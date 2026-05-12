@@ -42,3 +42,5 @@ Use short-lived feature branches for each milestone. Vercel preview deployments 
 ## Environment Variables
 
 Copy `.env.example` to `.env.local` when local environment values are needed. The placeholders are present for future milestones only; no environment variables are required for Milestone 0.
+
+Supabase schema notes and manual migration steps live in `docs/database-schema.md`.
