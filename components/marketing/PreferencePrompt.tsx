@@ -1,0 +1,37 @@
+const preferences = ["OG graphics", "Rare reissues", "Vintage decks", "Wall-hangers", "Aussie sellers", "Odd shapes"];
+
+export function PreferencePrompt() {
+  return (
+    <section className="bg-ink py-16 text-white sm:py-20" id="preferences">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-12">
+        <div>
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">Access list</p>
+          <h2 className="mt-3 text-3xl font-black leading-tight sm:text-5xl">
+            Tell the first version what kind of decks should show up.
+          </h2>
+          <p className="mt-4 text-lg font-medium leading-8 text-white/70">
+            The waitlist flow lands later. For now, the access-list CTA marks the intent: buyers want a curated place to
+            find skate decks without trawling every corner of the internet.
+          </p>
+          <a
+            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20"
+            href="#access"
+          >
+            Join the access list
+          </a>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {preferences.map((preference) => (
+            <div
+              className="rounded-md border border-white/10 bg-white/10 px-4 py-5 text-center text-sm font-black uppercase tracking-[0.1em] text-white/80"
+              key={preference}
+            >
+              {preference}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
