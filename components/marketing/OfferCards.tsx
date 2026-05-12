@@ -1,18 +1,23 @@
+import { CTAImpressionTracker } from "@/components/analytics/CTAImpressionTracker";
+import { AccessCTA } from "@/components/marketing/AccessCTA";
 import { site } from "@/lib/site";
 
 const offers = [
   {
     eyebrow: "Taste test",
+    buttonLabel: "Get preview access",
     ...site.offers.previewPass,
     highlight: "Low-friction access for ad traffic and curious buyers.",
   },
   {
     eyebrow: "Main pass",
+    buttonLabel: "Join monthly pass",
     ...site.offers.monthlyPass,
     highlight: "For people who want the first proper private-market experience.",
   },
   {
     eyebrow: "Upgrade path",
+    buttonLabel: "Unlock access",
     ...site.offers.previewUpgrade,
     highlight: "Keeps the preview useful without double-charging early interest.",
   },
@@ -21,6 +26,13 @@ const offers = [
 export function OfferCards() {
   return (
     <section className="bg-white py-16 sm:py-20" id="access">
+      <CTAImpressionTracker
+        eventName="pricing_viewed"
+        properties={{
+          currency: site.currency,
+          surface: "homepage_offer_cards",
+        }}
+      />
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <div className="max-w-3xl">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">Access concept</p>
@@ -45,9 +57,24 @@ export function OfferCards() {
               <p className="mt-5 text-base font-semibold leading-7 text-ink/70">{offer.note}</p>
               <div className="mt-6 h-2 rounded-sm bg-gradient-to-r from-orange via-mint to-lilac" />
               <p className="mt-5 text-sm font-bold leading-6 text-ink/60">{offer.highlight}</p>
-              <span className="mt-6 inline-flex h-9 w-9 items-center justify-center rounded-md bg-white text-sm font-black text-orange shadow-soft">
-                0{index + 1}
-              </span>
+              <div className="mt-6 flex items-center justify-between gap-3">
+                <AccessCTA
+                  body={site.soldOutModal.body}
+                  className="inline-flex min-h-11 items-center justify-center rounded-md bg-ink px-4 py-3 text-xs font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35"
+                  ctaLabel={site.soldOutModal.ctaLabel}
+                  currency={site.currency}
+                  eventContext={`homepage_offer_${offer.offerType}`}
+                  headline={site.soldOutModal.headline}
+                  offerId={offer.offerId}
+                  offerType={offer.offerType}
+                  priceCents={offer.priceCents}
+                >
+                  {offer.buttonLabel}
+                </AccessCTA>
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-white text-sm font-black text-orange shadow-soft">
+                  0{index + 1}
+                </span>
+              </div>
             </article>
           ))}
         </div>

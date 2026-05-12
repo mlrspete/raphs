@@ -1,3 +1,6 @@
+import { AccessCTA } from "@/components/marketing/AccessCTA";
+import { site } from "@/lib/site";
+
 const preferences = ["OG graphics", "Rare reissues", "Vintage decks", "Wall-hangers", "Aussie sellers", "Odd shapes"];
 
 export function PreferencePrompt() {
@@ -13,12 +16,19 @@ export function PreferencePrompt() {
             The waitlist flow lands later. For now, the access-list CTA marks the intent: buyers want a curated place to
             find skate decks without trawling every corner of the internet.
           </p>
-          <a
+          <AccessCTA
+            body={site.soldOutModal.body}
             className="mt-8 inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20"
-            href="#access"
+            ctaLabel={site.soldOutModal.ctaLabel}
+            currency={site.currency}
+            eventContext="homepage_preference_prompt"
+            headline={site.soldOutModal.headline}
+            offerId={site.offers.previewPass.offerId}
+            offerType={site.offers.previewPass.offerType}
+            priceCents={site.offers.previewPass.priceCents}
           >
-            Join the access list
-          </a>
+            Unlock access
+          </AccessCTA>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

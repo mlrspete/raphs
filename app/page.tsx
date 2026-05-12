@@ -1,3 +1,4 @@
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { FAQ } from "@/components/marketing/FAQ";
 import { Footer } from "@/components/marketing/Footer";
 import { Hero } from "@/components/marketing/Hero";
@@ -9,6 +10,7 @@ import { PreferencePrompt } from "@/components/marketing/PreferencePrompt";
 export default function Home() {
   return (
     <main className="overflow-hidden bg-cream text-ink">
+      <PageViewTracker eventName="homepage_viewed" properties={{ surface: "homepage" }} />
       <Hero />
       <OfferCards />
       <MarketplacePreview />

@@ -11,7 +11,7 @@ export const landingPageTests = [
   {
     id: "0f3d7b2e-6f24-45dc-b63a-5883d56bf90a",
     slug: "preview-pass",
-    status: "active",
+    status: "live",
     internalName: "1-Day Preview Pass angle",
     headline: "Get a one-day look inside Raph\u2019s Market.",
     subheadline:
@@ -24,7 +24,7 @@ export const landingPageTests = [
     categoryFocus: "OG, rare, vintage, and interesting skateboard decks",
     heroImageUrl: null,
     ctaPrimary: "Get preview access",
-    ctaSecondary: "Join the access list",
+    ctaSecondary: "Unlock access",
     ...soldOutModalCopy,
     sections: [
       {
@@ -54,12 +54,24 @@ export const landingPageTests = [
     configJson: {
       audience: "curious_buyers",
       experimentAngle: "low_price_preview",
+      mediaItems: [
+        {
+          title: "Preview wall",
+          label: "Fast look | curated deck energy",
+          tone: "orange",
+        },
+        {
+          title: "Rare shapes",
+          label: "OG, vintage, oddball",
+          tone: "mint",
+        },
+      ],
     },
   },
   {
     id: "aa6cae98-586b-4a55-98a0-6b9fb8eab125",
     slug: "monthly-pass",
-    status: "active",
+    status: "live",
     internalName: "Monthly Marketplace Pass angle",
     headline: "A private monthly market for skateboard decks worth checking first.",
     subheadline:
@@ -71,8 +83,8 @@ export const landingPageTests = [
     priceDisplay: "$24.99 AUD/month",
     categoryFocus: "curated monthly access",
     heroImageUrl: null,
-    ctaPrimary: "Get preview access",
-    ctaSecondary: "Join the access list",
+    ctaPrimary: "Join monthly pass",
+    ctaSecondary: "Unlock access",
     ...soldOutModalCopy,
     sections: [
       {
@@ -102,12 +114,24 @@ export const landingPageTests = [
     configJson: {
       audience: "high_intent_buyers",
       experimentAngle: "monthly_access",
+      mediaItems: [
+        {
+          title: "Monthly drop",
+          label: "Recurring access | AUD pricing",
+          tone: "lilac",
+        },
+        {
+          title: "Private browse",
+          label: "Tighter market | less noise",
+          tone: "peach",
+        },
+      ],
     },
   },
   {
     id: "7a89834e-8455-4325-9fab-9e55c67d70e5",
     slug: "upgrade-access",
-    status: "active",
+    status: "live",
     internalName: "Upgrade and collector-intent angle",
     headline: "Preview first, then upgrade if the deck market feels right.",
     subheadline:
@@ -119,8 +143,8 @@ export const landingPageTests = [
     priceDisplay: "$20 AUD upgrade",
     categoryFocus: "collector-intent upgrade path",
     heroImageUrl: null,
-    ctaPrimary: "Get preview access",
-    ctaSecondary: "Join the access list",
+    ctaPrimary: "Unlock access",
+    ctaSecondary: "Get preview access",
     ...soldOutModalCopy,
     sections: [
       {
@@ -150,6 +174,18 @@ export const landingPageTests = [
     configJson: {
       audience: "collector_intent",
       experimentAngle: "preview_upgrade",
+      mediaItems: [
+        {
+          title: "Upgrade path",
+          label: "Preview first | upgrade later",
+          tone: "mint",
+        },
+        {
+          title: "Collector signal",
+          label: "Condition, era, story",
+          tone: "orange",
+        },
+      ],
     },
   },
 ] satisfies LandingTestConfig[];
