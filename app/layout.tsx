@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { OutboundLinkTracker } from "@/components/analytics/OutboundLinkTracker";
+import { Providers } from "@/app/providers";
 import "./globals.css";
 import { site } from "@/lib/site";
 
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en-AU">
       <body>
-        <OutboundLinkTracker />
-        {children}
+        <Providers>
+          <OutboundLinkTracker />
+          {children}
+        </Providers>
       </body>
     </html>
   );

@@ -246,6 +246,7 @@ export type Database = {
           utm_campaign: string | null;
           utm_content: string | null;
           utm_term: string | null;
+          fbclid: string | null;
           meta_campaign_id: string | null;
           meta_adset_id: string | null;
           meta_ad_id: string | null;
@@ -273,6 +274,7 @@ export type Database = {
           utm_campaign?: string | null;
           utm_content?: string | null;
           utm_term?: string | null;
+          fbclid?: string | null;
           meta_campaign_id?: string | null;
           meta_adset_id?: string | null;
           meta_ad_id?: string | null;
@@ -300,6 +302,7 @@ export type Database = {
           utm_campaign?: string | null;
           utm_content?: string | null;
           utm_term?: string | null;
+          fbclid?: string | null;
           meta_campaign_id?: string | null;
           meta_adset_id?: string | null;
           meta_ad_id?: string | null;

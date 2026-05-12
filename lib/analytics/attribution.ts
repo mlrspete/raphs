@@ -70,6 +70,14 @@ function getCurrentPath() {
   return `${window.location.pathname}${window.location.search}`;
 }
 
+function getCurrentUrl() {
+  if (!isBrowser()) {
+    return null;
+  }
+
+  return window.location.href;
+}
+
 function getReferrer() {
   if (!isBrowser()) {
     return null;
@@ -149,6 +157,7 @@ export function getAttributionContext(): AttributionContext {
     anonymous_id: getAnonymousId(),
     session_id: getSessionId(),
     path: getCurrentPath(),
+    url: getCurrentUrl() ?? getCurrentPath(),
     referrer: getReferrer(),
     device_type: getDeviceType(),
     timestamp: new Date().toISOString(),
