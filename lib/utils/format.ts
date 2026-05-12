@@ -14,3 +14,22 @@ export function formatCurrencyFromCents(value: number | null | undefined, curren
     style: "currency",
   }).format(value / 100);
 }
+
+export function formatDateTime(value: string | null | undefined) {
+  if (!value) {
+    return "Unknown";
+  }
+
+  return new Intl.DateTimeFormat("en-AU", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(value));
+}
+
+export function shortenId(value: string | null | undefined) {
+  if (!value) {
+    return "";
+  }
+
+  return value.length > 14 ? `${value.slice(0, 8)}...${value.slice(-4)}` : value;
+}
