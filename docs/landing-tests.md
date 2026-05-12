@@ -14,6 +14,8 @@ Raph's Market V0 landing-page tests are defined in code and synced into Supabase
 - `monthly-pass` - Monthly Marketplace Pass, `$24.99 AUD/month`, `monthly_pass`
 - `upgrade-access` - Preview-to-monthly upgrade, `$20 AUD upgrade`, `upgrade_pass`
 
+Seeded public tests should use `status: "live"`. Draft, paused, archived, and missing tests return 404 on the public route.
+
 Each config includes the default sold-out modal copy:
 
 - Headline: `Today's access passes are sold out`
@@ -47,3 +49,25 @@ SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 Milestone 1 migrations must be applied before running the script. Run the seed command twice when testing; the second run should update the same rows by `slug` without creating duplicates.
+
+## Public Route Behavior
+
+Milestone 4 adds `app/l/[slug]/page.tsx`.
+
+- `/l/[slug]` fetches the matching `landing_page_tests` row from Supabase server-side.
+- Only rows with `status = 'live'` render publicly.
+- Missing rows and non-live statuses return 404.
+- Page metadata uses the landing headline plus `Raph's Market`; the description uses the row subheadline when present.
+- CTA buttons are rendered with stable `data-landing-cta`, `data-landing-slug`, `data-offer-id`, and `data-offer-type` attributes for later modal and event work.
+- No waitlist submission, event tracking, checkout, cart, CMS, or inventory backend is included yet.
+
+Apply `supabase/migrations/20260512000001_allow_public_live_landing_tests.sql` before testing public routes against Supabase. The migration allows anon reads for live landing-page tests only.
+
+The public route uses the server-safe anon Supabase client, so it needs:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+```
+
+It does not use `SUPABASE_SERVICE_ROLE_KEY` for public reads.

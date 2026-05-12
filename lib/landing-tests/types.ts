@@ -1,6 +1,6 @@
 import type { Json } from "@/lib/types/database";
 
-export type LandingTestStatus = "draft" | "active" | "paused";
+export type LandingTestStatus = "draft" | "live" | "paused" | "archived";
 
 export type LandingTestCurrency = "AUD";
 
@@ -17,6 +17,13 @@ export type LandingTestSection = {
 export type LandingTestFaqItem = {
   question: string;
   answer: string;
+};
+
+export type LandingTestMediaItem = {
+  title: string;
+  label: string;
+  imageUrl?: string | null;
+  tone?: "orange" | "mint" | "lilac" | "peach";
 };
 
 export type LandingTestConfig = {
@@ -41,4 +48,28 @@ export type LandingTestConfig = {
   sections: LandingTestSection[];
   faqItems: LandingTestFaqItem[];
   configJson?: Record<string, Json>;
+};
+
+export type LandingPageViewModel = {
+  id: string;
+  slug: string;
+  status: LandingTestStatus;
+  headline: string;
+  subheadline: string | null;
+  offerType: LandingTestOfferType | null;
+  offerId: string | null;
+  priceCents: number | null;
+  currency: LandingTestCurrency;
+  priceDisplay: string | null;
+  categoryFocus: string | null;
+  heroImageUrl: string | null;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  modalHeadline: string | null;
+  modalBody: string | null;
+  waitlistCta: string | null;
+  sections: LandingTestSection[];
+  faqItems: LandingTestFaqItem[];
+  mediaItems: LandingTestMediaItem[];
+  configJson: Record<string, Json>;
 };

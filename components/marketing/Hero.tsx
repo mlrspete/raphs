@@ -1,3 +1,4 @@
+import { AccessCTA } from "@/components/marketing/AccessCTA";
 import { site } from "@/lib/site";
 
 const deckTags = ["OG reissues", "90s graphics", "shop decks", "rare shapes"];
@@ -37,18 +38,32 @@ export function Hero() {
             {site.description} Test the vibe with a paid preview, then choose whether the full monthly pass is for you.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
+            <AccessCTA
+              body={site.soldOutModal.body}
               className="inline-flex min-h-12 items-center justify-center rounded-md bg-ink px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35"
-              href="#access"
+              ctaLabel={site.soldOutModal.ctaLabel}
+              currency={site.currency}
+              eventContext="homepage_hero_primary"
+              headline={site.soldOutModal.headline}
+              offerId={site.offers.previewPass.offerId}
+              offerType={site.offers.previewPass.offerType}
+              priceCents={site.offers.previewPass.priceCents}
             >
               Get preview access
-            </a>
-            <a
+            </AccessCTA>
+            <AccessCTA
+              body={site.soldOutModal.body}
               className="inline-flex min-h-12 items-center justify-center rounded-md border border-ink/15 bg-white/75 px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus:ring-4 focus:ring-mint/35"
-              href="#preferences"
+              ctaLabel={site.soldOutModal.ctaLabel}
+              currency={site.currency}
+              eventContext="homepage_hero_secondary"
+              headline={site.soldOutModal.headline}
+              offerId={site.offers.monthlyPass.offerId}
+              offerType={site.offers.monthlyPass.offerType}
+              priceCents={site.offers.monthlyPass.priceCents}
             >
-              Join the access list
-            </a>
+              Join monthly pass
+            </AccessCTA>
           </div>
         </div>
 

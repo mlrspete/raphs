@@ -1,3 +1,4 @@
+import { TrackedFAQItem } from "@/components/analytics/TrackedFAQItem";
 import { site } from "@/lib/site";
 
 const faqs = [
@@ -43,13 +44,13 @@ export function FAQ() {
 
         <div className="mt-10 divide-y divide-ink/10 rounded-lg border border-ink/10 bg-white shadow-soft">
           {faqs.map((faq) => (
-            <details className="group p-5 open:bg-peach/35 sm:p-6" key={faq.question}>
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-black text-ink">
-                <span>{faq.question}</span>
-                <span className="text-2xl leading-none text-orange transition group-open:rotate-45">+</span>
-              </summary>
-              <p className="mt-4 max-w-3xl text-base font-medium leading-7 text-ink/70">{faq.answer}</p>
-            </details>
+            <TrackedFAQItem
+              answer={faq.answer}
+              key={faq.question}
+              location="homepage_faq"
+              properties={{ surface: "homepage" }}
+              question={faq.question}
+            />
           ))}
         </div>
       </div>
