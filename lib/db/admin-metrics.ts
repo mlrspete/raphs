@@ -1,10 +1,16 @@
 import "server-only";
 
+import {
+  adminRangeLabels,
+  getAdminRangeStartIso,
+  normalizeAdminDateRange,
+  type AdminDateRangeKey,
+} from "@/lib/db/admin-filters";
 import { createServerSupabaseAuthClient } from "@/lib/supabase/server";
 import type { EventLog, LandingPageTest, LeadPreference, WaitlistLead } from "@/lib/types/database";
 import { safeRate } from "@/lib/utils/rates";
 
-export type AdminDateRangeKey = "7d" | "30d" | "all";
+export type { AdminDateRangeKey };
 
 export type AdminMetricCounts = {
   uniqueVisitors: number;
@@ -61,12 +67,6 @@ type MutableCounts = {
   waitlistSubmissions: number;
 };
 
-const rangeLabels: Record<AdminDateRangeKey, string> = {
-  "7d": "Last 7 days",
-  "30d": "Last 30 days",
-  all: "All time",
-};
-
 function emptyMutableCounts(): MutableCounts {
   return {
     visitorIds: new Set<string>(),
@@ -88,27 +88,6 @@ function finalizeCounts(counts: MutableCounts): AdminMetricCounts {
     modalToWaitlistConversion: safeRate(counts.waitlistSubmissions, counts.modalOpens),
     overallWaitlistConversion: safeRate(counts.waitlistSubmissions, counts.landingViews),
   };
-}
-
-function normalizeRange(range: string | string[] | undefined): AdminDateRangeKey {
-  const value = Array.isArray(range) ? range[0] : range;
-
-  if (value === "7d" || value === "30d" || value === "all") {
-    return value;
-  }
-
-  return "30d";
-}
-
-function getRangeStartIso(range: AdminDateRangeKey) {
-  if (range === "all") {
-    return null;
-  }
-
-  const days = range === "7d" ? 7 : 30;
-  const start = new Date();
-  start.setDate(start.getDate() - days);
-  return start.toISOString();
 }
 
 function incrementEventCounts(counts: MutableCounts, event: EventLog) {
@@ -173,7 +152,7 @@ function toBreakdownRows(map: Map<string, MutableCounts>, limit = 5): AdminBreak
 async function getAdminData(range: AdminDateRangeKey): Promise<AdminDataSet> {
   try {
     const supabase = await createServerSupabaseAuthClient();
-    const rangeStartIso = getRangeStartIso(range);
+    const rangeStartIso = getAdminRangeStartIso(range);
     const testsQuery = supabase
       .from("landing_page_tests")
       .select("*")
@@ -307,14 +286,14 @@ function buildTotals(data: AdminDataSet): AdminMetricCounts {
 }
 
 export async function getAdminOverviewMetrics(rangeInput?: string | string[]): Promise<AdminOverviewMetrics> {
-  const range = normalizeRange(rangeInput);
+  const range = normalizeAdminDateRange(rangeInput);
   const data = await getAdminData(range);
   const tests = buildTestMetrics(data);
   const { topSources, topOffers } = buildOverviewBreakdowns(data);
 
   return {
     range,
-    rangeLabel: rangeLabels[range],
+    rangeLabel: adminRangeLabels[range],
     totals: buildTotals(data),
     tests,
     topSources,
@@ -323,25 +302,25 @@ export async function getAdminOverviewMetrics(rangeInput?: string | string[]): P
 }
 
 export async function getLandingTestMetrics(rangeInput?: string | string[]) {
-  const range = normalizeRange(rangeInput);
+  const range = normalizeAdminDateRange(rangeInput);
   const data = await getAdminData(range);
 
   return {
     range,
-    rangeLabel: rangeLabels[range],
+    rangeLabel: adminRangeLabels[range],
     tests: buildTestMetrics(data),
   };
 }
 
 export async function getLandingTestResults(testId: string, rangeInput?: string | string[]): Promise<AdminLandingTestResults> {
-  const range = normalizeRange(rangeInput);
+  const range = normalizeAdminDateRange(rangeInput);
   const data = await getAdminData(range);
   const test = data.tests.find((item) => item.id === testId) ?? null;
 
   if (!test) {
     return {
       range,
-      rangeLabel: rangeLabels[range],
+      rangeLabel: adminRangeLabels[range],
       test: null,
       metrics: finalizeCounts(emptyMutableCounts()),
       funnel: [],
@@ -377,7 +356,7 @@ export async function getLandingTestResults(testId: string, rangeInput?: string 
 
   return {
     range,
-    rangeLabel: rangeLabels[range],
+    rangeLabel: adminRangeLabels[range],
     test,
     metrics,
     funnel: [
