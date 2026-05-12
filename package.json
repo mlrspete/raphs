@@ -10,6 +10,7 @@
     "seed:landing-tests": "tsx scripts/seed-landing-tests.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.105.4",
     "next": "^15.3.0",
     "posthog-js": "^1.373.4",
