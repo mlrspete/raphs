@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { ConversionRate } from "@/components/admin/ConversionRate";
 import { EmptyState } from "@/components/admin/EmptyState";
+import { TableScrollHint } from "@/components/admin/TableScrollHint";
 import type { AdminDateRangeKey, AdminLandingTestMetric } from "@/lib/db/admin-metrics";
 import { formatInteger } from "@/lib/utils/format";
 
@@ -14,6 +15,8 @@ export function TestsTable({ tests, range }: TestsTableProps) {
   if (tests.length === 0) {
     return (
       <EmptyState
+        actionHref="/admin"
+        actionLabel="Back to overview"
         description="Seed landing-page tests into Supabase, then this table will show live demand signals by test."
         title="No landing tests found"
       />
@@ -22,8 +25,9 @@ export function TestsTable({ tests, range }: TestsTableProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-soft">
+      <TableScrollHint />
       <div className="overflow-x-auto">
-        <table className="min-w-[1120px] w-full text-left text-sm">
+        <table className="w-full min-w-[1120px] text-left text-sm">
           <thead className="bg-cream text-xs font-black uppercase tracking-[0.12em] text-ink/54">
             <tr>
               <th className="px-4 py-3">Test</th>

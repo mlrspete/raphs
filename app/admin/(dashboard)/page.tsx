@@ -17,6 +17,11 @@ export const dynamic = "force-dynamic";
 export default async function AdminOverviewPage({ searchParams }: AdminOverviewPageProps) {
   const { range } = await searchParams;
   const metrics = await getAdminOverviewMetrics(range);
+  const hasAdminData =
+    metrics.totals.landingViews > 0 ||
+    metrics.totals.paidIntentClicks > 0 ||
+    metrics.totals.modalOpens > 0 ||
+    metrics.totals.waitlistSubmissions > 0;
 
   return (
     <section className="grid gap-6">
@@ -63,6 +68,15 @@ export default async function AdminOverviewPage({ searchParams }: AdminOverviewP
           value={formatPercent(metrics.totals.overallWaitlistConversion)}
         />
       </div>
+
+      {!hasAdminData ? (
+        <EmptyState
+          actionHref="/admin/tests"
+          actionLabel="Review landing tests"
+          description="No events or waitlist leads exist for this date range yet. Seed demo data in local or staging, or run the public funnel once to confirm tracking."
+          title="No admin data yet"
+        />
+      ) : null}
 
       <div className="grid gap-4 xl:grid-cols-2">
         <BreakdownCard rows={metrics.topSources} title="Top UTM sources / campaigns" />

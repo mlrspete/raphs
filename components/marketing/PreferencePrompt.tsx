@@ -13,12 +13,12 @@ export function PreferencePrompt() {
             Tell the first version what kind of decks should show up.
           </h2>
           <p className="mt-4 text-lg font-medium leading-8 text-white/70">
-            The waitlist flow lands later. For now, the access-list CTA marks the intent: buyers want a curated place to
-            find skate decks without trawling every corner of the internet.
+            The access-list CTA captures sold-out demand signals now: buyers want a curated place to find skate decks
+            without trawling every corner of the internet.
           </p>
           <AccessCTA
             body={site.soldOutModal.body}
-            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20"
+            className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
             ctaLabel={site.soldOutModal.ctaLabel}
             currency={site.currency}
             eventContext="homepage_preference_prompt"

@@ -19,7 +19,7 @@ export function LandingFinalCTA({ page }: LandingFinalCTAProps) {
         </p>
         <AccessCTA
           body={page.modalBody ?? site.soldOutModal.body}
-          className="mt-8 inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20"
+          className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
           ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
           currency={page.currency}
           eventContext="landing_final_primary"

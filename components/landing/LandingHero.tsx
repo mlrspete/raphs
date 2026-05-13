@@ -15,10 +15,10 @@ export function LandingHero({ page }: LandingHeroProps) {
 
       <div className="relative mx-auto grid min-h-[86svh] max-w-7xl gap-10 px-5 py-24 sm:px-8 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:px-12">
         <div>
-          <p className="mb-5 inline-flex rounded-md border border-ink/10 bg-white/70 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-ink/70 shadow-soft backdrop-blur sm:text-sm">
+          <p className="mb-5 inline-flex max-w-full flex-wrap rounded-md border border-ink/10 bg-white/70 px-3 py-2 text-xs font-extrabold uppercase leading-5 tracking-[0.12em] text-ink/70 shadow-soft backdrop-blur sm:text-sm sm:tracking-[0.16em]">
             {site.market}-only | {page.currency} | {page.categoryFocus ?? "private deck access"}
           </p>
-          <h1 className="max-w-4xl text-balance text-5xl font-black leading-[0.94] text-ink sm:text-6xl lg:text-7xl">
+          <h1 className="max-w-4xl text-balance text-4xl font-black leading-[0.98] text-ink sm:text-6xl sm:leading-[0.94] lg:text-7xl">
             {page.headline}
           </h1>
           {page.subheadline ? (
@@ -29,7 +29,7 @@ export function LandingHero({ page }: LandingHeroProps) {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <AccessCTA
               body={page.modalBody ?? site.soldOutModal.body}
-              className="inline-flex min-h-12 items-center justify-center rounded-md bg-ink px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-md bg-ink px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
               ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
               currency={page.currency}
               eventContext="landing_hero_primary"
@@ -44,7 +44,7 @@ export function LandingHero({ page }: LandingHeroProps) {
             </AccessCTA>
             <AccessCTA
               body={page.modalBody ?? site.soldOutModal.body}
-              className="inline-flex min-h-12 items-center justify-center rounded-md border border-ink/15 bg-white/75 px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus:ring-4 focus:ring-mint/35"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-md border border-ink/15 bg-white/75 px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus:ring-4 focus:ring-mint/35 sm:w-auto"
               ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
               currency={page.currency}
               eventContext="landing_hero_secondary"
