@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const waitlistPrivacyVersion = "waitlist-v0-2026-05-12";
+export const waitlistPrivacyVersion = "waitlist-v0-2026-05-13";
 
 export const preferredCategoryValues = [
   "80s_90s",
@@ -113,6 +113,7 @@ export const waitlistSubmissionSchema = z.object({
     message: "Marketing consent is required.",
   }),
   privacyVersion: optionalTrimmedString(80),
+  turnstileToken: optionalTrimmedString(5000),
   website: optionalTrimmedString(200),
   context: waitlistContextSchema,
   attribution: waitlistAttributionSchema,

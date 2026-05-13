@@ -1,4 +1,5 @@
 import { site } from "@/lib/site";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -11,12 +12,18 @@ export function Footer() {
           </p>
         </div>
         <div className="flex gap-3">
-          <a className="text-sm font-black uppercase tracking-[0.12em] text-ink/65 hover:text-ink" href="#access">
+          <Link className="text-sm font-black uppercase tracking-[0.12em] text-ink/65 hover:text-ink" href="/#access">
             Access
-          </a>
-          <a className="text-sm font-black uppercase tracking-[0.12em] text-ink/65 hover:text-ink" href="#faq">
+          </Link>
+          <Link className="text-sm font-black uppercase tracking-[0.12em] text-ink/65 hover:text-ink" href="/#faq">
             FAQ
-          </a>
+          </Link>
+          <Link className="text-sm font-black uppercase tracking-[0.12em] text-ink/65 hover:text-ink" href="/privacy">
+            Privacy
+          </Link>
+          <Link className="text-sm font-black uppercase tracking-[0.12em] text-ink/65 hover:text-ink" href="/terms">
+            Terms
+          </Link>
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 "use client";
 
 import { getAttributionContext } from "@/lib/analytics/attribution";
+import { captureMetaPixelEvent } from "@/lib/analytics/metaPixel";
 import { capturePostHogEvent } from "@/lib/analytics/posthog";
 import {
   isSupabaseLoggedEventName,
@@ -71,6 +72,7 @@ export function trackEvent(eventName: AnalyticsEventName, properties: TrackEvent
   }
 
   capturePostHogEvent(payload);
+  captureMetaPixelEvent(payload);
 
   if (shouldSendToSupabase(eventName)) {
     sendToSupabase(payload);
