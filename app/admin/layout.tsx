@@ -6,6 +6,10 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: `Admin | ${site.name}`,
   description: `Private admin access for ${site.name}.`,
+  robots: {
+    follow: false,
+    index: false,
+  },
 };
 
 export default function AdminRootLayout({ children }: { children: ReactNode }) {

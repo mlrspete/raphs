@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { upsertWaitlistLead } from "@/lib/db/leads";
+import { verifyTurnstileToken } from "@/lib/security/turnstile";
 import type { WaitlistApiResponse } from "@/lib/types/waitlist";
 import { waitlistSubmissionSchema } from "@/lib/validation/waitlist";
 
@@ -65,6 +66,24 @@ export async function POST(request: Request) {
   }
 
   try {
+    const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
+    const turnstile = await verifyTurnstileToken(parsed.data.turnstileToken, forwardedFor);
+
+    if (!turnstile.ok) {
+      const errorMessage = turnstile.error ?? "Anti-bot verification failed.";
+
+      return NextResponse.json<WaitlistApiResponse>(
+        {
+          success: false,
+          error: errorMessage,
+          fieldErrors: {
+            turnstileToken: [errorMessage],
+          },
+        },
+        { status: 400 },
+      );
+    }
+
     const result = await upsertWaitlistLead(parsed.data);
 
     return NextResponse.json<WaitlistApiResponse>({

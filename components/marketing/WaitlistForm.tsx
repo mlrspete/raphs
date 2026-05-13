@@ -1,7 +1,9 @@
 "use client";
 
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 import { getAttributionContext } from "@/lib/analytics/attribution";
 import type { TrackEventProperties } from "@/lib/analytics/types";
 import { trackEvent } from "@/lib/analytics/trackEvent";
@@ -36,6 +38,7 @@ type FormState = {
   likelihoodToBuy: string;
   consentMarketing: boolean;
   website: string;
+  turnstileToken: string | null;
 };
 
 const initialFormState: FormState = {
@@ -48,6 +51,7 @@ const initialFormState: FormState = {
   likelihoodToBuy: "",
   consentMarketing: false,
   website: "",
+  turnstileToken: null,
 };
 
 function firstError(fieldErrors: Record<string, string[]> | undefined, field: string) {
@@ -118,6 +122,18 @@ export function WaitlistForm({
     });
   }
 
+  const handleTurnstileTokenChange = useCallback((token: string | null) => {
+    setFormState((current) => ({
+      ...current,
+      turnstileToken: token,
+    }));
+    setFieldErrors((current) => {
+      const next = { ...current };
+      delete next.turnstileToken;
+      return next;
+    });
+  }, []);
+
   function buildPayload(): WaitlistSubmissionInput {
     const attribution = getAttributionContext();
 
@@ -131,6 +147,7 @@ export function WaitlistForm({
       likelihoodToBuy: formState.likelihoodToBuy,
       consentMarketing: formState.consentMarketing,
       privacyVersion: waitlistPrivacyVersion,
+      turnstileToken: formState.turnstileToken,
       website: formState.website,
       context: {
         currency,
@@ -390,11 +407,21 @@ export function WaitlistForm({
         />
         <span>
           I agree to receive emails about Raph&apos;s Market access windows and understand no payment is being processed.
+          I have read the{" "}
+          <Link className="font-black text-orange underline underline-offset-4" href="/privacy" rel="noreferrer" target="_blank">
+            privacy notice
+          </Link>
+          .
           {fieldErrors.consentMarketing ? (
             <span className="mt-1 block text-xs font-bold text-red-600">{fieldErrors.consentMarketing}</span>
           ) : null}
         </span>
       </label>
+
+      <TurnstileWidget onTokenChange={handleTurnstileTokenChange} />
+      {fieldErrors.turnstileToken ? (
+        <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700">{fieldErrors.turnstileToken}</p>
+      ) : null}
 
       {formError ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700">{formError}</p> : null}
 
