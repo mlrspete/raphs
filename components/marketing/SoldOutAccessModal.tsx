@@ -70,7 +70,7 @@ export function SoldOutAccessModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center" role="presentation">
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4" role="presentation">
       <button
         aria-label="Close sold-out access dialog"
         className="absolute inset-0 cursor-default bg-ink/65 backdrop-blur-sm"
@@ -81,7 +81,7 @@ export function SoldOutAccessModal({
         aria-describedby={bodyId}
         aria-labelledby={titleId}
         aria-modal="true"
-        className="relative max-h-[92svh] w-full max-w-xl overflow-y-auto rounded-lg border border-ink/10 bg-cream p-5 text-ink shadow-deck sm:p-7"
+        className="relative max-h-[94svh] w-full max-w-xl overflow-y-auto rounded-t-lg border border-ink/10 bg-cream p-5 text-ink shadow-deck sm:max-h-[92svh] sm:rounded-lg sm:p-7"
         role="dialog"
       >
         <button
@@ -96,7 +96,7 @@ export function SoldOutAccessModal({
 
         <div className="pr-12">
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Access window</p>
-          <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-4xl" id={titleId}>
+          <h2 className="mt-3 text-2xl font-black leading-tight text-ink sm:text-4xl" id={titleId}>
             {headline}
           </h2>
           <p className="mt-4 text-base font-semibold leading-7 text-ink/72" id={bodyId}>

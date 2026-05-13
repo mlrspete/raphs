@@ -1,4 +1,5 @@
 import { EmptyState } from "@/components/admin/EmptyState";
+import { TableScrollHint } from "@/components/admin/TableScrollHint";
 import type { AdminEventRow } from "@/lib/db/admin-events";
 import { formatCurrencyFromCents, formatDateTime, shortenId } from "@/lib/utils/format";
 
@@ -10,7 +11,9 @@ export function EventsTable({ events }: EventsTableProps) {
   if (events.length === 0) {
     return (
       <EmptyState
-        description="Selected analytics events will appear here after public pages receive tracked traffic."
+        actionHref="/admin/funnels"
+        actionLabel="Review funnels"
+        description="Selected analytics events will appear here after public pages receive tracked traffic. Clear filters, open a seeded landing page, and click a sold-out CTA if you expected rows."
         title="No events match these filters"
       />
     );
@@ -18,8 +21,9 @@ export function EventsTable({ events }: EventsTableProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-soft">
+      <TableScrollHint />
       <div className="overflow-x-auto">
-        <table className="min-w-[1280px] w-full text-left text-sm">
+        <table className="w-full min-w-[1280px] text-left text-sm">
           <thead className="bg-cream text-xs font-black uppercase tracking-[0.12em] text-ink/54">
             <tr>
               <th className="px-4 py-3">Event</th>

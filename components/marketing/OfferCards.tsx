@@ -57,10 +57,10 @@ export function OfferCards() {
               <p className="mt-5 text-base font-semibold leading-7 text-ink/70">{offer.note}</p>
               <div className="mt-6 h-2 rounded-sm bg-gradient-to-r from-orange via-mint to-lilac" />
               <p className="mt-5 text-sm font-bold leading-6 text-ink/60">{offer.highlight}</p>
-              <div className="mt-6 flex items-center justify-between gap-3">
+              <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <AccessCTA
                   body={site.soldOutModal.body}
-                  className="inline-flex min-h-11 items-center justify-center rounded-md bg-ink px-4 py-3 text-xs font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35"
+                  className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-ink px-4 py-3 text-center text-xs font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
                   ctaLabel={site.soldOutModal.ctaLabel}
                   currency={site.currency}
                   eventContext={`homepage_offer_${offer.offerType}`}
@@ -71,7 +71,7 @@ export function OfferCards() {
                 >
                   {offer.buttonLabel}
                 </AccessCTA>
-                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-white text-sm font-black text-orange shadow-soft">
+                <span className="inline-flex h-9 w-full shrink-0 items-center justify-center rounded-md bg-white text-sm font-black text-orange shadow-soft sm:w-9">
                   0{index + 1}
                 </span>
               </div>

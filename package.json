@@ -7,7 +7,8 @@
     "build": "next build",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "seed:landing-tests": "tsx scripts/seed-landing-tests.ts"
+    "seed:landing-tests": "tsx scripts/seed-landing-tests.ts",
+    "seed:demo-data": "tsx scripts/seed-demo-data.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

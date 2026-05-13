@@ -75,13 +75,13 @@ export function FilterBar({ fields, action, clearHref }: FilterBarProps) {
 
       <div className="mt-4 flex flex-wrap gap-2">
         <button
-          className="inline-flex min-h-10 items-center justify-center rounded-md bg-orange px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-ink shadow-soft transition hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/25"
+          className="inline-flex min-h-10 w-full items-center justify-center rounded-md bg-orange px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-ink shadow-soft transition hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/25 sm:w-auto"
           type="submit"
         >
           Apply filters
         </button>
         <a
-          className="inline-flex min-h-10 items-center justify-center rounded-md border border-ink/10 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-ink/64 transition hover:bg-cream hover:text-ink focus:outline-none focus:ring-4 focus:ring-orange/25"
+          className="inline-flex min-h-10 w-full items-center justify-center rounded-md border border-ink/10 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-ink/64 transition hover:bg-cream hover:text-ink focus:outline-none focus:ring-4 focus:ring-orange/25 sm:w-auto"
           href={clearHref}
         >
           Clear

@@ -28,10 +28,10 @@ export function Hero() {
 
       <div className="relative mx-auto flex min-h-[92svh] max-w-7xl flex-col justify-center px-5 py-24 sm:px-8 lg:px-12">
         <div className="max-w-4xl">
-          <p className="mb-5 inline-flex rounded-md border border-ink/10 bg-white/70 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.16em] text-ink/70 shadow-soft backdrop-blur sm:text-sm">
+          <p className="mb-5 inline-flex max-w-full flex-wrap rounded-md border border-ink/10 bg-white/70 px-3 py-2 text-xs font-extrabold uppercase leading-5 tracking-[0.12em] text-ink/70 shadow-soft backdrop-blur sm:text-sm sm:tracking-[0.16em]">
             Australia-only private deck access
           </p>
-          <h1 className="max-w-4xl text-balance text-5xl font-black leading-[0.94] text-ink sm:text-6xl md:text-7xl lg:text-8xl">
+          <h1 className="max-w-4xl text-balance text-4xl font-black leading-[0.98] text-ink sm:text-6xl sm:leading-[0.94] md:text-7xl lg:text-8xl">
             {site.name} is a curated private market for decks worth chasing.
           </h1>
           <p className="mt-6 max-w-2xl text-pretty text-lg font-semibold leading-8 text-ink/75 sm:text-xl md:text-2xl md:leading-9">
@@ -40,7 +40,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <AccessCTA
               body={site.soldOutModal.body}
-              className="inline-flex min-h-12 items-center justify-center rounded-md bg-ink px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-md bg-ink px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-ink/90 focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
               ctaLabel={site.soldOutModal.ctaLabel}
               currency={site.currency}
               eventContext="homepage_hero_primary"
@@ -53,7 +53,7 @@ export function Hero() {
             </AccessCTA>
             <AccessCTA
               body={site.soldOutModal.body}
-              className="inline-flex min-h-12 items-center justify-center rounded-md border border-ink/15 bg-white/75 px-6 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus:ring-4 focus:ring-mint/35"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-md border border-ink/15 bg-white/75 px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus:ring-4 focus:ring-mint/35 sm:w-auto"
               ctaLabel={site.soldOutModal.ctaLabel}
               currency={site.currency}
               eventContext="homepage_hero_secondary"

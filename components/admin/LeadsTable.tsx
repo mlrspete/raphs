@@ -1,4 +1,5 @@
 import { EmptyState } from "@/components/admin/EmptyState";
+import { TableScrollHint } from "@/components/admin/TableScrollHint";
 import type { AdminLeadRow } from "@/lib/db/admin-leads";
 import { formatDateTime } from "@/lib/utils/format";
 
@@ -10,7 +11,9 @@ export function LeadsTable({ leads }: LeadsTableProps) {
   if (leads.length === 0) {
     return (
       <EmptyState
-        description="Waitlist leads will appear here after visitors submit the sold-out modal form."
+        actionHref="/admin/exports"
+        actionLabel="Review exports"
+        description="Waitlist leads will appear here after visitors submit the sold-out modal form. Clear filters or submit a test lead from a seeded landing page if you expected data."
         title="No leads match these filters"
       />
     );
@@ -18,8 +21,9 @@ export function LeadsTable({ leads }: LeadsTableProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-soft">
+      <TableScrollHint />
       <div className="overflow-x-auto">
-        <table className="min-w-[1180px] w-full text-left text-sm">
+        <table className="w-full min-w-[1180px] text-left text-sm">
           <thead className="bg-cream text-xs font-black uppercase tracking-[0.12em] text-ink/54">
             <tr>
               <th className="px-4 py-3">Email</th>

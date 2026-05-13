@@ -423,7 +423,11 @@ export function WaitlistForm({
         <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700">{fieldErrors.turnstileToken}</p>
       ) : null}
 
-      {formError ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700">{formError}</p> : null}
+      {formError ? (
+        <p aria-live="polite" className="rounded-md bg-red-50 px-3 py-2 text-sm font-bold leading-6 text-red-700" role="alert">
+          {formError} Your details are still here so you can retry.
+        </p>
+      ) : null}
 
       <button
         className="inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-5 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"

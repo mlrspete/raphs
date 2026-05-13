@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { EmptyState } from "@/components/admin/EmptyState";
+import { TableScrollHint } from "@/components/admin/TableScrollHint";
 import type { AdminFunnelRow } from "@/lib/db/admin-funnels";
 import type { AdminDateRangeKey } from "@/lib/db/admin-metrics";
 import { formatInteger } from "@/lib/utils/format";
@@ -15,7 +16,9 @@ export function FunnelTable({ rows, range }: FunnelTableProps) {
   if (rows.length === 0) {
     return (
       <EmptyState
-        description="Seed landing-page tests and capture events to compare funnels by landing page."
+        actionHref="/admin/tests"
+        actionLabel="Review tests"
+        description="Seed landing-page tests and capture events to compare funnels by landing page. The seeded demo data script can populate local or staging dashboards."
         title="No funnel data yet"
       />
     );
@@ -23,8 +26,9 @@ export function FunnelTable({ rows, range }: FunnelTableProps) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-ink/10 bg-white shadow-soft">
+      <TableScrollHint />
       <div className="overflow-x-auto">
-        <table className="min-w-[1280px] w-full text-left text-sm">
+        <table className="w-full min-w-[1280px] text-left text-sm">
           <thead className="bg-cream text-xs font-black uppercase tracking-[0.12em] text-ink/54">
             <tr>
               <th className="px-4 py-3">Landing page</th>
