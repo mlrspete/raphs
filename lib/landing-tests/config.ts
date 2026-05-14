@@ -3,7 +3,7 @@ import type { LandingTestConfig } from "@/lib/landing-tests/types";
 export const soldOutModalCopy = {
   modalHeadline: "Today\u2019s access passes are sold out",
   modalBody:
-    "The current Raph\u2019s Market preview batch has sold out. Join the list and we\u2019ll email you when the next access window opens.",
+    "The current Monroes Market preview batch has sold out. Join the list and we\u2019ll email you when the next access window opens.",
   waitlistCta: "Join the access list",
 } as const;
 
@@ -13,7 +13,7 @@ export const landingPageTests = [
     slug: "preview-pass",
     status: "live",
     internalName: "1-Day Preview Pass angle",
-    headline: "Get a one-day look inside Raph\u2019s Market.",
+    headline: "Get a one-day look inside Monroes Market.",
     subheadline:
       "A low-friction preview for Australian deck hunters who want to see whether a curated private market is worth their attention.",
     offerType: "preview_pass",
@@ -98,7 +98,7 @@ export const landingPageTests = [
         id: "market-quality",
         eyebrow: "More signal",
         title: "A tighter market for interesting decks.",
-        body: "The copy frames Raph\u2019s Market as more selective than a general classifieds browse, while staying bright and approachable.",
+        body: "The copy frames Monroes Market as more selective than a general classifieds browse, while staying bright and approachable.",
       },
     ],
     faqItems: [

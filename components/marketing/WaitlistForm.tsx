@@ -246,7 +246,7 @@ export function WaitlistForm({
         <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">You are on the list</p>
         <h3 className="mt-2 text-2xl font-black leading-tight text-ink">Thanks, we saved your access request.</h3>
         <p className="mt-3 text-sm font-semibold leading-6 text-ink/65">
-          We will email you when the next Raph&apos;s Market access window opens. No payment has been taken.
+          We will email you when the next Monroes Market access window opens. No payment has been taken.
         </p>
       </div>
     );
@@ -277,7 +277,7 @@ export function WaitlistForm({
             autoComplete="given-name"
             className="min-h-11 rounded-md border border-ink/12 bg-white px-3 text-sm font-bold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
             onChange={(event) => updateField("firstName", event.target.value)}
-            placeholder="Raph"
+            placeholder="Alex"
             type="text"
             value={formState.firstName}
           />
@@ -406,7 +406,7 @@ export function WaitlistForm({
           type="checkbox"
         />
         <span>
-          I agree to receive emails about Raph&apos;s Market access windows and understand no payment is being processed.
+          I agree to receive emails about Monroes Market access windows and understand no payment is being processed.
           I have read the{" "}
           <Link className="font-black text-orange underline underline-offset-4" href="/privacy" rel="noreferrer" target="_blank">
             privacy notice

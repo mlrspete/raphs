@@ -1,5 +1,5 @@
 export const site = {
-  name: "Raph\u2019s Market",
+  name: "Monroes Market",
   description: "Private access to OG, rare, vintage, and interesting skateboard decks.",
   market: "Australia",
   currency: "AUD",
@@ -31,7 +31,7 @@ export const site = {
   },
   soldOutModal: {
     headline: "Today\u2019s access passes are sold out",
-    body: "The current Raph\u2019s Market preview batch has sold out. Join the list and we\u2019ll email you when the next access window opens.",
+    body: "The current Monroes Market preview batch has sold out. Join the list and we\u2019ll email you when the next access window opens.",
     ctaLabel: "Join the access list",
   },
 } as const;
