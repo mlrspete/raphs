@@ -9,10 +9,6 @@ import type { TrackEventProperties } from "@/lib/analytics/types";
 import { trackEvent } from "@/lib/analytics/trackEvent";
 import type { WaitlistApiResponse } from "@/lib/types/waitlist";
 import {
-  budgetRangeOptions,
-  buyerSellerIntentOptions,
-  likelihoodToBuyOptions,
-  preferredCategoryOptions,
   waitlistPrivacyVersion,
   waitlistSubmissionSchema,
   type WaitlistSubmissionInput,
@@ -64,13 +60,6 @@ function toSingleFieldErrors(fieldErrors: Record<string, string[]> | undefined) 
   ) as Record<string, string>;
 }
 
-function selectClassName(hasError: boolean) {
-  return [
-    "min-h-11 rounded-md border bg-white px-3 text-sm font-bold text-ink outline-none focus:ring-4 focus:ring-orange/25",
-    hasError ? "border-red-500" : "border-ink/12",
-  ].join(" ");
-}
-
 export function WaitlistForm({
   ctaLabel,
   offerId,
@@ -85,7 +74,7 @@ export function WaitlistForm({
   const [formError, setFormError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const startedRef = useRef(false);
-  const lastBrandsTrackedRef = useRef("");
+  const submitLabel = ctaLabel === "Join the access list" ? "Join access list" : ctaLabel;
   const trackingProperties = useMemo<TrackEventProperties>(
     () => ({
       currency,
@@ -242,9 +231,9 @@ export function WaitlistForm({
 
   if (status === "success") {
     return (
-      <div className="mt-5 rounded-lg border border-mint/50 bg-mint/20 p-5">
+      <div className="mt-6 rounded-lg border border-mint/50 bg-mint/20 p-5 shadow-soft">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">You are on the list</p>
-        <h3 className="mt-2 text-2xl font-black leading-tight text-ink">Thanks, we saved your access request.</h3>
+        <h3 className="mt-2 text-2xl font-black uppercase leading-tight text-ink">Request saved.</h3>
         <p className="mt-3 text-sm font-semibold leading-6 text-ink/65">
           We will email you when the next Monroes Market access window opens. No payment has been taken.
         </p>
@@ -253,138 +242,23 @@ export function WaitlistForm({
   }
 
   return (
-    <form className="mt-5 grid gap-4 rounded-lg border border-ink/10 bg-white/75 p-4" onFocusCapture={() => markStarted("form_focus")} onSubmit={handleSubmit}>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="grid gap-2 text-sm font-black text-ink sm:col-span-2">
-          Email address *
-          <input
-            aria-invalid={Boolean(fieldErrors.email)}
-            autoComplete="email"
-            className={`min-h-12 rounded-md border bg-white px-4 text-base font-semibold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25 ${
-              fieldErrors.email ? "border-red-500" : "border-ink/12"
-            }`}
-            onChange={(event) => updateField("email", event.target.value)}
-            placeholder="you@example.com"
-            type="email"
-            value={formState.email}
-          />
-          {fieldErrors.email ? <span className="text-xs font-bold text-red-600">{fieldErrors.email}</span> : null}
-        </label>
-
-        <label className="grid gap-2 text-sm font-black text-ink">
-          First name
-          <input
-            autoComplete="given-name"
-            className="min-h-11 rounded-md border border-ink/12 bg-white px-3 text-sm font-bold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
-            onChange={(event) => updateField("firstName", event.target.value)}
-            placeholder="Alex"
-            type="text"
-            value={formState.firstName}
-          />
-        </label>
-
-        <label className="grid gap-2 text-sm font-black text-ink">
-          Budget range
-          <select
-            className={selectClassName(Boolean(fieldErrors.budgetRange))}
-            onChange={(event) => {
-              updateField("budgetRange", event.target.value);
-              if (event.target.value) {
-                trackEvent("budget_selected", {
-                  ...trackingProperties,
-                  budget_range: event.target.value,
-                });
-              }
-            }}
-            value={formState.budgetRange}
-          >
-            <option value="">Pick a range</option>
-            {budgetRangeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm font-black text-ink">
-          Preferred era/category
-          <select
-            className={selectClassName(Boolean(fieldErrors.preferredCategory))}
-            onChange={(event) => {
-              updateField("preferredCategory", event.target.value);
-              if (event.target.value) {
-                trackEvent("category_selected", {
-                  ...trackingProperties,
-                  preferred_category: event.target.value,
-                });
-              }
-            }}
-            value={formState.preferredCategory}
-          >
-            <option value="">Pick a lane</option>
-            {preferredCategoryOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm font-black text-ink">
-          Buyer/seller intent
-          <select
-            className={selectClassName(Boolean(fieldErrors.buyerSellerIntent))}
-            onChange={(event) => updateField("buyerSellerIntent", event.target.value)}
-            value={formState.buyerSellerIntent}
-          >
-            <option value="">Pick one</option>
-            {buyerSellerIntentOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm font-black text-ink">
-          Likelihood to buy access
-          <select
-            className={selectClassName(Boolean(fieldErrors.likelihoodToBuy))}
-            onChange={(event) => updateField("likelihoodToBuy", event.target.value)}
-            value={formState.likelihoodToBuy}
-          >
-            <option value="">Pick one</option>
-            {likelihoodToBuyOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="grid gap-2 text-sm font-black text-ink sm:col-span-2">
-          Favourite brands
-          <input
-            className="min-h-11 rounded-md border border-ink/12 bg-white px-3 text-sm font-bold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
-            onBlur={() => {
-              const trimmedBrands = formState.favouriteBrands.trim();
-
-              if (trimmedBrands && trimmedBrands !== lastBrandsTrackedRef.current) {
-                lastBrandsTrackedRef.current = trimmedBrands;
-                trackEvent("brand_interest_added", {
-                  ...trackingProperties,
-                  brand_count: trimmedBrands.split(",").filter(Boolean).length,
-                });
-              }
-            }}
-            onChange={(event) => updateField("favouriteBrands", event.target.value)}
-            placeholder="Girl, Chocolate, Alien Workshop"
-            type="text"
-            value={formState.favouriteBrands}
-          />
-        </label>
-      </div>
+    <form className="mt-6 grid gap-4" onFocusCapture={() => markStarted("form_focus")} onSubmit={handleSubmit}>
+      <label className="grid gap-2 text-sm font-black uppercase text-ink">
+        Email address
+        <input
+          aria-invalid={Boolean(fieldErrors.email)}
+          autoComplete="email"
+          className={`min-h-14 rounded-md border bg-white px-4 text-base font-semibold text-ink shadow-soft outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25 ${
+            fieldErrors.email ? "border-red-500" : "border-ink/12"
+          }`}
+          onChange={(event) => updateField("email", event.target.value)}
+          placeholder="you@example.com"
+          required
+          type="email"
+          value={formState.email}
+        />
+        {fieldErrors.email ? <span className="text-xs font-bold normal-case text-red-600">{fieldErrors.email}</span> : null}
+      </label>
 
       <div aria-hidden="true" className="hidden">
         <label htmlFor="waitlist-company">Company</label>
@@ -398,11 +272,12 @@ export function WaitlistForm({
         />
       </div>
 
-      <label className="flex gap-3 rounded-md border border-ink/10 bg-cream/70 p-3 text-sm font-semibold leading-6 text-ink/70">
+      <label className="flex gap-3 rounded-md border border-ink/10 bg-white/68 p-3 text-sm font-semibold leading-6 text-ink/70">
         <input
           checked={formState.consentMarketing}
           className="mt-1 h-4 w-4 accent-orange"
           onChange={(event) => updateField("consentMarketing", event.target.checked)}
+          required
           type="checkbox"
         />
         <span>
@@ -430,7 +305,7 @@ export function WaitlistForm({
       ) : null}
 
       <button
-        className="inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-5 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex min-h-[3.25rem] items-center justify-center rounded-md bg-orange px-5 py-4 text-sm font-black uppercase text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
         data-currency={currency}
         data-event="waitlist_submitted"
         data-landing-page-id={landingPageId ?? undefined}
@@ -441,7 +316,7 @@ export function WaitlistForm({
         disabled={status === "loading"}
         type="submit"
       >
-        {status === "loading" ? "Joining..." : ctaLabel}
+        {status === "loading" ? "Joining..." : submitLabel}
       </button>
     </form>
   );

@@ -21,8 +21,6 @@ export type SoldOutAccessModalProps = {
 };
 
 export function SoldOutAccessModal({
-  headline,
-  body,
   ctaLabel,
   offerId,
   offerType,
@@ -73,7 +71,7 @@ export function SoldOutAccessModal({
     <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4" role="presentation">
       <button
         aria-label="Close sold-out access dialog"
-        className="absolute inset-0 cursor-default bg-ink/65 backdrop-blur-sm"
+        className="absolute inset-0 cursor-default bg-ink/72 backdrop-blur-sm"
         onClick={() => onClose("backdrop")}
         type="button"
       />
@@ -81,12 +79,14 @@ export function SoldOutAccessModal({
         aria-describedby={bodyId}
         aria-labelledby={titleId}
         aria-modal="true"
-        className="relative max-h-[94svh] w-full max-w-xl overflow-y-auto rounded-t-lg border border-ink/10 bg-cream p-5 text-ink shadow-deck sm:max-h-[92svh] sm:rounded-lg sm:p-7"
+        className="relative max-h-[94svh] w-full max-w-lg overflow-hidden rounded-t-lg border border-white/55 bg-cream text-ink shadow-deck sm:max-h-[92svh] sm:rounded-lg"
         role="dialog"
       >
+        <div className="absolute -right-20 -top-20 h-52 w-72 rotate-6 rounded-lg bg-orange/30 blur-3xl" />
+        <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-orange via-peach to-mint" />
         <button
           aria-label="Close dialog"
-          className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md border border-ink/10 bg-white text-2xl font-black leading-none text-ink shadow-soft transition hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30"
+          className="absolute right-4 top-5 z-10 inline-flex h-10 w-10 items-center justify-center rounded-md border border-ink/10 bg-white/82 text-xl font-black leading-none text-ink shadow-soft transition hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30"
           onClick={() => onClose("close_button")}
           ref={closeButtonRef}
           type="button"
@@ -94,42 +94,31 @@ export function SoldOutAccessModal({
           x
         </button>
 
-        <div className="pr-12">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Access window</p>
-          <h2 className="mt-3 text-2xl font-black leading-tight text-ink sm:text-4xl" id={titleId}>
-            {headline}
-          </h2>
-          <p className="mt-4 text-base font-semibold leading-7 text-ink/72" id={bodyId}>
-            {body}
-          </p>
-        </div>
-
-        <div className="mt-6 grid gap-3 rounded-lg border border-ink/10 bg-white p-4 sm:grid-cols-3">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.12em] text-ink/55">Offer</p>
-            <p className="mt-1 text-sm font-black text-ink">{offerType ?? "access_pass"}</p>
-          </div>
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.12em] text-ink/55">Price</p>
-            <p className="mt-1 text-sm font-black text-ink">
-              {typeof priceCents === "number" ? `${currency} ${(priceCents / 100).toFixed(2)}` : currency}
+        <div className="relative max-h-[94svh] overflow-y-auto p-5 pt-8 sm:max-h-[92svh] sm:p-8 sm:pt-10">
+          <div className="pr-12">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-orange">WAVE 1 ACCESS</p>
+            <h2 className="mt-3 text-6xl font-black uppercase leading-[0.82] text-ink sm:text-7xl" id={titleId}>
+              SOLD OUT
+            </h2>
+            <p className="mt-5 text-base font-semibold leading-7 text-ink/72" id={bodyId}>
+              Today&apos;s access passes are sold out. Wave 1 of Monroes Market has reached capacity. Join the list and
+              we&apos;ll email you when the next access window opens.
+            </p>
+            <p className="mt-4 rounded-md border border-ink/10 bg-white/62 px-3 py-2 text-xs font-black uppercase leading-5 text-ink/56">
+              Limited daily access passes | Australia | no payment processed
             </p>
           </div>
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.12em] text-ink/55">Market</p>
-            <p className="mt-1 text-sm font-black text-ink">Australia</p>
-          </div>
-        </div>
 
-        <WaitlistForm
-          ctaLabel={ctaLabel}
-          currency={currency}
-          landingPageId={landingPageId}
-          landingSlug={landingSlug}
-          offerId={offerId}
-          offerType={offerType}
-          priceCents={priceCents}
-        />
+          <WaitlistForm
+            ctaLabel={ctaLabel}
+            currency={currency}
+            landingPageId={landingPageId}
+            landingSlug={landingSlug}
+            offerId={offerId}
+            offerType={offerType}
+            priceCents={priceCents}
+          />
+        </div>
       </div>
     </div>
   );
