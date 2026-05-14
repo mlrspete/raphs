@@ -4,30 +4,31 @@ import { site } from "@/lib/site";
 const faqs = [
   {
     question: `What is ${site.name}?`,
-    answer: `${site.name} is a V0 demand-validation site for a future private marketplace focused on OG, rare, vintage, and interesting skateboard decks.`,
+    answer: `${site.name} is a private access marketplace concept for OG, rare, vintage, and interesting skateboard decks in Australia.`,
   },
   {
     question: "Is this live yet?",
     answer:
-      "This page is testing buyer interest and the paid-access model before marketplace features, payments, inventory, and seller tools are added.",
+      "Wave 1 is an early preview. The full marketplace, payments, checkout, and seller tools are not live yet.",
   },
   {
-    question: "What is the 1-Day Preview Pass?",
-    answer: `It is a $4.99 AUD access concept for people who want a quick look at the kind of private deck market ${site.name} is shaping.`,
-  },
-  {
-    question: "What is the Monthly Marketplace Pass?",
+    question: "What is the Preview Daypass?",
     answer:
-      "It is a $24.99 AUD/month concept for ongoing access to the future curated marketplace experience.",
+      "It is the one-day access option for people who want a quick peek at private listings before joining the full membership.",
+  },
+  {
+    question: "What is Monroes Ultra?",
+    answer:
+      "Monroes Ultra is the monthly membership concept for ongoing access to private listings, drops, and seller opportunities.",
   },
   {
     question: "Is this Australia only?",
-    answer: `Yes. ${site.name} is positioned around Australian buyers, sellers, pricing, and shipping expectations.`,
+    answer: `Yes. ${site.name} is focused on Australian buyers, sellers, pricing, and shipping expectations for this early wave.`,
   },
   {
     question: "Can I sell decks later?",
     answer:
-      "That is part of the future marketplace direction. Seller interest will help shape what comes after the buyer-access test.",
+      "That is part of the direction. Selected sellers will be introduced gradually as the next access windows open.",
   },
 ];
 
@@ -38,7 +39,7 @@ export function FAQ() {
         <div className="max-w-3xl">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">FAQ</p>
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-5xl">
-            The short version before the proper flows arrive.
+            The short version before the next wave.
           </h2>
         </div>
 

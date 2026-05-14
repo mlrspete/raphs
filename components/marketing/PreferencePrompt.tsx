@@ -1,45 +1,100 @@
-import { AccessCTA } from "@/components/marketing/AccessCTA";
-import { site } from "@/lib/site";
+"use client";
 
-const preferences = ["OG graphics", "Rare reissues", "Vintage decks", "Wall-hangers", "Aussie sellers", "Odd shapes"];
+import { useEffect, useState } from "react";
+
+const voteStorageKey = "monroes-your-say-vote";
+const preferences = [
+  "More OG graphics",
+  "More Aussie sellers",
+  "More rare reissues",
+  "More vintage decks",
+  "More wall-hangers",
+  "More odd shapes",
+];
+
+function tileClassName(isSelected: boolean) {
+  return [
+    "relative flex aspect-square min-h-28 flex-col justify-between overflow-hidden rounded-lg border p-4 text-left transition",
+    "focus:outline-none focus:ring-4 focus:ring-orange/35",
+    isSelected
+      ? "border-orange bg-orange text-ink shadow-deck"
+      : "border-white/10 bg-white/10 text-white hover:-translate-y-1 hover:border-orange/70 hover:bg-white/20",
+  ].join(" ");
+}
 
 export function PreferencePrompt() {
+  const [selectedVote, setSelectedVote] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const savedVote = window.localStorage.getItem(voteStorageKey);
+
+      if (savedVote && preferences.includes(savedVote)) {
+        setSelectedVote(savedVote);
+      }
+    } catch {
+      setSelectedVote(null);
+    }
+  }, []);
+
+  function submitVote(preference: string) {
+    setSelectedVote(preference);
+
+    try {
+      window.localStorage.setItem(voteStorageKey, preference);
+    } catch {
+      // localStorage can be unavailable in private or locked-down browsers.
+    }
+  }
+
   return (
-    <section className="bg-ink py-16 text-white sm:py-20" id="preferences">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-12">
+    <section className="relative overflow-hidden bg-ink py-16 text-white sm:py-20" id="preferences">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange/70 to-transparent" />
+      <div className="absolute -right-16 top-12 h-52 w-80 rotate-6 rounded-lg bg-orange/30 blur-3xl" />
+      <div className="absolute bottom-0 left-10 h-32 w-72 -rotate-6 rounded-lg bg-peach/10 blur-3xl" />
+
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center lg:px-12">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">Access list</p>
-          <h2 className="mt-3 text-3xl font-black leading-tight sm:text-5xl">
-            Tell the first version what kind of decks should show up.
+          <p className="text-sm font-black uppercase text-orange">Your say</p>
+          <h2 className="mt-3 text-4xl font-black uppercase leading-none sm:text-6xl">
+            Tell us what Monroes should unlock first.
           </h2>
-          <p className="mt-4 text-lg font-medium leading-8 text-white/70">
-            The access-list CTA captures sold-out demand signals now: buyers want a curated place to find skate decks
-            without trawling every corner of the internet.
+          <p className="mt-5 max-w-xl text-lg font-semibold leading-8 text-white/70">
+            Wave 1 is limited on purpose. Your local vote helps shape what gets prioritised for the next access window.
           </p>
-          <AccessCTA
-            body={site.soldOutModal.body}
-            className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
-            ctaLabel={site.soldOutModal.ctaLabel}
-            currency={site.currency}
-            eventContext="homepage_preference_prompt"
-            headline={site.soldOutModal.headline}
-            offerId={site.offers.previewPass.offerId}
-            offerType={site.offers.previewPass.offerType}
-            priceCents={site.offers.previewPass.priceCents}
+          <a
+            className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-7 py-3 text-center text-sm font-black uppercase text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
+            href="#access"
           >
-            Unlock access
-          </AccessCTA>
+            See access options
+          </a>
+          {selectedVote ? (
+            <p aria-live="polite" className="mt-4 text-sm font-bold text-white/64">
+              Vote submitted: {selectedVote}
+            </p>
+          ) : null}
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {preferences.map((preference) => (
-            <div
-              className="rounded-md border border-white/10 bg-white/10 px-4 py-5 text-center text-sm font-black uppercase tracking-[0.1em] text-white/80"
-              key={preference}
-            >
-              {preference}
-            </div>
-          ))}
+          {preferences.map((preference) => {
+            const isSelected = selectedVote === preference;
+
+            return (
+              <button
+                aria-pressed={isSelected}
+                className={tileClassName(isSelected)}
+                key={preference}
+                onClick={() => submitVote(preference)}
+                type="button"
+              >
+                <span className="text-xs font-black uppercase opacity-60">{isSelected ? "+1" : "Vote"}</span>
+                <span className="text-pretty text-base font-black uppercase leading-tight sm:text-lg">{preference}</span>
+                <span className="text-xs font-black uppercase opacity-70">
+                  {isSelected ? "Vote submitted" : "Tap to choose"}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </section>
