@@ -22,6 +22,20 @@ export type SoldOutAccessModalProps = {
   onClose: (reason: SoldOutAccessModalCloseReason) => void;
 };
 
+function readPositiveNumber(properties: TrackEventProperties | undefined, key: string) {
+  const value = properties?.[key];
+
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    return null;
+  }
+
+  return Math.round(value);
+}
+
+function formatCurrencyFromCents(cents: number, currency: string) {
+  return `$${(cents / 100).toFixed(2)} ${currency}`;
+}
+
 export function SoldOutAccessModal({
   ctaLabel,
   offerId,
@@ -38,6 +52,14 @@ export function SoldOutAccessModal({
   const bodyId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<Element | null>(null);
+  const selectedQuantity = readPositiveNumber(extraTrackingProperties, "daypass_quantity");
+  const selectedTotalPriceCents = readPositiveNumber(extraTrackingProperties, "total_price_cents");
+  const selectedIntentSummary =
+    selectedQuantity && selectedTotalPriceCents
+      ? `Selected intent: ${selectedQuantity} Daypass${
+          selectedQuantity === 1 ? "" : "es"
+        } - ${formatCurrencyFromCents(selectedTotalPriceCents, currency)}`
+      : null;
 
   useEffect(() => {
     if (!open) {
@@ -82,14 +104,15 @@ export function SoldOutAccessModal({
         aria-describedby={bodyId}
         aria-labelledby={titleId}
         aria-modal="true"
-        className="relative max-h-[94svh] w-full max-w-lg overflow-hidden rounded-t-lg border border-white/55 bg-cream text-ink shadow-deck sm:max-h-[92svh] sm:rounded-lg"
+        className="relative max-h-[94svh] w-full max-w-xl overflow-hidden rounded-t-[24px] border border-white/60 bg-[#FFFDF7] text-ink shadow-[0_30px_90px_rgba(23,23,23,0.28),0_0_70px_rgba(255,122,61,0.18)] sm:max-h-[92svh] sm:rounded-[26px]"
         role="dialog"
       >
-        <div className="absolute -right-20 -top-20 h-52 w-72 rotate-6 rounded-lg bg-orange/30 blur-3xl" />
+        <div className="absolute -right-20 -top-20 h-52 w-72 rotate-6 rounded-[32px] bg-orange/25 blur-3xl" />
+        <div className="absolute -left-24 bottom-12 h-48 w-64 rounded-full bg-mint/25 blur-3xl" />
         <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-orange via-peach to-mint" />
         <button
           aria-label="Close dialog"
-          className="absolute right-4 top-5 z-10 inline-flex h-10 w-10 items-center justify-center rounded-md border border-ink/10 bg-white/82 text-xl font-black leading-none text-ink shadow-soft transition hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30"
+          className="absolute right-4 top-5 z-10 inline-flex h-10 w-10 items-center justify-center rounded-[12px] border border-ink/10 bg-white/85 text-xl font-black leading-none text-ink shadow-soft transition hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30"
           onClick={() => onClose("close_button")}
           ref={closeButtonRef}
           type="button"
@@ -99,17 +122,22 @@ export function SoldOutAccessModal({
 
         <div className="relative max-h-[94svh] overflow-y-auto p-5 pt-8 sm:max-h-[92svh] sm:p-8 sm:pt-10">
           <div className="pr-12">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-orange">WAVE 1 ACCESS</p>
-            <h2 className="mt-3 text-6xl font-black uppercase leading-[0.82] text-ink sm:text-7xl" id={titleId}>
+            <p className="text-[0.6875rem] font-black uppercase tracking-[0.24em] text-orange">WAVE 1 ACCESS</p>
+            <h2
+              className="mt-3 text-[2.75rem] font-black uppercase leading-[0.88] tracking-[-0.04em] text-[#171717] sm:text-6xl"
+              id={titleId}
+            >
               SOLD OUT
             </h2>
-            <p className="mt-5 text-base font-semibold leading-7 text-ink/72" id={bodyId}>
-              Today&apos;s access passes are sold out. Wave 1 of Monroes Market has reached capacity. Join the list and
-              we&apos;ll email you when the next access window opens.
+            <p className="mt-5 text-base font-semibold leading-[1.6] text-[#333333]" id={bodyId}>
+              This promotion has sold out. Wave 1 of Monroes Market reached capacity for today. Thanks for the support
+              --- join the list and we will email you when the next Daypass wave opens.
             </p>
-            <p className="mt-4 rounded-md border border-ink/10 bg-white/62 px-3 py-2 text-xs font-black uppercase leading-5 text-ink/56">
-              Limited daily access passes | Australia | no payment processed
-            </p>
+            {selectedIntentSummary ? (
+              <p className="mt-4 rounded-[14px] border border-ink/10 bg-white/70 px-4 py-3 text-sm font-black leading-6 text-[#171717] shadow-soft">
+                {selectedIntentSummary}
+              </p>
+            ) : null}
           </div>
 
           <WaitlistForm

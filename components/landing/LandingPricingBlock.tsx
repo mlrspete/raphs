@@ -82,7 +82,7 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
 
         <div className="mt-8 rounded-[18px] border border-white/[0.12] bg-white/[0.08] p-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[0.6875rem] font-black uppercase tracking-[0.22em] text-white/60">Daypasses</p>
+            <p className="text-sm font-black text-white/70">Daypasses</p>
             <div className="flex items-center gap-3">
               <button
                 aria-label="Decrease Daypass quantity"

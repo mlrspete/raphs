@@ -248,7 +248,7 @@ export function WaitlistForm({
 
   return (
     <form className="mt-6 grid gap-4" onFocusCapture={() => markStarted("form_focus")} onSubmit={handleSubmit}>
-      <label className="grid gap-2 text-sm font-black uppercase text-ink">
+      <label className="grid gap-2 text-sm font-black text-ink">
         Email address
         <input
           aria-invalid={Boolean(fieldErrors.email)}

@@ -28,7 +28,7 @@ export function TrackedFAQItem({ question, answer, location, properties = {} }: 
         <span>{question}</span>
         <span className="text-2xl leading-none text-orange transition group-open:rotate-45">+</span>
       </summary>
-      <p className="mt-4 max-w-3xl text-base font-medium leading-7 text-ink/70">{answer}</p>
+      <p className="mt-4 max-w-3xl text-base font-medium leading-7 text-muted">{answer}</p>
     </details>
   );
 }
