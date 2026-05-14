@@ -68,6 +68,9 @@ export type LandingPageViewModel = {
   modalHeadline: string | null;
   modalBody: string | null;
   waitlistCta: string | null;
+  campaignLimit: number;
+  bonusEntryLabel: string;
+  unitPriceCents: number;
   sections: LandingTestSection[];
   faqItems: LandingTestFaqItem[];
   mediaItems: LandingTestMediaItem[];

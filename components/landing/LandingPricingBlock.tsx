@@ -9,7 +9,7 @@ type LandingPricingBlockProps = {
 
 export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
   return (
-    <article className="rounded-lg border border-ink/10 bg-ink p-6 text-white shadow-soft">
+    <article className="rounded-lg border border-dark-card/50 bg-dark p-6 text-white shadow-soft sm:p-8">
       <CTAImpressionTracker
         eventName="pricing_viewed"
         properties={{
@@ -22,17 +22,17 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
           surface: "landing_pricing_block",
         }}
       />
-      <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Access pricing</p>
+      <p className="landing-card-eyebrow">Access pricing</p>
       <p className="mt-4 break-words text-4xl font-black leading-none sm:text-5xl lg:text-6xl">
         {page.priceDisplay ?? `${page.currency} offer`}
       </p>
-      <p className="mt-5 max-w-xl text-base font-medium leading-7 text-white/70">
+      <p className="mt-5 max-w-xl text-base font-semibold leading-[1.65] text-white/70">
         Pricing is shown in {page.currency}. The CTA marks access intent for this private-market offer.
       </p>
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <AccessCTA
           body={page.modalBody ?? site.soldOutModal.body}
-          className="inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
+          className="landing-button inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-6 py-3 text-center text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-orange-hover hover:text-white focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
           ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
           currency={page.currency}
           eventContext="landing_pricing_primary"
@@ -47,7 +47,7 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
         </AccessCTA>
         <AccessCTA
           body={page.modalBody ?? site.soldOutModal.body}
-          className="inline-flex min-h-12 w-full items-center justify-center rounded-md border border-white/15 bg-white/10 px-6 py-3 text-center text-sm font-black uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
+          className="landing-button inline-flex min-h-12 w-full items-center justify-center rounded-md border border-white/20 bg-white/10 px-6 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
           ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
           currency={page.currency}
           eventContext="landing_pricing_secondary"

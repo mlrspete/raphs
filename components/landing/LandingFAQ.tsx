@@ -13,9 +13,9 @@ export function LandingFAQ({ page }: LandingFAQProps) {
   return (
     <section className="bg-cream py-14 sm:py-20">
       <div className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12">
-        <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">FAQ</p>
-        <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-5xl">Quick answers for this access test.</h2>
-        <div className="mt-10 divide-y divide-ink/10 rounded-lg border border-ink/10 bg-white shadow-soft">
+        <p className="landing-card-eyebrow">FAQ</p>
+        <h2 className="landing-section-title mt-3">Quick answers for this access test.</h2>
+        <div className="mt-10 divide-y divide-ink/10 rounded-lg border border-border bg-whitecard shadow-soft">
           {page.faqItems.map((item) => (
             <TrackedFAQItem
               answer={item.answer}

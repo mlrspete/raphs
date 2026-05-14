@@ -13,6 +13,9 @@ import type {
 import type { Json, LandingPageTest } from "@/lib/types/database";
 
 const liveStatus = "live";
+const defaultCampaignLimit = 100;
+const defaultBonusEntryLabel = "1 free entry into the featured promo item";
+const defaultPreviewPassPriceCents = 499;
 
 function isRecord(value: Json): value is Record<string, Json> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -20,6 +23,10 @@ function isRecord(value: Json): value is Record<string, Json> {
 
 function readString(value: Json | undefined) {
   return typeof value === "string" ? value : null;
+}
+
+function readPositiveInteger(value: Json | undefined) {
+  return typeof value === "number" && Number.isInteger(value) && value > 0 ? value : null;
 }
 
 function isSection(value: Json) {
@@ -75,6 +82,10 @@ function normalizeLandingPage(row: LandingPageTest): LandingPageViewModel {
     modalHeadline: row.modal_headline,
     modalBody: row.modal_body,
     waitlistCta: row.waitlist_cta,
+    campaignLimit: readPositiveInteger(configJson.campaignLimit) ?? defaultCampaignLimit,
+    bonusEntryLabel: readString(configJson.bonusEntryLabel) ?? defaultBonusEntryLabel,
+    unitPriceCents:
+      readPositiveInteger(configJson.unitPriceCents) ?? row.price_cents ?? defaultPreviewPassPriceCents,
     sections: readArray<LandingTestSection>(configJson.sections, isSection),
     faqItems: readArray<LandingTestFaqItem>(configJson.faqItems, isFaqItem),
     mediaItems: readArray<LandingTestMediaItem>(configJson.mediaItems, isMediaItem),

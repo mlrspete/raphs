@@ -4,8 +4,19 @@
 
 :root {
   color-scheme: light;
-  --background: 255 252 245;
-  --foreground: 34 34 34;
+  --background: 255 253 247;
+  --foreground: 23 23 23;
+  --monroes-cream: #fffdf7;
+  --monroes-ink: #171717;
+  --monroes-muted: #525252;
+  --monroes-border: #e8e0d4;
+  --monroes-orange: #ff7a3d;
+  --monroes-orange-hover: #f0642a;
+  --monroes-dark: #202020;
+  --monroes-dark-card: #343434;
+  --monroes-white-card: #fffdf8;
+  --monroes-mint: #bff6e8;
+  --monroes-lilac: #d8c8ff;
 }
 
 * {
@@ -15,6 +26,7 @@
 html {
   min-width: 320px;
   background: rgb(var(--background));
+  scroll-behavior: smooth;
 }
 
 body {
@@ -28,6 +40,96 @@ body {
 }
 
 ::selection {
-  background: #ffb067;
-  color: #222222;
+  background: #ffb68f;
+  color: var(--monroes-ink);
+}
+
+@layer components {
+  .landing-hero-eyebrow {
+    color: var(--monroes-orange);
+    font-size: 0.6875rem;
+    font-weight: 900;
+    letter-spacing: 0.28em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .landing-card-eyebrow {
+    color: var(--monroes-orange);
+    font-size: 0.6875rem;
+    font-weight: 900;
+    letter-spacing: 0.24em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .landing-hero-title {
+    color: var(--monroes-ink);
+    font-size: 2.75rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 0.93;
+  }
+
+  .landing-section-title {
+    color: var(--monroes-ink);
+    font-size: 2.125rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 1.06;
+  }
+
+  .landing-body {
+    color: var(--monroes-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.65;
+  }
+
+  .landing-button {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .landing-topography {
+    background-image:
+      repeating-radial-gradient(
+        ellipse at 18% 36%,
+        rgba(23, 23, 23, 0.08) 0 1px,
+        transparent 1px 18px
+      ),
+      repeating-radial-gradient(
+        ellipse at 84% 18%,
+        rgba(255, 122, 61, 0.14) 0 1px,
+        transparent 1px 22px
+      );
+    -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.2) 70%, transparent);
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.2) 70%, transparent);
+  }
+
+  @media (min-width: 640px) {
+    .landing-hero-title {
+      font-size: 3.75rem;
+      line-height: 0.91;
+    }
+
+    .landing-section-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .landing-hero-title {
+      font-size: 4.625rem;
+      line-height: 0.9;
+    }
+
+    .landing-section-title {
+      font-size: 2.875rem;
+      line-height: 1.04;
+    }
+  }
 }

@@ -28,7 +28,7 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
       />
       <LandingHero page={page} />
 
-      <section className="bg-white py-14 sm:py-20" id="access">
+      <section className="bg-whitecard py-14 sm:py-20" id="daypass-offer">
         <div className="mx-auto grid max-w-7xl gap-5 px-5 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:px-12">
           <LandingOfferCard page={page} />
           <LandingPricingBlock page={page} />
@@ -42,17 +42,19 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <div className="grid gap-4 md:grid-cols-2">
               {page.sections.map((section) => (
-                <article className="rounded-lg border border-ink/10 bg-cream p-6 shadow-soft" key={section.id}>
+                <article className="rounded-lg border border-border bg-whitecard p-6 shadow-soft sm:p-7" key={section.id}>
                   {section.eyebrow ? (
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">{section.eyebrow}</p>
+                    <p className="landing-card-eyebrow">{section.eyebrow}</p>
                   ) : null}
-                  <h2 className="mt-3 text-2xl font-black leading-tight text-ink sm:text-3xl">{section.title}</h2>
-                  <p className="mt-4 text-base font-medium leading-7 text-ink/70">{section.body}</p>
+                  <h2 className="mt-3 text-2xl font-black leading-tight text-ink sm:text-3xl">
+                    {section.title}
+                  </h2>
+                  <p className="landing-body mt-4">{section.body}</p>
                   {section.bullets?.length ? (
                     <div className="mt-5 grid gap-2">
                       {section.bullets.map((bullet) => (
                         <p
-                          className="rounded-md border border-ink/10 bg-white px-3 py-2 text-sm font-bold text-ink/70"
+                          className="rounded-md border border-border bg-cream px-3 py-2 text-sm font-bold text-muted"
                           key={bullet}
                         >
                           {bullet}
