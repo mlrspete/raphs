@@ -6,6 +6,8 @@ import { SoldOutAccessModal } from "@/components/marketing/SoldOutAccessModal";
 import type { TrackEventProperties } from "@/lib/analytics/types";
 import { trackEvent } from "@/lib/analytics/trackEvent";
 
+const emptyTrackingProperties: TrackEventProperties = {};
+
 export type AccessCTAProps = {
   children: string;
   className: string;
@@ -19,6 +21,7 @@ export type AccessCTAProps = {
   landingPageId?: string | null;
   landingSlug?: string | null;
   eventContext: string;
+  extraTrackingProperties?: TrackEventProperties;
 };
 
 export function AccessCTA({
@@ -34,6 +37,7 @@ export function AccessCTA({
   landingPageId,
   landingSlug,
   eventContext,
+  extraTrackingProperties = emptyTrackingProperties,
 }: AccessCTAProps) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -49,8 +53,9 @@ export function AccessCTA({
       currency,
       landingPageId,
       landingSlug,
+      extraTrackingProperties,
     }),
-    [body, ctaLabel, currency, headline, landingPageId, landingSlug, offerId, offerType, priceCents],
+    [body, ctaLabel, currency, extraTrackingProperties, headline, landingPageId, landingSlug, offerId, offerType, priceCents],
   );
   const trackingProperties = useMemo<TrackEventProperties>(
     () => ({
@@ -62,8 +67,9 @@ export function AccessCTA({
       offer_id: offerId ?? null,
       offer_type: offerType ?? null,
       price_cents: priceCents ?? null,
+      ...extraTrackingProperties,
     }),
-    [children, currency, eventContext, landingPageId, landingSlug, offerId, offerType, priceCents],
+    [children, currency, eventContext, extraTrackingProperties, landingPageId, landingSlug, offerId, offerType, priceCents],
   );
   const openModal = useCallback(() => {
     trackEvent("paid_intent_clicked", trackingProperties);
@@ -134,6 +140,15 @@ export function AccessCTA({
         data-offer-id={offerId ?? undefined}
         data-offer-type={offerType ?? undefined}
         data-price-cents={priceCents ?? undefined}
+        data-daypass-quantity={
+          typeof trackingProperties.daypass_quantity === "number" ? trackingProperties.daypass_quantity : undefined
+        }
+        data-total-price-cents={
+          typeof trackingProperties.total_price_cents === "number" ? trackingProperties.total_price_cents : undefined
+        }
+        data-unit-price-cents={
+          typeof trackingProperties.unit_price_cents === "number" ? trackingProperties.unit_price_cents : undefined
+        }
         onClick={openModal}
         ref={buttonRef}
         type="button"

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 
 import { WaitlistForm } from "@/components/marketing/WaitlistForm";
+import type { TrackEventProperties } from "@/lib/analytics/types";
 
 export type SoldOutAccessModalCloseReason = "backdrop" | "close_button" | "escape";
 
@@ -16,6 +17,7 @@ export type SoldOutAccessModalProps = {
   currency: string;
   landingPageId?: string | null;
   landingSlug?: string | null;
+  extraTrackingProperties?: TrackEventProperties;
   open: boolean;
   onClose: (reason: SoldOutAccessModalCloseReason) => void;
 };
@@ -28,6 +30,7 @@ export function SoldOutAccessModal({
   currency,
   landingPageId,
   landingSlug,
+  extraTrackingProperties,
   open,
   onClose,
 }: SoldOutAccessModalProps) {
@@ -117,6 +120,7 @@ export function SoldOutAccessModal({
             offerId={offerId}
             offerType={offerType}
             priceCents={priceCents}
+            extraTrackingProperties={extraTrackingProperties}
           />
         </div>
       </div>

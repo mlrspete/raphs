@@ -22,6 +22,7 @@ type WaitlistFormProps = {
   currency: string;
   landingPageId?: string | null;
   landingSlug?: string | null;
+  extraTrackingProperties?: TrackEventProperties;
 };
 
 type FormState = {
@@ -50,6 +51,8 @@ const initialFormState: FormState = {
   turnstileToken: null,
 };
 
+const emptyTrackingProperties: TrackEventProperties = {};
+
 function firstError(fieldErrors: Record<string, string[]> | undefined, field: string) {
   return fieldErrors?.[field]?.[0] ?? null;
 }
@@ -68,6 +71,7 @@ export function WaitlistForm({
   currency,
   landingPageId,
   landingSlug,
+  extraTrackingProperties = emptyTrackingProperties,
 }: WaitlistFormProps) {
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -83,8 +87,9 @@ export function WaitlistForm({
       offer_id: offerId ?? null,
       offer_type: offerType ?? null,
       price_cents: priceCents ?? null,
+      ...extraTrackingProperties,
     }),
-    [currency, landingPageId, landingSlug, offerId, offerType, priceCents],
+    [currency, extraTrackingProperties, landingPageId, landingSlug, offerId, offerType, priceCents],
   );
 
   function markStarted(interaction: string) {
@@ -313,6 +318,15 @@ export function WaitlistForm({
         data-offer-id={offerId ?? undefined}
         data-offer-type={offerType ?? undefined}
         data-price-cents={priceCents ?? undefined}
+        data-daypass-quantity={
+          typeof trackingProperties.daypass_quantity === "number" ? trackingProperties.daypass_quantity : undefined
+        }
+        data-total-price-cents={
+          typeof trackingProperties.total_price_cents === "number" ? trackingProperties.total_price_cents : undefined
+        }
+        data-unit-price-cents={
+          typeof trackingProperties.unit_price_cents === "number" ? trackingProperties.unit_price_cents : undefined
+        }
         disabled={status === "loading"}
         type="submit"
       >
