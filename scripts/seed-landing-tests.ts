@@ -7,6 +7,14 @@ import type { Database, Json } from "../lib/types/database";
 
 type LandingPageTestInsert = Database["public"]["Tables"]["landing_page_tests"]["Insert"];
 
+// Supabase initializes Realtime with the client even though this script only uses PostgREST.
+// Provide a never-used transport so Node.js 20 can run the seed without installing ws.
+class DisabledRealtimeWebSocket {
+  constructor() {
+    throw new Error("Realtime is disabled for the landing-test seed script.");
+  }
+}
+
 loadEnvConfig(process.cwd());
 
 function requiredEnv(name: string) {
@@ -59,6 +67,9 @@ async function seedLandingTests() {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
+    },
+    realtime: {
+      transport: DisabledRealtimeWebSocket as never,
     },
   });
 
