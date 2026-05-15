@@ -284,7 +284,7 @@ export function WaitlistForm({
           type="checkbox"
         />
         <span>
-          I agree to receive emails about Monroes Market access windows and understand no payment is being processed.
+          I agree to receive emails about Monroes access updates and understand no payment is being processed.
           I have read the{" "}
           <Link className="font-black text-orange underline underline-offset-4" href="/privacy" rel="noreferrer" target="_blank">
             privacy notice

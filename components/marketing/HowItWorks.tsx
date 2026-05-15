@@ -21,11 +21,11 @@ export function HowItWorks() {
           <div>
             <p className="text-sm font-black uppercase text-orange">How it works</p>
             <h2 className="mt-3 text-4xl font-black uppercase leading-none text-ink sm:text-6xl">
-              From window to wishlist.
+              From access to wishlist.
             </h2>
           </div>
           <p className="max-w-2xl text-lg font-semibold leading-8 text-ink/68 lg:justify-self-end">
-            Wave 1 keeps access tight while members are let in gradually.
+            Access stays intentionally tight while members are let in gradually.
           </p>
         </div>
 

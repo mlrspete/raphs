@@ -60,7 +60,8 @@ export function PreferencePrompt() {
             Tell us what Monroes should unlock first.
           </h2>
           <p className="mt-5 max-w-xl text-lg font-semibold leading-8 text-white/70">
-            Wave 1 is limited on purpose. Your local vote helps shape what gets prioritised for the next access window.
+            Access is intentionally selective. Your local vote helps shape which decks and sellers get prioritised as
+            Monroes grows.
           </p>
           <a
             className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-7 py-3 text-center text-sm font-black uppercase text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"

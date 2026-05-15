@@ -1,6 +1,6 @@
 import { site } from "@/lib/site";
 
-const heroSignals = ["Wave 1", "Limited daily passes", "Australia"];
+const heroSignals = ["Private access", "Collector decks", "Australia"];
 
 export function Hero() {
   return (
@@ -22,7 +22,7 @@ export function Hero() {
       <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-12">
         <header className="flex items-center justify-between gap-4">
           <p className="text-sm font-black uppercase text-ink">{site.name}</p>
-          <p className="text-xs font-black uppercase text-ink/55">Early preview wave</p>
+          <p className="text-xs font-black uppercase text-ink/55">Members only</p>
         </header>
 
         <div className="grid flex-1 gap-10 py-16 lg:grid-cols-[0.96fr_1.04fr] lg:items-center lg:py-10">
@@ -44,13 +44,13 @@ export function Hero() {
               <span className="mt-3 block text-4xl leading-[0.9] sm:text-5xl lg:text-6xl">Members only.</span>
             </h1>
             <p className="mt-6 max-w-xl text-pretty text-lg font-semibold leading-8 text-ink/72 sm:text-xl">
-              Monroes Market is a private access marketplace for OG, rare, and interesting skateboard decks in Australia.
+              Monroes is a private members-only marketplace for OG, rare, vintage, and interesting skateboard decks in Australia.
             </p>
             <a
               className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-ink px-7 py-3 text-center text-sm font-black uppercase text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
               href="#access"
             >
-              Preview
+              View access
             </a>
           </div>
 
@@ -68,7 +68,7 @@ export function Hero() {
               <div className="relative flex h-full flex-col justify-between rounded-md border border-white/70 bg-white/28 p-5 backdrop-blur-sm">
                 <div className="flex items-center justify-between text-xs font-black uppercase text-ink/60">
                   <span>Monroes</span>
-                  <span>Wave 1</span>
+                  <span>Members only</span>
                 </div>
                 <div className="grid gap-3">
                   <div className="h-36 rounded-md border border-ink/10 bg-cream/72 shadow-soft" />
@@ -79,7 +79,7 @@ export function Hero() {
                   </div>
                 </div>
                 <p className="max-w-xs text-2xl font-black uppercase leading-none text-ink">
-                  Private listings preview
+                  Private collector listings
                 </p>
               </div>
             </div>

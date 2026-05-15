@@ -1,5 +1,5 @@
 export const site = {
-  name: "Monroes Market",
+  name: "Monroes",
   description: "Private access to OG, rare, vintage, and interesting skateboard decks.",
   market: "Australia",
   currency: "AUD",
@@ -10,7 +10,7 @@ export const site = {
       priceCents: 499,
       offerId: "homepage_preview_pass",
       offerType: "preview_pass",
-      note: "A short look inside the private marketplace concept.",
+      note: "A short look inside the private marketplace.",
     },
     monthlyPass: {
       name: "Monthly Marketplace Pass",
@@ -31,7 +31,7 @@ export const site = {
   },
   soldOutModal: {
     headline: "Today\u2019s access passes are sold out",
-    body: "The current Monroes Market preview batch has sold out. Join the list and we\u2019ll email you when the next access window opens.",
+    body: "The current Monroes preview batch has sold out. Join the list and we\u2019ll email you when more places become available.",
     ctaLabel: "Join the access list",
   },
 } as const;
