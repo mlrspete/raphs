@@ -27,14 +27,9 @@ export function LandingHero({ page }: LandingHeroProps) {
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-pretty text-base font-semibold leading-[1.65] text-muted sm:text-lg">
-            Get a Monroes Daypass, browse the member-only deck market, and receive 1 free promo entry with your eligible
+            Get a Monroes Daypass, browse the member-only deck market, and receive 1 free entry with your eligible
             Daypass purchase.
           </p>
-          <div className="mt-8 sm:max-w-2xl">
-            <p className="inline-flex w-fit max-w-full rounded-[10px] border border-orange/20 bg-whitecard px-4 py-3 text-sm font-black leading-6 text-ink shadow-soft">
-              Limited to the first 100 eligible Daypass purchases. Australia only.
-            </p>
-          </div>
           <div className="mt-7">
             <a
               className="landing-button inline-flex min-h-[3rem] w-full items-center justify-center rounded-[10px] bg-ink px-7 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-orange hover:shadow-[0_16px_45px_rgba(255,122,61,0.34)] focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
