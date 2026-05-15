@@ -64,7 +64,6 @@ function toSingleFieldErrors(fieldErrors: Record<string, string[]> | undefined) 
 }
 
 export function WaitlistForm({
-  ctaLabel,
   offerId,
   offerType,
   priceCents,
@@ -78,7 +77,6 @@ export function WaitlistForm({
   const [formError, setFormError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const startedRef = useRef(false);
-  const submitLabel = ctaLabel === "Join the access list" ? "Join access list" : ctaLabel;
   const trackingProperties = useMemo<TrackEventProperties>(
     () => ({
       currency,
@@ -237,10 +235,10 @@ export function WaitlistForm({
   if (status === "success") {
     return (
       <div className="mt-6 rounded-lg border border-mint/50 bg-mint/20 p-5 shadow-soft">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">You are on the list</p>
+        <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">YOU ARE ON THE WAITLIST</p>
         <h3 className="mt-2 text-2xl font-black uppercase leading-tight text-ink">Request saved.</h3>
         <p className="mt-3 text-sm font-semibold leading-6 text-ink/65">
-          We will email you when the next Monroes Market access window opens. No payment has been taken.
+          We will email you when more Daypasses become available. No payment has been taken.
         </p>
       </div>
     );
@@ -253,7 +251,7 @@ export function WaitlistForm({
         <input
           aria-invalid={Boolean(fieldErrors.email)}
           autoComplete="email"
-          className={`min-h-14 rounded-md border bg-white px-4 text-base font-semibold text-ink shadow-soft outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25 ${
+          className={`min-h-[3.25rem] rounded-md border bg-white px-4 text-base font-semibold text-ink shadow-soft outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25 ${
             fieldErrors.email ? "border-red-500" : "border-ink/12"
           }`}
           onChange={(event) => updateField("email", event.target.value)}
@@ -310,7 +308,7 @@ export function WaitlistForm({
       ) : null}
 
       <button
-        className="inline-flex min-h-[3.25rem] items-center justify-center rounded-md bg-orange px-5 py-4 text-sm font-black uppercase text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex min-h-[3.25rem] items-center justify-center rounded-md bg-orange px-5 py-4 text-xs font-black uppercase tracking-[0.18em] text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
         data-currency={currency}
         data-event="waitlist_submitted"
         data-landing-page-id={landingPageId ?? undefined}
@@ -330,7 +328,7 @@ export function WaitlistForm({
         disabled={status === "loading"}
         type="submit"
       >
-        {status === "loading" ? "Joining..." : submitLabel}
+        {status === "loading" ? "JOINING..." : "JOIN WAITLIST"}
       </button>
     </form>
   );

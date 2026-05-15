@@ -36,6 +36,10 @@ function formatCurrencyFromCents(cents: number, currency: string) {
   return `$${(cents / 100).toFixed(2)} ${currency}`;
 }
 
+const modalBody =
+  "This promotion has sold out. Thanks for the support. Join the waitlist and we\u2019ll email you when more Daypasses become available.";
+const summarySeparator = "\u00b7";
+
 export function SoldOutAccessModal({
   ctaLabel,
   offerId,
@@ -58,7 +62,7 @@ export function SoldOutAccessModal({
     selectedQuantity && selectedTotalPriceCents
       ? `Total: ${selectedQuantity} Daypass${
           selectedQuantity === 1 ? "" : "es"
-        } - ${formatCurrencyFromCents(selectedTotalPriceCents, currency)}`
+        } ${summarySeparator} ${formatCurrencyFromCents(selectedTotalPriceCents, currency)}`
       : null;
 
   useEffect(() => {
@@ -122,7 +126,7 @@ export function SoldOutAccessModal({
 
         <div className="relative max-h-[94svh] overflow-y-auto p-5 pt-8 sm:max-h-[92svh] sm:p-8 sm:pt-10">
           <div className="pr-12">
-            <p className="text-[0.6875rem] font-black uppercase tracking-[0.24em] text-orange">WAVE 1 ACCESS</p>
+            <p className="text-[0.6875rem] font-black uppercase tracking-[0.26em] text-orange">DAYPASS ACCESS</p>
             <h2
               className="mt-3 text-[2.75rem] font-black uppercase leading-[0.88] tracking-[-0.04em] text-[#171717] sm:text-6xl"
               id={titleId}
@@ -130,11 +134,10 @@ export function SoldOutAccessModal({
               SOLD OUT
             </h2>
             <p className="mt-5 text-base font-semibold leading-[1.6] text-[#333333]" id={bodyId}>
-              This promotion has sold out. Wave 1 of Monroes Market reached capacity for today. Thanks for the support
-              --- join the list and we will email you when the next Daypass wave opens.
+              {modalBody}
             </p>
             {selectedTotalSummary ? (
-              <p className="mt-4 rounded-[14px] border border-ink/10 bg-white/70 px-4 py-3 text-sm font-black leading-6 text-[#171717] shadow-soft">
+              <p className="mt-4 rounded-[14px] border border-orange/20 bg-white/75 px-4 py-3 text-sm font-black leading-6 text-[#171717] shadow-soft">
                 {selectedTotalSummary}
               </p>
             ) : null}
