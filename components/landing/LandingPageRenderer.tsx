@@ -48,9 +48,9 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div className="max-w-3xl">
-            <p className="landing-card-eyebrow">WHY TRY THE DAYPASS?</p>
+            <p className="landing-card-eyebrow">WHY GET A DAYPASS?</p>
             <h2 className="landing-section-title mt-3">
-              See if Monroes is worth joining before going Ultra.
+              Try out Monroes before going Ultra.
             </h2>
             <p className="landing-body mt-4 max-w-2xl">
               A simple way to browse the private deck market first, without starting a monthly membership.
