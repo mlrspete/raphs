@@ -94,6 +94,12 @@ body {
     text-transform: uppercase;
   }
 
+  .landing-hero-column,
+  .landing-hero-art {
+    width: min(100%, calc(100vw - 6.5rem));
+    max-width: calc(100vw - 6.5rem);
+  }
+
   .landing-topography {
     background-image:
       repeating-radial-gradient(
@@ -111,6 +117,16 @@ body {
   }
 
   @media (min-width: 640px) {
+    .landing-hero-column {
+      width: auto;
+      max-width: 48rem;
+    }
+
+    .landing-hero-art {
+      width: 100%;
+      max-width: 27.5rem;
+    }
+
     .landing-hero-title {
       font-size: 3.75rem;
       line-height: 0.91;
