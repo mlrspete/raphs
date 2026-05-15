@@ -8,11 +8,10 @@ export default function LandingPageNotFound() {
       <section className="mx-auto flex min-h-[70svh] max-w-3xl flex-col justify-center">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Landing page unavailable</p>
         <h1 className="mt-3 text-4xl font-black leading-tight text-ink sm:text-5xl">
-          This {site.name} access test is not live.
+          This {site.name} landing page is not live.
         </h1>
         <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-ink/68 sm:text-lg">
-          The page may be missing, paused, or still being prepared. Current public tests only render when their seeded
-          landing-page status is live.
+          The page may be missing, paused, or still being prepared. Landing pages only render when their status is live.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link

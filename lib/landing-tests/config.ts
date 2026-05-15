@@ -1,10 +1,10 @@
 import type { LandingTestConfig } from "@/lib/landing-tests/types";
 
 export const soldOutModalCopy = {
-  modalHeadline: "Today\u2019s access passes are sold out",
+  modalHeadline: "SOLD OUT",
   modalBody:
-    "The current Monroes Market preview batch has sold out. Join the list and we\u2019ll email you when the next access window opens.",
-  waitlistCta: "Join the access list",
+    "This promotion has sold out. Thanks for the support. Join the waitlist and we\u2019ll email you when more Daypasses become available.",
+  waitlistCta: "JOIN WAITLIST",
 } as const;
 
 export const landingPageTests = [
@@ -31,8 +31,8 @@ export const landingPageTests = [
         id: "why-preview",
         eyebrow: "Tiny commitment",
         title: "Peek at the private deck market before going monthly.",
-        body: "The preview pass tests whether a quick paid look feels useful for buyers coming from Meta ads.",
-        bullets: ["One-day access concept", "Australia-only positioning", "No marketplace account needed yet"],
+        body: "The preview pass gives buyers a quick paid look at the private deck market after arriving from Monroes ads.",
+        bullets: ["One-day access", "Australia-only positioning", "No marketplace account needed yet"],
       },
       {
         id: "deck-energy",
@@ -43,8 +43,8 @@ export const landingPageTests = [
     ],
     faqItems: [
       {
-        question: "What does the preview pass test?",
-        answer: "It tests whether buyers will pay a small amount to preview a curated private deck market.",
+        question: "What comes with the preview pass?",
+        answer: "It gives buyers a short look at a curated private deck market before deciding whether to join Monroes Ultra.",
       },
       {
         question: "Is the preview pass in AUD?",
@@ -91,8 +91,8 @@ export const landingPageTests = [
         id: "monthly-value",
         eyebrow: "Ongoing access",
         title: "Built for people who want the first look, not the leftover feed.",
-        body: "The monthly angle tests whether buyers value an always-on private market enough to pay for access.",
-        bullets: ["$24.99 AUD/month concept", "Curated marketplace feel", "Buyer demand signal for the full V0"],
+        body: "The monthly angle frames Monroes Ultra as an always-on private market for buyers who want recurring access.",
+        bullets: ["$24.99 AUD/month positioning", "Curated marketplace feel", "Buyer demand signal for Monroes Ultra"],
       },
       {
         id: "market-quality",
@@ -151,7 +151,7 @@ export const landingPageTests = [
         id: "upgrade-path",
         eyebrow: "Flexible intent",
         title: "A cleaner path from preview curiosity to monthly access.",
-        body: "This test checks whether buyers like a preview-first offer that can roll into a monthly pass without feeling like a double charge.",
+        body: "This angle gives buyers a preview-first path that can roll into monthly access without feeling like a double charge.",
         bullets: ["$20 AUD upgrade concept", "Preview-first positioning", "Collector-oriented copy"],
       },
       {
@@ -164,7 +164,7 @@ export const landingPageTests = [
     faqItems: [
       {
         question: "What does the upgrade price mean?",
-        answer: "It tests a $20 AUD path from preview access into the monthly marketplace pass.",
+        answer: "It presents a $20 AUD path from preview access into the monthly marketplace pass.",
       },
       {
         question: "Is this for collectors only?",
