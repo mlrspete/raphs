@@ -54,9 +54,9 @@ export function SoldOutAccessModal({
   const previousFocusRef = useRef<Element | null>(null);
   const selectedQuantity = readPositiveNumber(extraTrackingProperties, "daypass_quantity");
   const selectedTotalPriceCents = readPositiveNumber(extraTrackingProperties, "total_price_cents");
-  const selectedIntentSummary =
+  const selectedTotalSummary =
     selectedQuantity && selectedTotalPriceCents
-      ? `Selected intent: ${selectedQuantity} Daypass${
+      ? `Total: ${selectedQuantity} Daypass${
           selectedQuantity === 1 ? "" : "es"
         } - ${formatCurrencyFromCents(selectedTotalPriceCents, currency)}`
       : null;
@@ -133,9 +133,9 @@ export function SoldOutAccessModal({
               This promotion has sold out. Wave 1 of Monroes Market reached capacity for today. Thanks for the support
               --- join the list and we will email you when the next Daypass wave opens.
             </p>
-            {selectedIntentSummary ? (
+            {selectedTotalSummary ? (
               <p className="mt-4 rounded-[14px] border border-ink/10 bg-white/70 px-4 py-3 text-sm font-black leading-6 text-[#171717] shadow-soft">
-                {selectedIntentSummary}
+                {selectedTotalSummary}
               </p>
             ) : null}
           </div>

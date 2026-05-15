@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { CTAImpressionTracker } from "@/components/analytics/CTAImpressionTracker";
 import { AccessCTA } from "@/components/marketing/AccessCTA";
@@ -10,20 +10,29 @@ import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 type LandingPricingBlockProps = {
   page: LandingPageViewModel;
+  quantity: number;
+  minQuantity: number;
+  maxQuantity: number;
+  unitPriceCents: number;
+  onQuantityChange: (quantity: number) => void;
 };
 
-const daypassUnitPriceCents = 499;
-const minQuantity = 1;
-const maxQuantity = 10;
+const promoItem = "1988 Tony Hawk Powell Peralta Deck";
+const campaignBonusEntryLabel = "1 free entry into the 1988 Tony Hawk Powell Peralta Deck promo giveaway";
 
 function formatAud(cents: number) {
   return `$${(cents / 100).toFixed(2)} AUD`;
 }
 
-export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
-  const [quantity, setQuantity] = useState(minQuantity);
-  const totalPriceCents = quantity * daypassUnitPriceCents;
-  const campaignBonusEntryLabel = page.bonusEntryLabel;
+export function LandingPricingBlock({
+  page,
+  quantity,
+  minQuantity,
+  maxQuantity,
+  unitPriceCents,
+  onQuantityChange,
+}: LandingPricingBlockProps) {
+  const totalPriceCents = quantity * unitPriceCents;
   const trackingContext = useMemo<TrackEventProperties>(
     () => ({
       campaign_bonus_entry: true,
@@ -31,18 +40,19 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
       campaign_limit: page.campaignLimit,
       currency: page.currency,
       daypass_quantity: quantity,
+      promo_item: promoItem,
       total_price_cents: totalPriceCents,
-      unit_price_cents: daypassUnitPriceCents,
+      unit_price_cents: unitPriceCents,
     }),
-    [campaignBonusEntryLabel, page.campaignLimit, page.currency, quantity, totalPriceCents],
+    [page.campaignLimit, page.currency, quantity, totalPriceCents, unitPriceCents],
   );
 
   function decrementQuantity() {
-    setQuantity((current) => Math.max(minQuantity, current - 1));
+    onQuantityChange(Math.max(minQuantity, quantity - 1));
   }
 
   function incrementQuantity() {
-    setQuantity((current) => Math.min(maxQuantity, current + 1));
+    onQuantityChange(Math.min(maxQuantity, quantity + 1));
   }
 
   return (
@@ -55,29 +65,30 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
           campaign_bonus_entry_label: campaignBonusEntryLabel,
           campaign_limit: page.campaignLimit,
           currency: page.currency,
-          daypass_quantity: minQuantity,
+          daypass_quantity: quantity,
           landing_page_id: page.id,
           landing_slug: page.slug,
           offer_id: page.offerId,
           offer_type: page.offerType,
-          price_cents: daypassUnitPriceCents,
+          price_cents: unitPriceCents,
+          promo_item: promoItem,
           surface: "landing_pricing_block",
-          total_price_cents: daypassUnitPriceCents,
-          unit_price_cents: daypassUnitPriceCents,
+          total_price_cents: totalPriceCents,
+          unit_price_cents: unitPriceCents,
         }}
       />
       <div className="relative">
         <div className="flex items-start justify-between gap-4">
           <p className="landing-card-eyebrow">DAYPASS</p>
-          <p className="rounded-full border border-orange/20 bg-orange/10 px-3 py-2 text-[0.625rem] font-black uppercase leading-4 tracking-[0.18em] text-[#D93A1A] shadow-[0_0_28px_rgba(255,122,61,0.22)] motion-safe:animate-pulse">
-            Limited wave passes remaining
+          <p className="rounded-full border border-orange/25 bg-orange/10 px-3 py-2 text-[0.625rem] font-black uppercase leading-4 tracking-[0.2em] text-[#D93A1A] shadow-[0_0_28px_rgba(255,122,61,0.22)] motion-safe:animate-pulse">
+            LIMITED PASSES REMAINING
           </p>
         </div>
         <p className="mt-5 break-words text-[2.5rem] font-black leading-none text-white sm:text-5xl">
-          {formatAud(daypassUnitPriceCents)}
+          {formatAud(unitPriceCents)}
         </p>
         <p className="mt-4 max-w-xl text-base font-semibold leading-[1.65] text-white/70">
-          24-hour Monroes Market preview access.
+          12-hour Monroes preview access.
         </p>
 
         <div className="mt-8 rounded-[18px] border border-white/[0.12] bg-white/[0.08] p-4">
@@ -86,7 +97,7 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
             <div className="flex items-center gap-3">
               <button
                 aria-label="Decrease Daypass quantity"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-35"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-[10px] border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-35"
                 disabled={quantity === minQuantity}
                 onClick={decrementQuantity}
                 type="button"
@@ -98,7 +109,7 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
               </span>
               <button
                 aria-label="Increase Daypass quantity"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-35"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-[10px] border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-35"
                 disabled={quantity === maxQuantity}
                 onClick={incrementQuantity}
                 type="button"
@@ -108,7 +119,7 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
             </div>
           </div>
           <p className="mt-4 text-sm font-bold leading-6 text-white/70">
-            Selected intent: <span className="text-orange">{formatAud(totalPriceCents)}</span>
+            Total: <span className="text-orange">{formatAud(totalPriceCents)}</span>
           </p>
         </div>
 
@@ -124,12 +135,12 @@ export function LandingPricingBlock({ page }: LandingPricingBlockProps) {
           landingSlug={page.slug}
           offerId={page.offerId}
           offerType={page.offerType}
-          priceCents={daypassUnitPriceCents}
+          priceCents={unitPriceCents}
         >
           GET DAYPASS
         </AccessCTA>
         <p className="mt-3 text-center text-xs font-semibold leading-5 text-white/60">
-          No payment is processed in this V0 access test.
+          One-time purchase, no hidden fees.
         </p>
       </div>
     </article>

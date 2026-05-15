@@ -1,12 +1,11 @@
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+import { LandingDaypassOfferSection } from "@/components/landing/LandingDaypassOfferSection";
 import { LandingFAQ } from "@/components/landing/LandingFAQ";
 import { LandingFinalCTA } from "@/components/landing/LandingFinalCTA";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingMediaGrid } from "@/components/landing/LandingMediaGrid";
-import { LandingOfferCard } from "@/components/landing/LandingOfferCard";
-import { LandingPricingBlock } from "@/components/landing/LandingPricingBlock";
 
 type LandingPageRendererProps = {
   page: LandingPageViewModel;
@@ -42,13 +41,7 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
         }}
       />
       <LandingHero page={page} />
-
-      <section className="bg-whitecard py-14 sm:py-20" id="daypass-offer">
-        <div className="mx-auto grid max-w-7xl gap-5 px-5 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:px-12">
-          <LandingOfferCard page={page} />
-          <LandingPricingBlock page={page} />
-        </div>
-      </section>
+      <LandingDaypassOfferSection page={page} />
 
       <LandingMediaGrid />
 
