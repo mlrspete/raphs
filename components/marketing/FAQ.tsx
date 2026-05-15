@@ -1,34 +1,35 @@
 import { TrackedFAQItem } from "@/components/analytics/TrackedFAQItem";
-import { site } from "@/lib/site";
 
 const faqs = [
   {
-    question: `What is ${site.name}?`,
-    answer: `${site.name} is a private members-only marketplace for OG, rare, vintage, and interesting skateboard decks in Australia.`,
+    question: "What is Monroes?",
+    answer:
+      "Monroes is a members-only marketplace for OG, rare, vintage, and interesting skateboard decks in Australia.",
   },
   {
-    question: "Is this live yet?",
+    question: "Is Monroes live yet?",
     answer:
-      "The private marketplace is opening gradually. Payments, checkout, and seller tools are not live yet.",
+      "Monroes is currently in an early preview. Access is limited while the platform is shaped around collector demand.",
   },
   {
-    question: "What is the Preview Daypass?",
+    question: "What is the Daypass?",
     answer:
-      "It is the one-day access option for people who want a quick peek at private listings before joining the full membership.",
+      "The Daypass is a one-time way to try Monroes before deciding whether Monroes Ultra is right for you.",
   },
   {
     question: "What is Monroes Ultra?",
     answer:
-      "Monroes Ultra is the monthly membership for ongoing access to private listings, drops, and seller opportunities.",
+      "Monroes Ultra is the monthly membership for members who want ongoing access to drops, private member areas, and future opportunities.",
   },
   {
-    question: "Is this Australia only?",
-    answer: `Yes. ${site.name} is focused on Australian buyers, sellers, pricing, and shipping expectations.`,
-  },
-  {
-    question: "Can I sell decks later?",
+    question: "Is Monroes Australia only?",
     answer:
-      "That is part of the direction. Selected sellers will be introduced gradually as more member places open.",
+      "For now, Monroes is focused on Aussie collectors, AUD pricing, and local collector expectations.",
+  },
+  {
+    question: "Can members help shape Monroes?",
+    answer:
+      "Yes. Member feedback helps guide what Monroes prioritises next, including the types of decks, drops, and collector opportunities surfaced over time.",
   },
 ];
 
@@ -39,7 +40,7 @@ export function FAQ() {
         <div className="max-w-3xl">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">FAQ</p>
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-5xl">
-            The short version before you request access.
+            The short version on Monroes.
           </h2>
         </div>
 
