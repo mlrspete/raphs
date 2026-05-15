@@ -13,6 +13,10 @@ type LandingPageProps = {
 
 export const dynamic = "force-dynamic";
 
+const landingMetaTitle = "Monroes Daypass Promo Giveaway";
+const landingMetaDescription =
+  "Get a Monroes Daypass, browse the member-only deck market, and receive 1 free promo entry with your eligible Daypass purchase.";
+
 export async function generateMetadata({ params }: LandingPageProps): Promise<Metadata> {
   const { slug } = await params;
   const page = await getLandingPageBySlug(slug);
@@ -25,8 +29,8 @@ export async function generateMetadata({ params }: LandingPageProps): Promise<Me
   }
 
   return {
-    title: `${page.headline} | ${site.name}`,
-    description: page.subheadline ?? site.description,
+    title: `${landingMetaTitle} | ${site.name}`,
+    description: landingMetaDescription,
   };
 }
 
