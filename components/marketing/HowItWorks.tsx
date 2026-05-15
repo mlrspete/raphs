@@ -1,11 +1,11 @@
 const steps = [
   {
     title: "Choose your access",
-    body: "Start with a Preview Daypass or go straight to Monroes Ultra.",
+    body: "Start with a Daypass or go straight to Monroes Ultra.",
   },
   {
     title: "Unlock the private market",
-    body: "Browse members-only listings from selected sellers.",
+    body: "Browse members-only listings.",
   },
   {
     title: "Secure what you want",
@@ -21,12 +21,9 @@ export function HowItWorks() {
           <div>
             <p className="text-sm font-black uppercase text-orange">How it works</p>
             <h2 className="mt-3 text-4xl font-black uppercase leading-none text-ink sm:text-6xl">
-              From access to wishlist.
+              BUILD A SHARPER COLLECTION.
             </h2>
           </div>
-          <p className="max-w-2xl text-lg font-semibold leading-8 text-ink/68 lg:justify-self-end">
-            Access stays intentionally tight while members are let in gradually.
-          </p>
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
