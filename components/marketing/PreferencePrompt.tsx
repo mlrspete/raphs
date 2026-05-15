@@ -57,21 +57,21 @@ export function PreferencePrompt() {
         <div>
           <p className="text-sm font-black uppercase text-orange">Your say</p>
           <h2 className="mt-3 text-4xl font-black uppercase leading-none sm:text-6xl">
-            Tell us what Monroes should unlock first.
+            Help shape what Monroes becomes next.
           </h2>
           <p className="mt-5 max-w-xl text-lg font-semibold leading-8 text-white/70">
-            Access is intentionally selective. Your local vote helps shape which decks and sellers get prioritised as
-            Monroes grows.
+            Members help guide what gets prioritised next, from the types of decks surfaced to the features and
+            opportunities Monroes builds around Aussie collectors.
           </p>
           <a
             className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-7 py-3 text-center text-sm font-black uppercase text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
             href="#access"
           >
-            See access options
+            See packages
           </a>
           {selectedVote ? (
             <p aria-live="polite" className="mt-4 text-sm font-bold text-white/64">
-              Vote submitted: {selectedVote}
+              Your vote: {selectedVote}
             </p>
           ) : null}
         </div>
