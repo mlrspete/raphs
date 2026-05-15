@@ -4,7 +4,7 @@ type LandingOfferCardProps = {
 
 const benefits = [
   {
-    label: "12-hour access to members-only marketplace listings",
+    label: "12-hour access to Monroes",
   },
   {
     label: "Browse private deck listings",
@@ -13,7 +13,7 @@ const benefits = [
     label: "No buyer commitment beyond the Daypass window",
   },
   {
-    label: "Free entry into the 1988 Tony Hawk Powell Peralta Deck promo giveaway",
+    label: "Free Entry into the 1988 Tony Hawk Powell Peralta skateboard deck promo giveaway",
     isPromo: true,
   },
 ];
@@ -25,11 +25,11 @@ export function LandingOfferCard({ quantity }: LandingOfferCardProps) {
     <article className="rounded-[22px] border border-border bg-whitecard p-6 shadow-soft sm:p-8">
       <p className="landing-card-eyebrow">DAYPASS PREVIEW</p>
       <h2 className="mt-3 text-3xl font-black leading-[1.05] tracking-[-0.04em] text-ink sm:text-4xl lg:text-[2.625rem]">
-        1-day access to Monroes member-only marketplace.
+        Try out Monroes for the day.
       </h2>
       <p className="landing-body mt-5">
-        OG, vintage and rare skate decks behind one private door. A Daypass gives you a short look inside Monroes before
-        joining Ultra — one-time purchase, no hidden fees, no subscription.
+        A Daypass gives you a short look inside Monroes before joining Ultra — one-time purchase, no hidden fees, no
+        subscription.
       </p>
 
       <div className="mt-7 grid gap-3">
