@@ -7,14 +7,14 @@ type LandingFAQProps = {
 
 const promoFaqItems = [
   {
-    question: "What happens when I press Get Daypass?",
+    question: "What do I get with a Daypass?",
     answer:
-      "Because this V0 does not process payments, the current access window is shown as sold out. Join the list and we will email you when the next Daypass wave opens.",
+      "A Daypass gives you 12-hour access to the Monroes member-only marketplace, so you can browse private deck listings before deciding whether to join Ultra. It is a one-time purchase, not a subscription.",
   },
   {
     question: "Does the Daypass include promo entry?",
     answer:
-      "This campaign simulates a Daypass wave where eligible new Daypass members receive 1 free entry into the featured promo item. Final campaign terms will be shown before any real paid launch.",
+      "Yes. Eligible Daypass buyers in this campaign receive 1 free entry into the 1988 Tony Hawk Powell Peralta Deck promo giveaway, limited to the first 100 eligible Daypass purchases.",
   },
 ];
 
@@ -23,7 +23,7 @@ export function LandingFAQ({ page }: LandingFAQProps) {
     <section className="bg-cream py-14 sm:py-20">
       <div className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12">
         <p className="landing-card-eyebrow">FAQ</p>
-        <h2 className="landing-section-title mt-3">Quick answers before the next wave.</h2>
+        <h2 className="landing-section-title mt-3">Quick answers before you get a Daypass.</h2>
         <div className="mt-10 divide-y divide-ink/10 rounded-lg border border-border bg-whitecard shadow-soft">
           {promoFaqItems.map((item) => (
             <TrackedFAQItem

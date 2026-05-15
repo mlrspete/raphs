@@ -15,12 +15,12 @@ const educationCards = [
   {
     eyebrow: "LOW COMMITMENT",
     title: "Try the private deck market before going monthly.",
-    body: "The Daypass is for buyers who want a quick look first: browse what is inside, see whether the listings feel right, then decide if Monroes Ultra makes sense.",
-    bullets: ["24-hour preview access", "$4.99 AUD Daypass", "No monthly commitment in this wave"],
+    body: "The Daypass gives you a short look inside Monroes so you can browse private listings, check the deck mix, and decide whether Ultra is worth it.",
+    bullets: ["12-hour preview access", "One-time purchase", "No hidden fees"],
   },
   {
     eyebrow: "DECK FOCUS",
-    title: "Built for boards with better stories than stock listings.",
+    title: "Built for boards with better stories.",
     body: "Monroes is for OG graphics, rare shapes, wall-hangers, reissues, oddball cruisers, and decks that feel harder to find twice.",
     bullets: ["OG graphics", "Rare reissues", "Vintage decks", "Odd shapes and wall-hangers"],
   },
@@ -48,9 +48,12 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div className="max-w-3xl">
-            <h2 className="landing-section-title">WHY TRY THE DAYPASS?</h2>
+            <p className="landing-card-eyebrow">WHY TRY THE DAYPASS?</p>
+            <h2 className="landing-section-title mt-3">
+              See if Monroes is worth joining before going Ultra.
+            </h2>
             <p className="landing-body mt-4 max-w-2xl">
-              A quick way to see whether Monroes has the kind of private deck market you would actually come back to.
+              A simple way to browse the private deck market first, without starting a monthly membership.
             </p>
           </div>
 

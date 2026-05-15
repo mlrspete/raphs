@@ -1,3 +1,5 @@
+const listingPreviewSubtext = "OG graphics \u00b7 rare shapes \u00b7 vintage finds";
+
 export function LandingMediaGrid() {
   return (
     <section className="bg-cream py-14 sm:py-20">
@@ -7,10 +9,10 @@ export function LandingMediaGrid() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,122,61,0.22),transparent_32%),radial-gradient(circle_at_86%_26%,rgba(255,253,247,0.45),transparent_28%)]" />
           <div className="relative">
             <p className="text-[2.75rem] font-black uppercase leading-none text-ink sm:text-6xl lg:text-7xl">
-              COMING SOON
+              PRIVATE LISTING PREVIEW
             </p>
             <p className="mt-4 text-[0.6875rem] font-black uppercase leading-5 tracking-[0.24em] text-muted sm:text-xs">
-              Private listing preview
+              {listingPreviewSubtext}
             </p>
           </div>
         </div>
