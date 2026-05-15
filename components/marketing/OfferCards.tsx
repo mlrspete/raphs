@@ -4,22 +4,22 @@ import { site } from "@/lib/site";
 
 const offers = [
   {
-    eyebrow: "24-hour look",
-    name: "PREVIEW DAYPASS",
+    eyebrow: "12-hour look",
+    name: "DAYPASS",
     price: site.offers.previewPass.price,
-    note: "A one-day look inside Monroes. Browse private deck listings and decide whether the full membership belongs in your rotation.",
-    bullets: ["Private deck listings", "Collector-led deck mix", "Members-only entry"],
-    buttonLabel: "Get preview access",
+    note: "Try out Monroes for a day. Browse private listings and decide whether you want to go Monroes Ultra.",
+    bullets: ["Private listings preview", "12-hour look inside Monroes", "One-time purchase, no hidden fees"],
+    buttonLabel: "Get Daypass",
     offerId: site.offers.previewPass.offerId,
     offerType: site.offers.previewPass.offerType,
     priceCents: site.offers.previewPass.priceCents,
   },
   {
-    eyebrow: "Full access",
+    eyebrow: "Full membership",
     name: "MONROES ULTRA",
     price: site.offers.monthlyPass.price,
-    note: "Full unrestricted Monroes access for members who want ongoing access to private listings, drops, and seller opportunities.",
-    bullets: ["Ongoing member access", "Early drops and seller opportunities", "No sale fees for selected sellers"],
+    note: "Full unrestricted access to Monroes for members who want ongoing access to private listings, drops, and seller opportunities.",
+    bullets: ["Ongoing member access", "Early drops and seller opportunities", "No sale fees for early sellers"],
     buttonLabel: "Join Ultra",
     offerId: site.offers.monthlyPass.offerId,
     offerType: site.offers.monthlyPass.offerType,
@@ -43,13 +43,9 @@ export function OfferCards() {
           <div>
             <p className="text-sm font-black uppercase text-orange">Packages</p>
             <h2 className="mt-3 text-4xl font-black uppercase leading-none text-ink sm:text-6xl">
-              Choose your access.
+              Join Monroes.
             </h2>
           </div>
-          <p className="max-w-2xl text-lg font-semibold leading-8 text-ink/70 lg:justify-self-end">
-            Monroes is a members-only private skateboard marketplace. Listings stay behind the gate, members are let in
-            gradually, and selected sellers pay no sale fees while the community grows.
-          </p>
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
@@ -101,13 +97,6 @@ export function OfferCards() {
               </div>
             </article>
           ))}
-        </div>
-
-        <div className="mt-8 rounded-lg border border-ink/10 bg-cream px-5 py-4">
-          <p className="text-sm font-bold leading-6 text-ink/65">
-            Access opens gradually. Joining the list means we will email you when more member places become available;
-            no payment is processed at this stage.
-          </p>
         </div>
       </div>
     </section>
