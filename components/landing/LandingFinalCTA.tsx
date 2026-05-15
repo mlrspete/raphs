@@ -11,7 +11,7 @@ export function LandingFinalCTA() {
           {daypassPriceLine}
         </p>
         <h2 className="landing-section-title mt-3 text-balance text-white">
-          Want inside Monroes Market?
+          Want inside Monroes?
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-base font-semibold leading-[1.65] text-white/70 sm:text-lg">
           Get a Daypass, browse the private deck market, and see what is available before you join Ultra.
