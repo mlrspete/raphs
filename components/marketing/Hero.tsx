@@ -1,7 +1,5 @@
 import { site } from "@/lib/site";
 
-const heroSignals = ["Private access", "Collector decks", "Australia"];
-
 export function Hero() {
   return (
     <section className="relative min-h-[88svh] overflow-hidden border-b border-ink/10 bg-cream">
@@ -22,35 +20,24 @@ export function Hero() {
       <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-12">
         <header className="flex items-center justify-between gap-4">
           <p className="text-sm font-black uppercase text-ink">{site.name}</p>
-          <p className="text-xs font-black uppercase text-ink/55">Members only</p>
         </header>
 
         <div className="grid flex-1 gap-10 py-16 lg:grid-cols-[0.96fr_1.04fr] lg:items-center lg:py-10">
           <div className="relative z-10 max-w-3xl">
-            <div className="mb-6 flex flex-wrap gap-2">
-              {heroSignals.map((signal) => (
-                <span
-                  className="rounded-md border border-ink/10 bg-white/70 px-3 py-2 text-xs font-black uppercase text-ink/65 shadow-soft backdrop-blur"
-                  key={signal}
-                >
-                  {signal}
-                </span>
-              ))}
-            </div>
-
             <h1 className="text-balance text-6xl font-black uppercase leading-[0.86] text-ink sm:text-7xl lg:text-8xl xl:text-9xl">
-              <span className="block">Private</span>
-              <span className="block text-orange">Decks.</span>
-              <span className="mt-3 block text-4xl leading-[0.9] sm:text-5xl lg:text-6xl">Members only.</span>
+              <span className="block">
+                Rare <span className="text-orange">Decks.</span>
+              </span>
+              <span className="mt-3 block text-4xl leading-[0.9] sm:text-5xl lg:text-6xl">Private listings.</span>
             </h1>
             <p className="mt-6 max-w-xl text-pretty text-lg font-semibold leading-8 text-ink/72 sm:text-xl">
-              Monroes is a private members-only marketplace for OG, rare, vintage, and interesting skateboard decks in Australia.
+              Monroes is a private members-only marketplace for OG, rare, and interesting skateboard decks in Australia.
             </p>
             <a
               className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-ink px-7 py-3 text-center text-sm font-black uppercase text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
               href="#access"
             >
-              View access
+              Preview
             </a>
           </div>
 
@@ -68,7 +55,7 @@ export function Hero() {
               <div className="relative flex h-full flex-col justify-between rounded-md border border-white/70 bg-white/28 p-5 backdrop-blur-sm">
                 <div className="flex items-center justify-between text-xs font-black uppercase text-ink/60">
                   <span>Monroes</span>
-                  <span>Members only</span>
+                  <span>Private listings preview</span>
                 </div>
                 <div className="grid gap-3">
                   <div className="h-36 rounded-md border border-ink/10 bg-cream/72 shadow-soft" />
@@ -79,7 +66,7 @@ export function Hero() {
                   </div>
                 </div>
                 <p className="max-w-xs text-2xl font-black uppercase leading-none text-ink">
-                  Private collector listings
+                  Private listings preview
                 </p>
               </div>
             </div>
