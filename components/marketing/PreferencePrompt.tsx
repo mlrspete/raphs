@@ -91,7 +91,7 @@ export function PreferencePrompt() {
                 <span className="text-xs font-black uppercase opacity-60">{isSelected ? "+1" : "Vote"}</span>
                 <span className="text-pretty text-base font-black uppercase leading-tight sm:text-lg">{preference}</span>
                 <span className="text-xs font-black uppercase opacity-70">
-                  {isSelected ? "Vote submitted" : "Tap to choose"}
+                  {isSelected ? "Selected" : "Tap to choose"}
                 </span>
               </button>
             );
