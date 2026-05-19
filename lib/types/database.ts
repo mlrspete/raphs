@@ -1039,7 +1039,33 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      fulfill_daypass_order: {
+        Args: {
+          p_stripe_event_id: string;
+          p_order_id: string;
+          p_stripe_checkout_session_id: string;
+          p_stripe_customer_id: string | null;
+          p_stripe_payment_intent_id: string | null;
+          p_purchaser_email: string;
+          p_purchaser_email_normalized: string;
+          p_campaign_id: string;
+          p_offer_id: string;
+          p_quantity: number;
+          p_friend_codes: Json;
+          p_webhook_payload?: Json;
+        };
+        Returns: Json;
+      };
+      redeem_daypass_code: {
+        Args: {
+          p_code_hash: string;
+          p_redeemer_member_profile_id: string;
+          p_now?: string;
+        };
+        Returns: Json;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };
