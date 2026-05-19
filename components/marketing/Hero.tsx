@@ -31,7 +31,7 @@ export function Hero() {
               <span className="mt-3 block text-4xl leading-[0.9] sm:text-5xl lg:text-6xl">Private listings.</span>
             </h1>
             <p className="mt-6 max-w-xl text-pretty text-lg font-semibold leading-8 text-ink/72 sm:text-xl">
-              Monroes is a private members-only marketplace for OG, rare, and interesting skateboard decks in Australia.
+              Monroes is a private member deck market for OG, rare, and interesting skateboard decks in Australia.
             </p>
             <a
               className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-ink px-7 py-3 text-center text-sm font-black uppercase text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"

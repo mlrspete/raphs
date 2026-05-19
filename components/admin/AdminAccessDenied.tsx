@@ -11,7 +11,9 @@ export function AdminAccessDenied({ email }: AdminAccessDeniedProps) {
         <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Access denied</p>
         <h1 className="mt-3 text-3xl font-black leading-tight text-ink">This account is not an admin.</h1>
         <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
-          {email ? `${email} is signed in, but it does not have an admin profile for Raph's Market.` : "This account does not have an admin profile for Raph's Market."}
+          {email
+            ? `${email} is signed in, but it does not have an admin profile for Monroes.`
+            : "This account does not have an admin profile for Monroes."}
         </p>
         <div className="mt-6">
           <AdminSignOutButton />

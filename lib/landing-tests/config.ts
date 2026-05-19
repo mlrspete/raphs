@@ -102,7 +102,7 @@ export const landingPageTests: LandingTestConfig[] = [
         eyebrow: "Tiny commitment",
         title: "Peek at the private deck market before going monthly.",
         body: "The preview pass gives buyers a quick paid look at the private deck market after arriving from Monroes ads.",
-        bullets: ["One-day access", "Australia-only positioning", "No marketplace account needed yet"],
+        bullets: ["One-day access", "Australia-only positioning", "No seller account needed"],
       },
       {
         id: "deck-energy",
@@ -142,7 +142,7 @@ export const landingPageTests: LandingTestConfig[] = [
     id: "aa6cae98-586b-4a55-98a0-6b9fb8eab125",
     slug: "monthly-pass",
     status: "live",
-    internalName: "Monthly Marketplace Pass angle",
+    internalName: "Monthly access pass angle",
     headline: "A private monthly market for skateboard decks worth checking first.",
     subheadline:
       "For Australian buyers who would rather browse a tighter, more curated deck market than refresh scattered listings all week.",
@@ -162,19 +162,19 @@ export const landingPageTests: LandingTestConfig[] = [
         eyebrow: "Ongoing access",
         title: "Built for people who want the first look, not the leftover feed.",
         body: "The monthly angle frames Monroes Ultra as an always-on private market for buyers who want recurring access.",
-        bullets: ["$24.99 AUD/month positioning", "Curated marketplace feel", "Buyer demand signal for Monroes Ultra"],
+        bullets: ["$24.99 AUD/month positioning", "Curated member-market feel", "Buyer demand signal for Monroes Ultra"],
       },
       {
         id: "market-quality",
         eyebrow: "More signal",
         title: "A tighter market for interesting decks.",
-        body: "The copy frames Monroes Market as more selective than a general classifieds browse, while staying bright and approachable.",
+        body: "The copy frames Monroes as more selective than a general classifieds browse, while staying bright and approachable.",
       },
     ],
     faqItems: [
       {
-        question: "What is the monthly marketplace pass?",
-        answer: "It is a $24.99 AUD/month access concept for a future private deck marketplace.",
+        question: "What is the monthly access pass?",
+        answer: "It is a $24.99 AUD/month access concept for a future private member deck market.",
       },
       {
         question: "Who is this angle for?",
@@ -205,7 +205,7 @@ export const landingPageTests: LandingTestConfig[] = [
     internalName: "Upgrade and collector-intent angle",
     headline: "Preview first, then upgrade if the deck market feels right.",
     subheadline:
-      "A collector-intent angle for buyers who want a small first step before committing to monthly private marketplace access.",
+      "A collector-intent angle for buyers who want a small first step before committing to monthly private member access.",
     offerType: "upgrade_pass",
     offerId: "preview_to_monthly_upgrade",
     priceCents: 2000,
@@ -234,7 +234,7 @@ export const landingPageTests: LandingTestConfig[] = [
     faqItems: [
       {
         question: "What does the upgrade price mean?",
-        answer: "It presents a $20 AUD path from preview access into the monthly marketplace pass.",
+        answer: "It presents a $20 AUD path from preview access into the monthly access pass.",
       },
       {
         question: "Is this for collectors only?",

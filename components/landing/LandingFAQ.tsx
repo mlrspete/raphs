@@ -9,12 +9,12 @@ const promoFaqItems = [
   {
     question: "What do I get with a Daypass?",
     answer:
-      "A Daypass gives you 12-hour access to the Monroes member-only marketplace, so you can browse private deck listings before deciding whether to join Ultra. It is a one-time purchase, not a subscription.",
+      "A Daypass gives you 12-hour access to the Monroes member-only deck market, so you can browse private Monroes listings before deciding whether to join Ultra. It is a one-time purchase, not a subscription.",
   },
   {
     question: "Does the Daypass include promo entry?",
     answer:
-      "Yes. Eligible Daypass buyers in this campaign receive 1 free entry into the 1988 Tony Hawk Powell Peralta Deck promo giveaway, limited to the first 100 eligible Daypass purchases.",
+      "Yes. Eligible Daypass purchases receive free entry into the promotion, limited to the first 100 eligible Daypass purchases unless final rules say otherwise.",
   },
 ];
 

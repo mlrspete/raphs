@@ -35,7 +35,7 @@ export function AdminShell({ children, adminEmail }: AdminShellProps) {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <p className="text-xs font-black uppercase tracking-[0.16em] text-ink/48">Private dashboard</p>
-              <h1 className="mt-1 text-2xl font-black leading-tight text-ink">Raph&apos;s Market Admin</h1>
+              <h1 className="mt-1 text-2xl font-black leading-tight text-ink">Monroes Admin</h1>
             </div>
             <p className="max-w-full break-all rounded-md border border-ink/10 bg-cream px-3 py-2 text-sm font-bold text-ink/65">
               {adminEmail}

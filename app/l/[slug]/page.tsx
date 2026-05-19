@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { LandingPageRenderer } from "@/components/landing/LandingPageRenderer";
 import { getLandingPageBySlug } from "@/lib/db/landing-tests";
+import { getCampaign001LandingFallback } from "@/lib/landing-tests/campaign001Fallback";
 import { site } from "@/lib/site";
 
 type LandingPageProps = {
@@ -13,13 +14,13 @@ type LandingPageProps = {
 
 export const dynamic = "force-dynamic";
 
-const landingMetaTitle = "Monroes Daypass Promo Giveaway";
+const landingMetaTitle = "Monroes Daypass Promotion";
 const landingMetaDescription =
-  "Get a Monroes Daypass, browse the member-only deck market, and receive 1 free promo entry with your eligible Daypass purchase.";
+  "Get a Monroes Daypass, browse the member-only deck market, and receive free promo entry with an eligible Daypass purchase.";
 
 export async function generateMetadata({ params }: LandingPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = await getLandingPageBySlug(slug);
+  const page = (await getLandingPageBySlug(slug)) ?? getCampaign001LandingFallback(slug);
 
   if (!page) {
     return {
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: LandingPageProps): Promise<Me
 
 export default async function LandingPage({ params }: LandingPageProps) {
   const { slug } = await params;
-  const page = await getLandingPageBySlug(slug);
+  const page = (await getLandingPageBySlug(slug)) ?? getCampaign001LandingFallback(slug);
 
   if (!page) {
     notFound();

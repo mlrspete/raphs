@@ -10,7 +10,7 @@ export const site = {
       priceCents: 499,
       offerId: "homepage_preview_pass",
       offerType: "preview_pass",
-      note: "A short look inside the private marketplace.",
+      note: "A short look inside the private member deck market.",
     },
     monthlyPass: {
       name: "Monthly Marketplace Pass",

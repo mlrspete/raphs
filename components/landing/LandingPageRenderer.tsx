@@ -1,12 +1,17 @@
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+import { CampaignDrawProcessCard } from "@/components/landing/CampaignDrawProcessCard";
+import { CampaignFactsPanel } from "@/components/landing/CampaignFactsPanel";
+import { CampaignRulesSummary } from "@/components/landing/CampaignRulesSummary";
 import { LandingDaypassOfferSection } from "@/components/landing/LandingDaypassOfferSection";
 import { LandingFAQ } from "@/components/landing/LandingFAQ";
 import { LandingFinalCTA } from "@/components/landing/LandingFinalCTA";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingMediaGrid } from "@/components/landing/LandingMediaGrid";
+import { PrizeProofSection } from "@/components/landing/PrizeProofSection";
 import { MembershipPreviewBlock } from "@/components/preview/MembershipPreviewBlock";
+import { campaign001Slug } from "@/lib/domain/campaigns/config";
 
 type LandingPageRendererProps = {
   page: LandingPageViewModel;
@@ -28,6 +33,8 @@ const educationCards = [
 ];
 
 export function LandingPageRenderer({ page }: LandingPageRendererProps) {
+  const isCampaign001 = page.slug === campaign001Slug;
+
   return (
     <main className="overflow-hidden bg-cream text-ink">
       <PageViewTracker
@@ -42,8 +49,11 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
         }}
       />
       <LandingHero page={page} />
+      {isCampaign001 ? <PrizeProofSection /> : null}
+      {isCampaign001 ? <CampaignFactsPanel /> : null}
       <LandingDaypassOfferSection page={page} />
       <MembershipPreviewBlock ctaHref="#daypass-offer" ctaLabel="Choose Daypass" surface="landing" />
+      {isCampaign001 ? <CampaignRulesSummary /> : null}
 
       <LandingMediaGrid />
 
@@ -82,6 +92,7 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
       </section>
 
       <LandingFAQ page={page} />
+      {isCampaign001 ? <CampaignDrawProcessCard /> : null}
       <LandingFinalCTA />
     </main>
   );

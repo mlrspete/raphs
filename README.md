@@ -1,8 +1,8 @@
-# Raph’s Market
+# Monroes
 
-V0 demand-validation website for Raph’s Market, an Australia-only private marketplace concept for OG, rare, vintage, and interesting skateboard decks.
+Lean V1 build for Monroes, an Australia-only private member deck market concept for OG, rare, vintage, and interesting skateboard decks.
 
-This milestone only bootstraps the app foundation. It does not include marketplace listings, payments, auth, analytics, database integration, waitlist capture, seller tools, or admin workflows.
+The repo now includes the V0 demand-validation foundation plus additive V1 Daypass, member access, listings, checkout, fulfilment, redemption, transactional email, and campaign trust scaffolding. It still avoids seller tools, listing submissions, wishlist, cart, auctions, and CMS complexity.
 
 ## Tech Stack
 

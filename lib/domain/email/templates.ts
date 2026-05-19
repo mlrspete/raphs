@@ -133,7 +133,7 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
         `Promo entries: ${input.promoEntryCount}`,
         drawAt ? `Planned draw: ${escapeHtml(drawAt)}` : "Planned draw: final timing pending",
       ])}
-      ${paragraph("Eligible Daypass purchases receive free entry into the promotion. You are not buying entries.")}
+      ${paragraph("Eligible Daypass purchases receive free entry into the promotion. Entries are not sold separately.")}
       <h2 style="font-size:18px;margin:24px 0 12px;">Access instructions</h2>
       ${list([
         `Open ${link("your member dashboard", "/member")} and log in with the same email used at checkout.`,
@@ -156,7 +156,7 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
     `Promo entries: ${input.promoEntryCount}`,
     drawAt ? `Planned draw: ${drawAt}` : `Planned draw: final timing pending`,
     ``,
-    `Eligible Daypass purchases receive free entry into the promotion. You are not buying entries.`,
+    `Eligible Daypass purchases receive free entry into the promotion. Entries are not sold separately.`,
     ``,
     `Access instructions:`,
     `- Log in with the same checkout email: ${memberUrl}`,

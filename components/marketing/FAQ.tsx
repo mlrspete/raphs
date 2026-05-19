@@ -4,7 +4,7 @@ const faqs = [
   {
     question: "What is Monroes?",
     answer:
-      "Monroes is a members-only marketplace for OG, rare, vintage, and interesting skateboard decks in Australia.",
+      "Monroes is a private member deck market for OG, rare, vintage, and interesting skateboard decks in Australia.",
   },
   {
     question: "Is Monroes live yet?",

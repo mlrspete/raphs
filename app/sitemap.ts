@@ -13,5 +13,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${appUrl}/terms`,
     },
+    {
+      url: `${appUrl}/refund-policy`,
+    },
+    {
+      url: `${appUrl}/promo-rules/campaign-001`,
+    },
   ];
 }

@@ -13,7 +13,7 @@ const benefits = [
     label: "No buyer commitment beyond the Daypass window",
   },
   {
-    label: "Free Entry into the 1988 Tony Hawk Powell Peralta skateboard deck promo giveaway",
+    label: "Eligible Daypass purchases receive free entry into the promotion",
     isPromo: true,
   },
 ];
@@ -28,7 +28,7 @@ export function LandingOfferCard({ quantity }: LandingOfferCardProps) {
         Try out Monroes for the day.
       </h2>
       <p className="landing-body mt-5">
-        A Daypass gives you a short look inside Monroes before joining Ultra — one-time purchase, no hidden fees, no
+        A Daypass gives you a short look inside Monroes before joining Ultra - one-time purchase, no hidden fees, no
         subscription.
       </p>
 

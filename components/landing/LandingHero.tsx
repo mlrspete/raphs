@@ -15,20 +15,20 @@ export function LandingHero({ page }: LandingHeroProps) {
         <div className="landing-hero-column relative z-10 min-w-0">
           <p className="landing-hero-eyebrow mb-5 max-w-2xl">FIRST 100 ELIGIBLE DAYPASSES</p>
           <h1 className="landing-hero-title max-w-[780px] overflow-hidden uppercase">
-            <span className="mb-2 block text-[0.48em] leading-[1.02] sm:mb-3">GAIN ENTRY INTO THE</span>
+            <span className="mb-2 block text-[0.48em] leading-[1.02] sm:mb-3">GET A DAYPASS FOR</span>
             <span className="block max-w-full bg-gradient-to-r from-orange to-orange-hover bg-clip-text text-[0.64em] leading-[0.95] text-transparent min-[380px]:text-[0.7em] sm:text-[0.82em] lg:text-[0.86em]">
-              1988 TONY HAWK
+              MONROES
             </span>
             <span className="mt-2 block text-[0.46em] leading-[0.98] min-[380px]:text-[0.52em] sm:text-[0.6em]">
-              OG POWELL PERALTA DECK
+              CAMPAIGN 001
             </span>
             <span className="mt-2 block text-[0.62em] leading-[0.95] min-[380px]:text-[0.68em] sm:text-[0.78em] lg:text-[0.82em]">
-              PROMO GIVEAWAY.
+              DECK PROMOTION.
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-pretty text-base font-semibold leading-[1.65] text-muted sm:text-lg">
-            Get a Monroes Daypass, browse the member-only deck market, and receive 1 free entry with your eligible
-            Daypass purchase.
+            Get a Monroes Daypass and browse the member-only deck market. Eligible Daypass purchases receive free entry
+            into the promotion.
           </p>
           <div className="mt-7">
             <a
@@ -56,7 +56,7 @@ export function LandingHero({ page }: LandingHeroProps) {
             <div className="landing-topography absolute inset-0 opacity-30" />
             <div className="relative flex w-full flex-col justify-between rounded-[20px] border border-white/70 bg-white/30 p-5 backdrop-blur-[1px]">
               <div className="flex items-start justify-between gap-4">
-                <p className="landing-card-eyebrow text-ink/60">PROMO GIVEAWAY</p>
+                <p className="landing-card-eyebrow text-ink/60">PROMOTION</p>
                 <p className="rounded-full border border-orange/25 bg-orange/10 px-3 py-1.5 text-[0.625rem] font-black uppercase leading-4 tracking-[0.18em] text-ink">
                   FIRST 100
                 </p>
@@ -69,10 +69,12 @@ export function LandingHero({ page }: LandingHeroProps) {
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_32%_20%,rgba(255,122,61,0.26),transparent_28%),radial-gradient(circle_at_78%_78%,rgba(191,246,232,0.52),transparent_34%)]" />
                   <div className="relative h-20 rounded-[18px] border border-ink/10 bg-white/58" />
                   <div className="relative">
-                    <p className="text-[0.625rem] font-black uppercase leading-4 tracking-[0.2em] text-muted">1988</p>
-                    <p className="mt-1 text-2xl font-black uppercase leading-none text-ink">Tony Hawk</p>
+                    <p className="text-[0.625rem] font-black uppercase leading-4 tracking-[0.2em] text-muted">
+                      Campaign 001
+                    </p>
+                    <p className="mt-1 text-2xl font-black uppercase leading-none text-ink">Deck prize</p>
                     <p className="mt-2 text-[0.625rem] font-black uppercase leading-4 tracking-[0.18em] text-orange">
-                      Powell Peralta
+                      Final proof pending
                     </p>
                   </div>
                 </div>

@@ -19,8 +19,8 @@ type LandingPricingBlockProps = {
   onQuantityChange: (quantity: number) => void;
 };
 
-const promoItem = "1988 Tony Hawk Powell Peralta Deck";
-const campaignBonusEntryLabel = "1 free entry into the 1988 Tony Hawk Powell Peralta Deck promo giveaway";
+const promoItem = "Campaign 001 deck prize";
+const campaignBonusEntryLabel = "Eligible Daypass purchases receive free entry into the promotion";
 
 function formatAud(cents: number) {
   return `$${(cents / 100).toFixed(2)} AUD`;
