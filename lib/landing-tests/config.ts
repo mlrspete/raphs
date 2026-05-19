@@ -7,7 +7,77 @@ export const soldOutModalCopy = {
   waitlistCta: "JOIN WAITLIST",
 } as const;
 
-export const landingPageTests = [
+export const landingPageTests: LandingTestConfig[] = [
+  {
+    id: "24cf88d0-8f5a-46b9-8d4c-2d19504e1cd0",
+    slug: "campaign-001",
+    status: "live",
+    internalName: "Campaign 001 real Daypass checkout",
+    headline: "Get a Monroes Daypass and enter Campaign 001.",
+    subheadline:
+      "Buy a 12-hour Daypass, browse the private member deck market, and receive 1 free entry with your eligible Daypass purchase.",
+    offerType: "daypass",
+    offerId: "daypass_campaign_001",
+    priceCents: 499,
+    currency: "AUD",
+    priceDisplay: "$4.99 AUD",
+    categoryFocus: "Campaign 001 Daypass access and promo entry",
+    heroImageUrl: null,
+    ctaPrimary: "Get Daypass",
+    ctaSecondary: "Choose Daypass",
+    modalHeadline: "CHECKOUT UNAVAILABLE",
+    modalBody:
+      "Campaign 001 checkout is not available right now. Please check back soon or contact support if you expected access.",
+    waitlistCta: "CHECK BACK SOON",
+    sections: [
+      {
+        id: "campaign-001-daypass",
+        eyebrow: "12-hour access",
+        title: "Paid Daypass utility before the draw.",
+        body: "Campaign 001 gives buyers a real 12-hour look inside the private Monroes deck market before any later Ultra decision.",
+        bullets: ["$4.99 AUD Daypass", "Member-only listings", "Eligible purchase includes a free promo entry"],
+      },
+      {
+        id: "campaign-001-promo",
+        eyebrow: "Promo entry",
+        title: "A simple paid campaign MVP.",
+        body: "The checkout flow creates a pending order first, then Stripe confirmation is handled separately by webhook fulfilment.",
+      },
+    ],
+    faqItems: [
+      {
+        question: "Does checkout create my access immediately?",
+        answer:
+          "No. Payment is confirmed by Stripe webhook fulfilment after checkout. The success page only confirms that Stripe redirected you back.",
+      },
+      {
+        question: "Do I need an account before buying?",
+        answer:
+          "No. You can pay first. Later, log in with the same email used at checkout so Monroes can link your member profile.",
+      },
+    ],
+    configJson: {
+      audience: "real_campaign_buyers",
+      bonusEntryLabel: "1 free entry into Campaign 001 with each eligible Daypass purchase",
+      campaignLimit: 100,
+      campaignSlug: "campaign-001",
+      checkoutEnabled: true,
+      experimentAngle: "campaign_001_checkout",
+      mediaItems: [
+        {
+          title: "Campaign 001",
+          label: "Daypass | promo entry",
+          tone: "orange",
+        },
+        {
+          title: "Private market",
+          label: "12-hour member access",
+          tone: "mint",
+        },
+      ],
+      unitPriceCents: 499,
+    },
+  },
   {
     id: "0f3d7b2e-6f24-45dc-b63a-5883d56bf90a",
     slug: "preview-pass",
@@ -188,7 +258,7 @@ export const landingPageTests = [
       ],
     },
   },
-] satisfies LandingTestConfig[];
+];
 
 export function getLandingTestBySlug(slug: string) {
   return landingPageTests.find((test) => test.slug === slug);

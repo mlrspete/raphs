@@ -5,12 +5,14 @@ import { Hero } from "@/components/marketing/Hero";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { OfferCards } from "@/components/marketing/OfferCards";
 import { PreferencePrompt } from "@/components/marketing/PreferencePrompt";
+import { MembershipPreviewBlock } from "@/components/preview/MembershipPreviewBlock";
 
 export default function Home() {
   return (
     <main className="overflow-hidden bg-cream text-ink">
       <PageViewTracker eventName="homepage_viewed" properties={{ surface: "homepage" }} />
       <Hero />
+      <MembershipPreviewBlock ctaHref="#access" ctaLabel="Get a Daypass" surface="homepage" />
       <OfferCards />
       <HowItWorks />
       <PreferencePrompt />

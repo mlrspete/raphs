@@ -3,8 +3,10 @@
 import { useMemo } from "react";
 
 import { CTAImpressionTracker } from "@/components/analytics/CTAImpressionTracker";
+import { CampaignDaypassCheckoutButton } from "@/components/landing/CampaignDaypassCheckoutButton";
 import { AccessCTA } from "@/components/marketing/AccessCTA";
 import type { TrackEventProperties } from "@/lib/analytics/types";
+import { campaign001Slug } from "@/lib/domain/campaigns/config";
 import { site } from "@/lib/site";
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
@@ -33,6 +35,7 @@ export function LandingPricingBlock({
   onQuantityChange,
 }: LandingPricingBlockProps) {
   const totalPriceCents = quantity * unitPriceCents;
+  const isCampaign001 = page.slug === campaign001Slug;
   const trackingContext = useMemo<TrackEventProperties>(
     () => ({
       campaign_bonus_entry: true,
@@ -123,22 +126,39 @@ export function LandingPricingBlock({
           </p>
         </div>
 
-        <AccessCTA
-          body={page.modalBody ?? site.soldOutModal.body}
-          className="landing-button mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-[10px] bg-orange px-6 py-3 text-center text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-orange-hover hover:text-white focus:outline-none focus:ring-4 focus:ring-white/20"
-          ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
-          currency={page.currency}
-          eventContext="landing_pricing_primary"
-          extraTrackingProperties={trackingContext}
-          headline={page.modalHeadline ?? site.soldOutModal.headline}
-          landingPageId={page.id}
-          landingSlug={page.slug}
-          offerId={page.offerId}
-          offerType={page.offerType}
-          priceCents={unitPriceCents}
-        >
-          GET DAYPASS
-        </AccessCTA>
+        {isCampaign001 ? (
+          <CampaignDaypassCheckoutButton
+            className="landing-button mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-[10px] bg-orange px-6 py-3 text-center text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-orange-hover hover:text-white focus:outline-none focus:ring-4 focus:ring-white/20 disabled:cursor-wait disabled:opacity-70"
+            currency={page.currency}
+            daypassQuantity={quantity}
+            extraTrackingProperties={trackingContext}
+            landingPageId={page.id}
+            landingSlug={page.slug}
+            offerId={page.offerId}
+            offerType={page.offerType}
+            totalPriceCents={totalPriceCents}
+            unitPriceCents={unitPriceCents}
+          >
+            GET DAYPASS
+          </CampaignDaypassCheckoutButton>
+        ) : (
+          <AccessCTA
+            body={page.modalBody ?? site.soldOutModal.body}
+            className="landing-button mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-[10px] bg-orange px-6 py-3 text-center text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-orange-hover hover:text-white focus:outline-none focus:ring-4 focus:ring-white/20"
+            ctaLabel={page.waitlistCta ?? site.soldOutModal.ctaLabel}
+            currency={page.currency}
+            eventContext="landing_pricing_primary"
+            extraTrackingProperties={trackingContext}
+            headline={page.modalHeadline ?? site.soldOutModal.headline}
+            landingPageId={page.id}
+            landingSlug={page.slug}
+            offerId={page.offerId}
+            offerType={page.offerType}
+            priceCents={unitPriceCents}
+          >
+            GET DAYPASS
+          </AccessCTA>
+        )}
         <p className="mt-3 text-center text-xs font-semibold leading-5 text-white/60">
           One-time purchase, no hidden fees.
         </p>

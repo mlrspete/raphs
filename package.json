@@ -8,7 +8,10 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "seed:landing-tests": "tsx scripts/seed-landing-tests.ts",
-    "seed:demo-data": "tsx scripts/seed-demo-data.ts"
+    "seed:demo-data": "tsx scripts/seed-demo-data.ts",
+    "seed:campaigns": "tsx scripts/seed-campaigns.ts",
+    "seed:listings": "tsx scripts/seed-listings.ts",
+    "seed:v1": "npm run seed:campaigns && npm run seed:listings"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",
@@ -17,6 +20,7 @@
     "posthog-js": "^1.373.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "stripe": "^22.1.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

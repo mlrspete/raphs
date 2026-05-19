@@ -4,7 +4,7 @@ export type LandingTestStatus = "draft" | "live" | "paused" | "archived";
 
 export type LandingTestCurrency = "AUD";
 
-export type LandingTestOfferType = "preview_pass" | "monthly_pass" | "upgrade_pass";
+export type LandingTestOfferType = "daypass" | "preview_pass" | "monthly_pass" | "upgrade_pass";
 
 export type LandingTestSection = {
   id: string;

@@ -6,6 +6,7 @@ import { LandingFAQ } from "@/components/landing/LandingFAQ";
 import { LandingFinalCTA } from "@/components/landing/LandingFinalCTA";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingMediaGrid } from "@/components/landing/LandingMediaGrid";
+import { MembershipPreviewBlock } from "@/components/preview/MembershipPreviewBlock";
 
 type LandingPageRendererProps = {
   page: LandingPageViewModel;
@@ -42,6 +43,7 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
       />
       <LandingHero page={page} />
       <LandingDaypassOfferSection page={page} />
+      <MembershipPreviewBlock ctaHref="#daypass-offer" ctaLabel="Choose Daypass" surface="landing" />
 
       <LandingMediaGrid />
 

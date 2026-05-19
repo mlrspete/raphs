@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Monroes listing placeholder</title>
+  <desc id="desc">Placeholder artwork for Monroes-owned skateboard deck listings awaiting final product photography.</desc>
+  <rect width="1200" height="900" fill="#fffdf7"/>
+  <rect x="70" y="70" width="1060" height="760" rx="36" fill="#ffe0c4" stroke="#171717" stroke-opacity=".08" stroke-width="4"/>
+  <path d="M0 670c150-80 270-100 420-40 190 75 330 50 510-60 110-68 190-92 270-78v408H0z" fill="#bff6e8" opacity=".72"/>
+  <path d="M0 0h1200v220c-130 36-250 30-360-18C706 144 564 140 438 190 292 248 152 238 0 156z" fill="#d8c8ff" opacity=".62"/>
+  <g transform="translate(475 160) rotate(6)">
+    <rect x="0" y="0" width="250" height="580" rx="78" fill="#fffdf7" stroke="#171717" stroke-opacity=".16" stroke-width="5"/>
+    <circle cx="125" cy="68" r="20" fill="#ff7a3d" opacity=".8"/>
+    <circle cx="125" cy="512" r="20" fill="#ff7a3d" opacity=".8"/>
+    <rect x="48" y="138" width="154" height="260" rx="28" fill="#171717" opacity=".08"/>
+    <path d="M70 352c40-82 72-124 122-176" stroke="#ff7a3d" stroke-width="18" stroke-linecap="round" fill="none"/>
+    <path d="M72 404c52-54 98-84 146-98" stroke="#171717" stroke-opacity=".52" stroke-width="14" stroke-linecap="round" fill="none"/>
+  </g>
+  <text x="600" y="782" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800" fill="#171717">MONROES LISTING PLACEHOLDER</text>
+</svg>

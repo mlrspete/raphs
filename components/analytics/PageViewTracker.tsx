@@ -6,7 +6,10 @@ import type { AnalyticsEventName, TrackEventProperties } from "@/lib/analytics/t
 import { trackEvent } from "@/lib/analytics/trackEvent";
 
 type PageViewTrackerProps = {
-  eventName: Extract<AnalyticsEventName, "homepage_viewed" | "landing_viewed">;
+  eventName: Extract<
+    AnalyticsEventName,
+    "homepage_viewed" | "landing_viewed" | "member_dashboard_viewed" | "member_listings_viewed"
+  >;
   properties?: TrackEventProperties;
 };
 
