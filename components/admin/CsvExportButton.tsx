@@ -1,5 +1,14 @@
 type CsvExportButtonProps = {
-  type: "leads" | "events" | "landing-tests";
+  type:
+    | "leads"
+    | "events"
+    | "landing-tests"
+    | "orders"
+    | "entries"
+    | "codes"
+    | "access-grants"
+    | "webhook-events"
+    | "outbound-emails";
   label: string;
   params?: Record<string, string | null | undefined>;
 };

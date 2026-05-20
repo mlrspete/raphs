@@ -132,7 +132,7 @@ export const listingSeeds = [
     is_featured: false,
     is_member_only: true,
     primary_image_url: placeholderImageUrl,
-    facts_json: facts(["Seeded for member marketplace preview density."]),
+    facts_json: facts(["Seeded for member listing preview density."]),
     sort_order: 70,
   },
   {
@@ -183,7 +183,7 @@ export const listingSeeds = [
     is_featured: true,
     is_member_only: true,
     primary_image_url: placeholderImageUrl,
-    facts_json: facts(["Odd-shape example for marketplace variety. Final asset pending."]),
+    facts_json: facts(["Odd-shape example for member listing variety. Final asset pending."]),
     sort_order: 100,
   },
   {

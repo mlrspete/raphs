@@ -2,8 +2,10 @@ import { DateRangeFilter } from "@/components/admin/DateRangeFilter";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { MetricCard } from "@/components/admin/MetricCard";
 import { TestsTable } from "@/components/admin/TestsTable";
+import { getAdminAuthState } from "@/lib/auth/admin";
 import { getAdminOverviewMetrics } from "@/lib/db/admin-metrics";
-import { formatInteger } from "@/lib/utils/format";
+import { getAdminV1Overview } from "@/lib/db/admin-v1-reports";
+import { formatCurrencyFromCents, formatInteger } from "@/lib/utils/format";
 import { formatPercent } from "@/lib/utils/rates";
 
 type AdminOverviewPageProps = {
@@ -15,8 +17,14 @@ type AdminOverviewPageProps = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminOverviewPage({ searchParams }: AdminOverviewPageProps) {
+  const authState = await getAdminAuthState();
+
+  if (authState.status !== "admin") {
+    return null;
+  }
+
   const { range } = await searchParams;
-  const metrics = await getAdminOverviewMetrics(range);
+  const [metrics, v1Overview] = await Promise.all([getAdminOverviewMetrics(range), getAdminV1Overview(range)]);
   const hasAdminData =
     metrics.totals.landingViews > 0 ||
     metrics.totals.paidIntentClicks > 0 ||
@@ -67,6 +75,31 @@ export default async function AdminOverviewPage({ searchParams }: AdminOverviewP
           label="Waitlist conversion"
           value={formatPercent(metrics.totals.overallWaitlistConversion)}
         />
+      </div>
+
+      <div className="grid gap-4">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Campaign 001</p>
+          <h3 className="mt-2 text-2xl font-black leading-tight text-ink">V1 operations snapshot</h3>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <MetricCard helper={v1Overview.rangeLabel} label="Paid orders" value={formatInteger(v1Overview.paidOrders)} />
+          <MetricCard
+            helper="Paid and fulfilled order totals"
+            label="Revenue"
+            value={formatCurrencyFromCents(v1Overview.revenueCents, v1Overview.currency)}
+          />
+          <MetricCard
+            helper="Quantity across paid Daypass order items"
+            label="Daypasses sold"
+            value={formatInteger(v1Overview.daypassesSold)}
+          />
+          <MetricCard
+            helper="Created / redeemed"
+            label="Friend codes"
+            value={`${formatInteger(v1Overview.codesCreated)} / ${formatInteger(v1Overview.codesRedeemed)}`}
+          />
+        </div>
       </div>
 
       {!hasAdminData ? (

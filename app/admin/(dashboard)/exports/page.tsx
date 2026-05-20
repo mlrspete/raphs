@@ -20,7 +20,8 @@ export default async function AdminExportsPage({ searchParams }: AdminExportsPag
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Exports</p>
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-4xl">CSV exports</h2>
           <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-ink/68">
-            Download simple CSV files for practical V0 analysis. Export actions are logged to Supabase when available.
+            Download simple CSV files for practical V0 analysis and Campaign 001 operations. Export actions are logged to
+            Supabase when available.
           </p>
         </div>
         <DateRangeFilter currentRange={currentRange} />
@@ -41,6 +42,36 @@ export default async function AdminExportsPage({ searchParams }: AdminExportsPag
           body="Landing test rows with core demand metrics and conversion rates for quick comparison."
           button={<CsvExportButton label="Download tests" params={{ range: currentRange }} type="landing-tests" />}
           title="Landing-test summary"
+        />
+        <ExportCard
+          body="Order status, purchaser email, totals, quantity, campaign, Stripe reconciliation IDs, and fulfilment timestamp."
+          button={<CsvExportButton label="Download orders" params={{ range: currentRange }} type="orders" />}
+          title="Orders CSV"
+        />
+        <ExportCard
+          body="Promo entry numbers, aliases, owner/current-holder context, status, code last four, and draw-review flags."
+          button={<CsvExportButton label="Download entries" params={{ range: currentRange }} type="entries" />}
+          title="Entries CSV"
+        />
+        <ExportCard
+          body="Friend Daypass code status, purchaser, redemption status, last four only, and campaign/order context."
+          button={<CsvExportButton label="Download codes" params={{ range: currentRange }} type="codes" />}
+          title="Codes CSV"
+        />
+        <ExportCard
+          body="Member access status, linked order/code last four, activation windows, expiry, and revocation timestamp."
+          button={<CsvExportButton label="Download access" params={{ range: currentRange }} type="access-grants" />}
+          title="Access grants CSV"
+        />
+        <ExportCard
+          body="Webhook event IDs, event type, checkout session, processing status, related order, and sanitized errors."
+          button={<CsvExportButton label="Download webhooks" params={{ range: currentRange }} type="webhook-events" />}
+          title="Webhook diagnostics"
+        />
+        <ExportCard
+          body="Transactional email recipient, template, idempotency key, provider status, and sanitized delivery error."
+          button={<CsvExportButton label="Download emails" params={{ range: currentRange }} type="outbound-emails" />}
+          title="Email diagnostics"
         />
       </div>
     </section>

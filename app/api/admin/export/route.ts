@@ -4,6 +4,16 @@ import { getAdminAuthState } from "@/lib/auth/admin";
 import { csvResponse, rowsToCsv, type CsvRow } from "@/lib/csv/export";
 import { getAdminRangeStartIso, normalizeAdminDateRange, readParam } from "@/lib/db/admin-filters";
 import { getAdminOverviewMetrics } from "@/lib/db/admin-metrics";
+import {
+  getAdminAccessGrantsReport,
+  getAdminCodesReport,
+  getAdminEntriesReport,
+  getAdminOrdersReport,
+  getAdminOutboundEmailsReport,
+  getAdminWebhookEventsReport,
+  normalizeAdminV1Filters,
+  type AdminV1Filters,
+} from "@/lib/db/admin-v1-reports";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import type { Json } from "@/lib/types/database";
 import { formatCurrencyFromCents } from "@/lib/utils/format";
@@ -11,9 +21,28 @@ import { formatPercent } from "@/lib/utils/rates";
 
 export const dynamic = "force-dynamic";
 
-type ExportType = "leads" | "events" | "landing-tests";
+type ExportType =
+  | "leads"
+  | "events"
+  | "landing-tests"
+  | "orders"
+  | "entries"
+  | "codes"
+  | "access-grants"
+  | "webhook-events"
+  | "outbound-emails";
 
-const exportTypes = ["leads", "events", "landing-tests"] as const;
+const exportTypes = [
+  "leads",
+  "events",
+  "landing-tests",
+  "orders",
+  "entries",
+  "codes",
+  "access-grants",
+  "webhook-events",
+  "outbound-emails",
+] as const;
 
 function isExportType(value: string | null): value is ExportType {
   return exportTypes.includes(value as ExportType);
@@ -66,7 +95,16 @@ export async function GET(request: NextRequest) {
     utmCampaign: getParam(request, "utmCampaign"),
     budget: getParam(request, "budget"),
     eventName: getParam(request, "eventName"),
+    campaignSlug: getParam(request, "campaignSlug") ?? getParam(request, "campaign"),
+    status: getParam(request, "status"),
+    redeemed: getParam(request, "redeemed"),
   };
+  const v1Filters = normalizeAdminV1Filters({
+    range,
+    campaignSlug: filters.campaignSlug ?? undefined,
+    status: filters.status ?? undefined,
+    redeemed: filters.redeemed ?? undefined,
+  });
 
   let response: Response;
 
@@ -74,8 +112,20 @@ export async function GET(request: NextRequest) {
     response = await exportLeads(filters);
   } else if (type === "events") {
     response = await exportEvents(filters);
-  } else {
+  } else if (type === "landing-tests") {
     response = await exportLandingTestSummary(filters.range);
+  } else if (type === "orders") {
+    response = await exportOrders(v1Filters);
+  } else if (type === "entries") {
+    response = await exportEntries(v1Filters);
+  } else if (type === "codes") {
+    response = await exportCodes(v1Filters);
+  } else if (type === "access-grants") {
+    response = await exportAccessGrants(v1Filters);
+  } else if (type === "webhook-events") {
+    response = await exportWebhookEvents(v1Filters);
+  } else {
+    response = await exportOutboundEmails(v1Filters);
   }
 
   await logExport(authState.user.id, type, filters);
@@ -153,7 +203,7 @@ async function exportLeads(filters: {
     created_at: lead.created_at,
   }));
 
-  return csvResponse(rowsToCsv(rows, headers), `raphs-leads-${filters.range}.csv`);
+  return csvResponse(rowsToCsv(rows, headers), `monroes-leads-${filters.range}.csv`);
 }
 
 async function exportEvents(filters: {
@@ -212,7 +262,7 @@ async function exportEvents(filters: {
     properties: event.properties,
   }));
 
-  return csvResponse(rowsToCsv(rows, headers), `raphs-events-${filters.range}.csv`);
+  return csvResponse(rowsToCsv(rows, headers), `monroes-events-${filters.range}.csv`);
 }
 
 async function exportLandingTestSummary(range: ReturnType<typeof normalizeAdminDateRange>) {
@@ -246,5 +296,201 @@ async function exportLandingTestSummary(range: ReturnType<typeof normalizeAdminD
     overall_waitlist_conversion: formatPercent(test.overallWaitlistConversion),
   }));
 
-  return csvResponse(rowsToCsv(rows, headers), `raphs-landing-tests-${range}.csv`);
+  return csvResponse(rowsToCsv(rows, headers), `monroes-landing-tests-${range}.csv`);
+}
+
+async function exportOrders(filters: AdminV1Filters) {
+  const orders = await getAdminOrdersReport(filters);
+  const headers = [
+    "order_id",
+    "created_at",
+    "purchaser_email",
+    "status",
+    "total_cents",
+    "currency",
+    "quantity",
+    "campaign_slug",
+    "campaign_name",
+    "stripe_checkout_session_id",
+    "stripe_payment_intent_id",
+    "fulfilled_at",
+    "source_slug",
+  ];
+  const rows: CsvRow[] = orders.map((order) => ({
+    order_id: order.id,
+    created_at: order.createdAt,
+    purchaser_email: order.purchaserEmail,
+    status: order.status,
+    total_cents: order.totalCents,
+    currency: order.currency,
+    quantity: order.quantity,
+    campaign_slug: order.campaignSlug,
+    campaign_name: order.campaignName,
+    stripe_checkout_session_id: order.stripeCheckoutSessionId,
+    stripe_payment_intent_id: order.stripePaymentIntentId,
+    fulfilled_at: order.fulfilledAt,
+    source_slug: order.sourceSlug,
+  }));
+
+  return csvResponse(rowsToCsv(rows, headers), `monroes-orders-${filters.range}.csv`);
+}
+
+async function exportEntries(filters: AdminV1Filters) {
+  const entries = await getAdminEntriesReport(filters);
+  const headers = [
+    "campaign_slug",
+    "campaign_name",
+    "entry_number",
+    "display_alias",
+    "owner_email",
+    "current_holder_email",
+    "referrer_email",
+    "daypass_code_last4",
+    "status",
+    "locked_at",
+    "created_at",
+    "order_id",
+  ];
+  const rows: CsvRow[] = entries.map((entry) => ({
+    campaign_slug: entry.campaignSlug,
+    campaign_name: entry.campaignName,
+    entry_number: entry.entryNumber,
+    display_alias: entry.displayAlias,
+    owner_email: entry.ownerEmail,
+    current_holder_email: entry.currentHolderEmail,
+    referrer_email: entry.referrerEmail,
+    daypass_code_last4: entry.daypassCodeLast4,
+    status: entry.status,
+    locked_at: entry.lockedAt,
+    created_at: entry.createdAt,
+    order_id: entry.orderId,
+  }));
+
+  return csvResponse(rowsToCsv(rows, headers), `monroes-entries-${filters.range}.csv`);
+}
+
+async function exportCodes(filters: AdminV1Filters) {
+  const codes = await getAdminCodesReport(filters);
+  const headers = [
+    "campaign_slug",
+    "campaign_name",
+    "order_id",
+    "purchaser_email",
+    "purchaser_email_normalized",
+    "code_last4",
+    "status",
+    "redeemed_by_email",
+    "redeemed_at",
+    "created_at",
+    "expires_at",
+  ];
+  const rows: CsvRow[] = codes.map((code) => ({
+    campaign_slug: code.campaignSlug,
+    campaign_name: code.campaignName,
+    order_id: code.orderId,
+    purchaser_email: code.purchaserEmail,
+    purchaser_email_normalized: code.purchaserEmailNormalized,
+    code_last4: code.codeLast4,
+    status: code.status,
+    redeemed_by_email: code.redeemedByEmail,
+    redeemed_at: code.redeemedAt,
+    created_at: code.createdAt,
+    expires_at: code.expiresAt,
+  }));
+
+  return csvResponse(rowsToCsv(rows, headers), `monroes-codes-${filters.range}.csv`);
+}
+
+async function exportAccessGrants(filters: AdminV1Filters) {
+  const grants = await getAdminAccessGrantsReport(filters);
+  const headers = [
+    "access_grant_id",
+    "member_email",
+    "order_id",
+    "daypass_code_last4",
+    "campaign_slug",
+    "campaign_name",
+    "access_type",
+    "status",
+    "starts_at",
+    "expires_at",
+    "created_at",
+    "revoked_at",
+  ];
+  const rows: CsvRow[] = grants.map((grant) => ({
+    access_grant_id: grant.id,
+    member_email: grant.memberEmail,
+    order_id: grant.orderId,
+    daypass_code_last4: grant.daypassCodeLast4,
+    campaign_slug: grant.campaignSlug,
+    campaign_name: grant.campaignName,
+    access_type: grant.accessType,
+    status: grant.status,
+    starts_at: grant.startsAt,
+    expires_at: grant.expiresAt,
+    created_at: grant.createdAt,
+    revoked_at: grant.revokedAt,
+  }));
+
+  return csvResponse(rowsToCsv(rows, headers), `monroes-access-grants-${filters.range}.csv`);
+}
+
+async function exportWebhookEvents(filters: AdminV1Filters) {
+  const events = await getAdminWebhookEventsReport(filters);
+  const headers = [
+    "stripe_event_id",
+    "event_type",
+    "stripe_checkout_session_id",
+    "processing_status",
+    "related_order_id",
+    "error_message",
+    "received_at",
+    "processed_at",
+  ];
+  const rows: CsvRow[] = events.map((event) => ({
+    stripe_event_id: event.stripeEventId,
+    event_type: event.eventType,
+    stripe_checkout_session_id: event.stripeCheckoutSessionId,
+    processing_status: event.processingStatus,
+    related_order_id: event.relatedOrderId,
+    error_message: event.errorMessage,
+    received_at: event.receivedAt,
+    processed_at: event.processedAt,
+  }));
+
+  return csvResponse(rowsToCsv(rows, headers), `monroes-webhook-events-${filters.range}.csv`);
+}
+
+async function exportOutboundEmails(filters: AdminV1Filters) {
+  const emails = await getAdminOutboundEmailsReport(filters);
+  const headers = [
+    "provider",
+    "provider_message_id",
+    "recipient_email",
+    "template_key",
+    "idempotency_key",
+    "related_order_id",
+    "campaign_slug",
+    "campaign_name",
+    "status",
+    "error_message",
+    "created_at",
+    "sent_at",
+  ];
+  const rows: CsvRow[] = emails.map((email) => ({
+    provider: email.provider,
+    provider_message_id: email.providerMessageId,
+    recipient_email: email.recipientEmail,
+    template_key: email.templateKey,
+    idempotency_key: email.idempotencyKey,
+    related_order_id: email.relatedOrderId,
+    campaign_slug: email.campaignSlug,
+    campaign_name: email.campaignName,
+    status: email.status,
+    error_message: email.errorMessage,
+    created_at: email.createdAt,
+    sent_at: email.sentAt,
+  }));
+
+  return csvResponse(rowsToCsv(rows, headers), `monroes-outbound-emails-${filters.range}.csv`);
 }
