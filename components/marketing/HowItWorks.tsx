@@ -1,3 +1,5 @@
+import { ScrollReveal } from "@/components/marketing/ScrollReveal";
+
 const steps = [
   {
     title: "Choose your access",
@@ -17,19 +19,20 @@ export function HowItWorks() {
   return (
     <section className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-        <div className="grid gap-5 lg:grid-cols-[0.72fr_1fr] lg:items-end">
+        <ScrollReveal className="grid gap-5 lg:grid-cols-[0.72fr_1fr] lg:items-end">
           <div>
             <p className="text-sm font-black uppercase text-orange">How it works</p>
             <h2 className="mt-3 text-4xl font-black uppercase leading-none text-ink sm:text-6xl">
               BUILD A SHARPER COLLECTION.
             </h2>
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <ScrollReveal className="mt-10 grid gap-4 md:grid-cols-3" stagger={0.08}>
           {steps.map((step, index) => (
             <article
               className="relative overflow-hidden rounded-lg border border-ink/10 bg-cream p-6 shadow-soft sm:p-7"
+              data-scroll-reveal-item
               key={step.title}
             >
               <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-orange via-peach to-mint" />
@@ -43,7 +46,7 @@ export function HowItWorks() {
               </div>
             </article>
           ))}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

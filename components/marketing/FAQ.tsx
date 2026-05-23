@@ -1,35 +1,34 @@
 import { TrackedFAQItem } from "@/components/analytics/TrackedFAQItem";
+import { ScrollReveal } from "@/components/marketing/ScrollReveal";
 
 const faqs = [
   {
     question: "What is Monroes?",
     answer:
-      "Monroes is a private member deck market for OG, rare, vintage, and interesting skateboard decks in Australia.",
-  },
-  {
-    question: "Is Monroes live yet?",
-    answer:
-      "Monroes is currently in an early preview. Access is limited while the platform is shaped around collector demand.",
+      "Monroes is a subscription-based members-only marketplace for OG, rare, vintage and interesting complete skateboards and skateboard decks in Australia.",
   },
   {
     question: "What is the Daypass?",
     answer:
-      "The Daypass is a one-time way to try Monroes before deciding whether Monroes Ultra is right for you.",
+      "The Daypass is a one-time way to try Monroes before deciding whether Monroes Ultra is right for you. It is a one-time purchase with no recurring charges or hidden fees, and it grants 12-hour access after redemption.",
   },
   {
     question: "What is Monroes Ultra?",
-    answer:
-      "Monroes Ultra is the monthly membership for members who want ongoing access to drops, private member areas, and future opportunities.",
+    answer: "Monroes Ultra is the monthly membership for members who want ongoing access to Monroes.",
   },
   {
     question: "Is Monroes Australia only?",
-    answer:
-      "For now, Monroes is focused on Aussie collectors, AUD pricing, and local collector expectations.",
+    answer: "Monroes is based in Melbourne and exclusively focused on Aussie collectors and local collector expectations.",
   },
   {
     question: "Can members help shape Monroes?",
     answer:
-      "Yes. Member feedback helps guide what Monroes prioritises next, including the types of decks, drops, and collector opportunities surfaced over time.",
+      "Yes. Member feedback helps guide what Monroes prioritises next, including new types of items, drops, and collector opportunities surfaced over time.",
+  },
+  {
+    question: "How many Daypasses can I purchase?",
+    answer:
+      "You can only have one Daypass active at a time, however you can purchase multiple Daypasses at a time and have those Daypasses available for later activation.",
   },
 ];
 
@@ -37,14 +36,14 @@ export function FAQ() {
   return (
     <section className="bg-cream py-16 sm:py-20" id="faq">
       <div className="mx-auto max-w-5xl px-5 sm:px-8 lg:px-12">
-        <div className="max-w-3xl">
+        <ScrollReveal className="max-w-3xl">
           <p className="text-sm font-black uppercase tracking-[0.16em] text-orange">FAQ</p>
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-5xl">
             The short version on Monroes.
           </h2>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-10 divide-y divide-ink/10 rounded-lg border border-ink/10 bg-white shadow-soft">
+        <ScrollReveal className="mt-10 divide-y divide-ink/10 rounded-lg border border-ink/10 bg-white shadow-soft">
           {faqs.map((faq) => (
             <TrackedFAQItem
               answer={faq.answer}
@@ -54,7 +53,7 @@ export function FAQ() {
               question={faq.question}
             />
           ))}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

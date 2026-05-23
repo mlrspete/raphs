@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <p className="text-lg font-black text-ink">{site.name}</p>
           <p className="mt-1 text-sm font-semibold text-ink/60">
-            Private member deck market for Aussie collectors. Prices shown in {site.currency}.
+            Members-only marketplace for Aussie collectors. Prices shown in {site.currency}.
           </p>
         </div>
         <div className="flex gap-3">

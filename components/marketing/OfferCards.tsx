@@ -1,5 +1,5 @@
 import { CTAImpressionTracker } from "@/components/analytics/CTAImpressionTracker";
-import { AccessCTA } from "@/components/marketing/AccessCTA";
+import { ScrollReveal } from "@/components/marketing/ScrollReveal";
 import { site } from "@/lib/site";
 
 const offers = [
@@ -9,21 +9,15 @@ const offers = [
     price: site.offers.previewPass.price,
     note: "Try out Monroes for a day. Browse private listings and decide whether you want to go Monroes Ultra.",
     bullets: ["Private listings preview", "12-hour look inside Monroes", "One-time purchase, no hidden fees"],
-    buttonLabel: "Get Daypass",
-    offerId: site.offers.previewPass.offerId,
-    offerType: site.offers.previewPass.offerType,
-    priceCents: site.offers.previewPass.priceCents,
+    buttonLabel: "GET DAYPASS",
   },
   {
     eyebrow: "Full membership",
     name: "MONROES ULTRA",
     price: site.offers.monthlyPass.price,
-    note: "Full unrestricted access to Monroes for members who want ongoing access to private listings, drops, and seller opportunities.",
-    bullets: ["Ongoing member access", "Early drops and seller opportunities", "No sale fees for early sellers"],
-    buttonLabel: "Join Ultra",
-    offerId: site.offers.monthlyPass.offerId,
-    offerType: site.offers.monthlyPass.offerType,
-    priceCents: site.offers.monthlyPass.priceCents,
+    note: "Full unrestricted access to Monroes private listings.",
+    bullets: ["Ongoing member access", "Access to the most sought-after decks in Australia.", "No hidden fees."],
+    buttonLabel: "JOIN ULTRA",
   },
 ];
 
@@ -39,19 +33,20 @@ export function OfferCards() {
       />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange/50 to-transparent" />
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-        <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+        <ScrollReveal className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
           <div>
             <p className="text-sm font-black uppercase text-orange">Packages</p>
             <h2 className="mt-3 text-4xl font-black uppercase leading-none text-ink sm:text-6xl">
               Join Monroes.
             </h2>
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+        <ScrollReveal className="mt-10 grid gap-5 lg:grid-cols-2" stagger={0.08}>
           {offers.map((offer, index) => (
             <article
               className="group relative overflow-hidden rounded-lg border border-ink/10 bg-cream p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-deck sm:p-8"
+              data-scroll-reveal-item
               key={offer.name}
             >
               <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-orange via-peach to-mint" />
@@ -80,24 +75,17 @@ export function OfferCards() {
                 </ul>
 
                 <div className="mt-8">
-                  <AccessCTA
-                    body={site.soldOutModal.body}
+                  <button
                     className="inline-flex min-h-12 w-full items-center justify-center rounded-md bg-ink px-5 py-3 text-center text-sm font-black uppercase text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
-                    ctaLabel={site.soldOutModal.ctaLabel}
-                    currency={site.currency}
-                    eventContext={`homepage_offer_${offer.offerType}`}
-                    headline={site.soldOutModal.headline}
-                    offerId={offer.offerId}
-                    offerType={offer.offerType}
-                    priceCents={offer.priceCents}
+                    type="button"
                   >
                     {offer.buttonLabel}
-                  </AccessCTA>
+                  </button>
                 </div>
               </div>
             </article>
           ))}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

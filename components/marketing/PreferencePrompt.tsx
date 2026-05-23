@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { ScrollReveal } from "@/components/marketing/ScrollReveal";
+
 const voteStorageKey = "monroes-your-say-vote";
 const preferences = [
   "More OG graphics",
@@ -54,15 +56,12 @@ export function PreferencePrompt() {
       <div className="absolute bottom-0 left-10 h-32 w-72 -rotate-6 rounded-lg bg-peach/10 blur-3xl" />
 
       <div className="relative mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-center lg:px-12">
-        <div>
+        <ScrollReveal>
           <p className="text-sm font-black uppercase text-orange">Your say</p>
           <h2 className="mt-3 text-4xl font-black uppercase leading-none sm:text-6xl">
-            Help shape what Monroes becomes next.
+            <span className="lg:block">MEMBERS</span> <span className="lg:block">SHAPE WHAT</span>{" "}
+            <span className="lg:block">MONROES BECOMES NEXT.</span>
           </h2>
-          <p className="mt-5 max-w-xl text-lg font-semibold leading-8 text-white/70">
-            Members help guide what gets prioritised next, from the types of decks surfaced to the features and
-            opportunities Monroes builds around Aussie collectors.
-          </p>
           <a
             className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-orange px-7 py-3 text-center text-sm font-black uppercase text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto"
             href="#access"
@@ -74,9 +73,9 @@ export function PreferencePrompt() {
               Your vote: {selectedVote}
             </p>
           ) : null}
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <ScrollReveal className="grid grid-cols-2 gap-3 sm:grid-cols-3" stagger={0.07}>
           {preferences.map((preference) => {
             const isSelected = selectedVote === preference;
 
@@ -84,6 +83,7 @@ export function PreferencePrompt() {
               <button
                 aria-pressed={isSelected}
                 className={tileClassName(isSelected)}
+                data-scroll-reveal-item
                 key={preference}
                 onClick={() => submitVote(preference)}
                 type="button"
@@ -96,7 +96,7 @@ export function PreferencePrompt() {
               </button>
             );
           })}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
