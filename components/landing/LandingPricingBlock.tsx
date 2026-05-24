@@ -12,6 +12,7 @@ import {
   type DaypassCheckoutOptionDefinition,
   type DaypassCheckoutQuantity,
 } from "@/lib/domain/daypass/pricing";
+import { daypassCampaign001OfferCode } from "@/lib/domain/offers/config";
 import { site } from "@/lib/site";
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
@@ -29,6 +30,42 @@ function formatAud(cents: number) {
   return `$${(cents / 100).toFixed(2)} AUD`;
 }
 
+function readConfigString(page: LandingPageViewModel, key: string) {
+  const value = page.configJson[key];
+  return typeof value === "string" && value.trim() ? value : null;
+}
+
+function readConfigBoolean(page: LandingPageViewModel, key: string) {
+  return page.configJson[key] === true;
+}
+
+function isCheckoutDisabled(page: LandingPageViewModel) {
+  return page.configJson.checkoutEnabled === false || readConfigBoolean(page, "checkoutDisabled");
+}
+
+function isSoldOutOrUnavailable(page: LandingPageViewModel) {
+  return (
+    readConfigBoolean(page, "soldOut") ||
+    readConfigBoolean(page, "isSoldOut") ||
+    readConfigBoolean(page, "passesSoldOut") ||
+    readConfigBoolean(page, "passesUnavailable")
+  );
+}
+
+function canPurchaseCampaignDaypass(page: LandingPageViewModel) {
+  const configuredCampaignSlug = readConfigString(page, "campaignSlug");
+  const isCampaign001CheckoutPage = page.slug === campaign001Slug || configuredCampaignSlug === campaign001Slug;
+  const checkoutExplicitlyEnabled = readConfigBoolean(page, "checkoutEnabled");
+  const hasDaypassOffer = page.offerType === "daypass" || page.offerId === daypassCampaign001OfferCode;
+
+  return (
+    isCampaign001CheckoutPage &&
+    (checkoutExplicitlyEnabled || hasDaypassOffer) &&
+    !isCheckoutDisabled(page) &&
+    !isSoldOutOrUnavailable(page)
+  );
+}
+
 export function LandingPricingBlock({
   checkoutOptions,
   page,
@@ -38,7 +75,7 @@ export function LandingPricingBlock({
   const selectedOption = getDaypassCheckoutOptionDefinition(quantity) ?? checkoutOptions[0];
   const totalPriceCents = selectedOption.totalPriceCents;
   const unitPriceCents = selectedOption.unitPriceCents;
-  const isCampaign001 = page.slug === campaign001Slug;
+  const isPurchasableCampaignDaypass = canPurchaseCampaignDaypass(page);
   const trackingContext = useMemo<TrackEventProperties>(
     () => ({
       campaign_bonus_entry: true,
@@ -125,9 +162,10 @@ export function LandingPricingBlock({
           </p>
         </div>
 
-        {isCampaign001 ? (
+        {isPurchasableCampaignDaypass ? (
           <CampaignDaypassCheckoutButton
             className="landing-button mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-[10px] bg-orange px-6 py-3 text-center text-ink shadow-deck transition hover:-translate-y-0.5 hover:bg-orange-hover hover:text-white focus:outline-none focus:ring-4 focus:ring-white/20 disabled:cursor-wait disabled:opacity-70"
+            checkoutCampaignSlug={campaign001Slug}
             currency={page.currency}
             daypassQuantity={quantity}
             extraTrackingProperties={trackingContext}

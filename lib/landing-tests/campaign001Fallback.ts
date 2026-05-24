@@ -14,6 +14,8 @@ export function getCampaign001LandingFallback(slug: string): LandingPageViewMode
     configJson: {
       campaignFallback: true,
       canonicalRoute: campaign001PublicContent.canonicalRoute,
+      campaignSlug: campaign001Slug,
+      checkoutEnabled: true,
       rulesUrl: campaign001PublicContent.rulesUrl,
     },
     ctaPrimary: "Get Daypass",

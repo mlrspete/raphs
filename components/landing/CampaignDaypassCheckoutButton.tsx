@@ -6,12 +6,14 @@ import { getAttributionContext } from "@/lib/analytics/attribution";
 import type { TrackEventProperties } from "@/lib/analytics/types";
 import { trackEvent } from "@/lib/analytics/trackEvent";
 import { campaign001Slug } from "@/lib/domain/campaigns/config";
+import type { DaypassCheckoutQuantity } from "@/lib/domain/daypass/pricing";
 
 type CampaignDaypassCheckoutButtonProps = {
   children: string;
   className: string;
+  checkoutCampaignSlug?: string;
   currency: "AUD";
-  daypassQuantity: number;
+  daypassQuantity: DaypassCheckoutQuantity;
   landingPageId: string;
   landingSlug: string;
   offerId: string | null;
@@ -35,6 +37,7 @@ type CheckoutResponse =
 export function CampaignDaypassCheckoutButton({
   children,
   className,
+  checkoutCampaignSlug = campaign001Slug,
   currency,
   daypassQuantity,
   extraTrackingProperties = {},
@@ -131,7 +134,7 @@ export function CampaignDaypassCheckoutButton({
       const response = await fetch("/api/checkout/daypass", {
         body: JSON.stringify({
           attribution,
-          campaign_slug: campaign001Slug,
+          campaign_slug: checkoutCampaignSlug,
           quantity: daypassQuantity,
           source_landing_page_id: landingPageId,
           source_slug: landingSlug,
@@ -154,7 +157,11 @@ export function CampaignDaypassCheckoutButton({
       trackEvent("checkout_redirected", trackingProperties);
       window.location.assign(body.url);
     } catch (caughtError) {
-      const message = caughtError instanceof Error ? caughtError.message : "Checkout could not be started.";
+      const rawMessage = caughtError instanceof Error ? caughtError.message : "Checkout could not be started.";
+      const message =
+        rawMessage.includes("not configured") || rawMessage.includes("Missing")
+          ? "Checkout is temporarily unavailable. Please try again shortly."
+          : rawMessage;
       setError(message);
       setIsLoading(false);
       trackEvent("checkout_failed", {
@@ -166,10 +173,21 @@ export function CampaignDaypassCheckoutButton({
 
   return (
     <div>
-      <button className={className} disabled={isLoading} onClick={startCheckout} ref={buttonRef} type="button">
+      <button
+        aria-busy={isLoading}
+        className={className}
+        disabled={isLoading}
+        onClick={startCheckout}
+        ref={buttonRef}
+        type="button"
+      >
         {isLoading ? "Opening checkout..." : children}
       </button>
-      {error ? <p className="mt-3 text-center text-sm font-bold leading-6 text-[#FFD6C7]">{error}</p> : null}
+      {error ? (
+        <p aria-live="polite" className="mt-3 text-center text-sm font-bold leading-6 text-[#FFD6C7]">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }
