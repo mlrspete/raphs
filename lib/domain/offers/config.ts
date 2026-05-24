@@ -21,7 +21,8 @@ export const commerceOfferSeeds = [
       checkoutEnabled: true,
       manualStripeSetupRequired: true,
       route: "/l/campaign-001",
-      stripePriceIdSource: "STRIPE_DAYPASS_PRICE_ID or commerce_offers.stripe_price_id",
+      stripePriceIdSource:
+        "STRIPE_DAYPASS_PRICE_ID or commerce_offers.stripe_price_id for single Daypass; STRIPE_5X_DAYPASS_PRICE_ID and STRIPE_10X_DAYPASS_PRICE_ID for bundles",
     },
   },
   {

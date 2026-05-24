@@ -4,8 +4,9 @@ import type Stripe from "stripe";
 
 import { insertEventLog } from "@/lib/db/events";
 import { grantDaypassOrderAccess, type DaypassFulfillmentSummary } from "@/lib/domain/access/grantAccess";
+import { getDaypassCheckoutOptionDefinition, type DaypassCheckoutOptionDefinition } from "@/lib/domain/daypass/pricing";
 import { generateDaypassCodes } from "@/lib/domain/daypass-codes/generateDaypassCodes";
-import { getExpectedFriendCodeCount, getExpectedPromoEntryCount } from "@/lib/domain/promo-entries/createPromoEntries";
+import { getExpectedFriendCodeCount } from "@/lib/domain/promo-entries/createPromoEntries";
 import { getActiveCommerceOfferByCode } from "@/lib/domain/offers/queries";
 import { daypassCampaign001OfferCode } from "@/lib/domain/offers/config";
 import { getPaidOrderStripeFields } from "@/lib/domain/orders/markOrderPaid";
@@ -32,6 +33,17 @@ function readMetadataString(session: Stripe.Checkout.Session, key: string) {
   return value && value.trim() ? value : null;
 }
 
+function readMetadataInteger(session: Stripe.Checkout.Session, key: string) {
+  const value = readMetadataString(session, key);
+
+  if (!value) {
+    return null;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) ? parsed : null;
+}
+
 function sanitizeEmailHookError(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
   return message.slice(0, 800);
@@ -46,6 +58,46 @@ function readQuantity(session: Stripe.Checkout.Session) {
   }
 
   return quantity;
+}
+
+function resolvePaidCheckoutPricing(session: Stripe.Checkout.Session, quantity: number): DaypassCheckoutOptionDefinition {
+  const option = getDaypassCheckoutOptionDefinition(quantity);
+
+  if (!option) {
+    throw new Error("Stripe Checkout Session has an unsupported Daypass quantity.");
+  }
+
+  const amountTotal = session.amount_total;
+
+  if (typeof amountTotal !== "number") {
+    throw new Error("Stripe Checkout Session is missing amount total.");
+  }
+
+  const currency = session.currency?.toUpperCase();
+
+  if (currency !== "AUD") {
+    throw new Error("Stripe Checkout Session currency does not match the Daypass offer.");
+  }
+
+  const metadataTotal = readMetadataInteger(session, "checkout_total_price_cents");
+  const metadataUnit = readMetadataInteger(session, "checkout_unit_price_cents");
+
+  if (metadataTotal !== null && metadataTotal !== option.totalPriceCents) {
+    throw new Error("Stripe Checkout Session total metadata does not match the Daypass checkout option.");
+  }
+
+  if (metadataUnit !== null && metadataUnit !== option.unitPriceCents) {
+    throw new Error("Stripe Checkout Session unit metadata does not match the Daypass checkout option.");
+  }
+
+  if (amountTotal !== option.totalPriceCents) {
+    throw new Error("Stripe Checkout Session amount does not match the Daypass checkout option.");
+  }
+
+  return {
+    ...option,
+    unitPriceCents: metadataUnit ?? option.unitPriceCents,
+  };
 }
 
 async function getExistingOrderFulfilledAt(orderId: string | null, sessionId: string) {
@@ -103,10 +155,14 @@ async function logFulfillmentBusinessEvents(
   session: Stripe.Checkout.Session,
   summary: DaypassFulfillmentSummary,
   quantity: number,
+  pricing: DaypassCheckoutOptionDefinition,
 ) {
   const baseProperties = {
     already_fulfilled: summary.already_fulfilled,
     campaign_id: readMetadataString(session, "campaign_id"),
+    checkout_option_code: pricing.code,
+    checkout_total_price_cents: pricing.totalPriceCents,
+    checkout_unit_price_cents: pricing.unitPriceCents,
     daypass_quantity: quantity,
     daypass_code_count: summary.daypass_code_count,
     promo_entry_count: summary.promo_entry_count,
@@ -130,6 +186,64 @@ async function logFulfillmentBusinessEvents(
   }
 }
 
+async function findOrderItemIdForReconciliation(orderId: string) {
+  const supabase = createAdminSupabaseClient();
+  const { data, error } = await supabase
+    .from("order_items")
+    .select("id")
+    .eq("order_id", orderId)
+    .eq("item_type", "daypass")
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data?.id ?? null;
+}
+
+async function reconcileFulfilledOrderPricing(summary: DaypassFulfillmentSummary, pricing: DaypassCheckoutOptionDefinition) {
+  if (!summary.order_id) {
+    throw new Error("Fulfilment summary did not include an order id.");
+  }
+
+  const supabase = createAdminSupabaseClient();
+  const { error: orderError } = await supabase
+    .from("orders")
+    .update({
+      currency: "AUD",
+      subtotal_cents: pricing.totalPriceCents,
+      total_cents: pricing.totalPriceCents,
+    })
+    .eq("id", summary.order_id);
+
+  if (orderError) {
+    throw new Error(orderError.message);
+  }
+
+  const orderItemId = summary.order_item_id ?? (await findOrderItemIdForReconciliation(summary.order_id));
+
+  if (!orderItemId) {
+    throw new Error("Fulfilled Daypass order item could not be found for pricing reconciliation.");
+  }
+
+  const { error: itemError } = await supabase
+    .from("order_items")
+    .update({
+      currency: "AUD",
+      quantity: pricing.quantity,
+      total_price_cents: pricing.totalPriceCents,
+      unit_price_cents: pricing.unitPriceCents,
+    })
+    .eq("id", orderItemId);
+
+  if (itemError) {
+    throw new Error(itemError.message);
+  }
+}
+
 export async function fulfillCheckout({ sessionId, stripeEventId, webhookPayload }: FulfillCheckoutInput) {
   const stripe = getStripeClient();
   const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -149,6 +263,7 @@ export async function fulfillCheckout({ sessionId, stripeEventId, webhookPayload
   const campaignId = readMetadataString(session, "campaign_id");
   const offerCode = readMetadataString(session, "offer_code");
   const quantity = readQuantity(session);
+  const pricing = resolvePaidCheckoutPricing(session, quantity);
 
   if (!campaignId) {
     throw new Error("Stripe Checkout Session is missing campaign metadata.");
@@ -164,7 +279,6 @@ export async function fulfillCheckout({ sessionId, stripeEventId, webhookPayload
     throw new Error("Campaign 001 Daypass offer is not active.");
   }
 
-  const expectedPromoEntries = getExpectedPromoEntryCount(quantity);
   const expectedFriendCodes = getExpectedFriendCodeCount(quantity);
   const fulfilledAt = await getExistingOrderFulfilledAt(orderId, session.id);
   const generatedFriendCodes = fulfilledAt ? [] : generateDaypassCodes(expectedFriendCodes);
@@ -184,7 +298,8 @@ export async function fulfillCheckout({ sessionId, stripeEventId, webhookPayload
     webhookPayload,
   });
 
-  await logFulfillmentBusinessEvents(session, summary, expectedPromoEntries);
+  await reconcileFulfilledOrderPricing(summary, pricing);
+  await logFulfillmentBusinessEvents(session, summary, quantity, pricing);
   const plainFriendCodes = summary.already_fulfilled ? [] : generatedFriendCodes.map((code) => code.plainCode);
 
   try {

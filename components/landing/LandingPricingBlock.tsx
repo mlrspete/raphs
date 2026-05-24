@@ -7,16 +7,19 @@ import { CampaignDaypassCheckoutButton } from "@/components/landing/CampaignDayp
 import { AccessCTA } from "@/components/marketing/AccessCTA";
 import type { TrackEventProperties } from "@/lib/analytics/types";
 import { campaign001Slug } from "@/lib/domain/campaigns/config";
+import {
+  getDaypassCheckoutOptionDefinition,
+  type DaypassCheckoutOptionDefinition,
+  type DaypassCheckoutQuantity,
+} from "@/lib/domain/daypass/pricing";
 import { site } from "@/lib/site";
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 type LandingPricingBlockProps = {
   page: LandingPageViewModel;
-  quantity: number;
-  minQuantity: number;
-  maxQuantity: number;
-  unitPriceCents: number;
-  onQuantityChange: (quantity: number) => void;
+  quantity: DaypassCheckoutQuantity;
+  checkoutOptions: readonly [DaypassCheckoutOptionDefinition, ...DaypassCheckoutOptionDefinition[]];
+  onQuantityChange: (quantity: DaypassCheckoutQuantity) => void;
 };
 
 const promoItem = "Campaign 001 deck prize";
@@ -27,14 +30,14 @@ function formatAud(cents: number) {
 }
 
 export function LandingPricingBlock({
+  checkoutOptions,
   page,
   quantity,
-  minQuantity,
-  maxQuantity,
-  unitPriceCents,
   onQuantityChange,
 }: LandingPricingBlockProps) {
-  const totalPriceCents = quantity * unitPriceCents;
+  const selectedOption = getDaypassCheckoutOptionDefinition(quantity) ?? checkoutOptions[0];
+  const totalPriceCents = selectedOption.totalPriceCents;
+  const unitPriceCents = selectedOption.unitPriceCents;
   const isCampaign001 = page.slug === campaign001Slug;
   const trackingContext = useMemo<TrackEventProperties>(
     () => ({
@@ -49,14 +52,6 @@ export function LandingPricingBlock({
     }),
     [page.campaignLimit, page.currency, quantity, totalPriceCents, unitPriceCents],
   );
-
-  function decrementQuantity() {
-    onQuantityChange(Math.max(minQuantity, quantity - 1));
-  }
-
-  function incrementQuantity() {
-    onQuantityChange(Math.min(maxQuantity, quantity + 1));
-  }
 
   return (
     <article className="relative overflow-hidden rounded-[22px] border border-dark-card/50 bg-dark p-6 text-white shadow-soft sm:p-8">
@@ -88,38 +83,42 @@ export function LandingPricingBlock({
           </p>
         </div>
         <p className="mt-5 break-words text-[2.5rem] font-black leading-none text-white sm:text-5xl">
-          {formatAud(unitPriceCents)}
+          {formatAud(totalPriceCents)}
         </p>
         <p className="mt-4 max-w-xl text-base font-semibold leading-[1.65] text-white/70">
           12-hour Monroes preview access.
         </p>
 
         <div className="mt-8 rounded-[18px] border border-white/[0.12] bg-white/[0.08] p-4">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm font-black text-white/70">Daypasses</p>
-            <div className="flex items-center gap-3">
-              <button
-                aria-label="Decrease Daypass quantity"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-[10px] border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-35"
-                disabled={quantity === minQuantity}
-                onClick={decrementQuantity}
-                type="button"
-              >
-                -
-              </button>
-              <span className="min-w-8 text-center text-2xl font-black text-orange" aria-live="polite">
-                {quantity}
-              </span>
-              <button
-                aria-label="Increase Daypass quantity"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-[10px] border border-white/15 bg-white/10 text-lg font-black text-white transition hover:bg-white/15 focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-35"
-                disabled={quantity === maxQuantity}
-                onClick={incrementQuantity}
-                type="button"
-              >
-                +
-              </button>
-            </div>
+          <div className="grid gap-3" role="radiogroup" aria-label="Daypass checkout options">
+            {checkoutOptions.map((option) => {
+              const selected = option.quantity === selectedOption.quantity;
+
+              return (
+                <button
+                  aria-checked={selected}
+                  className={`grid min-h-16 grid-cols-[1fr_auto] items-center gap-3 rounded-[10px] border px-4 py-3 text-left transition focus:outline-none focus:ring-4 focus:ring-orange/30 ${
+                    selected
+                      ? "border-orange bg-orange/15 text-white shadow-[0_0_28px_rgba(255,122,61,0.22)]"
+                      : "border-white/15 bg-white/10 text-white hover:bg-white/15"
+                  }`}
+                  key={option.code}
+                  onClick={() => onQuantityChange(option.quantity)}
+                  role="radio"
+                  type="button"
+                >
+                  <span>
+                    <span className="block text-sm font-black leading-5">{option.label}</span>
+                    <span className="mt-1 block text-xs font-bold leading-5 text-white/60">
+                      {option.quantity === 1 ? "Single 12-hour preview" : `${option.quantity} promo entries included`}
+                    </span>
+                  </span>
+                  <span className="text-right text-sm font-black leading-5 text-orange">
+                    {formatAud(option.totalPriceCents)}
+                  </span>
+                </button>
+              );
+            })}
           </div>
           <p className="mt-4 text-sm font-bold leading-6 text-white/70">
             Total: <span className="text-orange">{formatAud(totalPriceCents)}</span>

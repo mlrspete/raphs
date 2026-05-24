@@ -2,13 +2,14 @@ import "server-only";
 
 import type Stripe from "stripe";
 
-import { getCheckoutBaseUrl, getStripeClient, getStripeDaypassPriceId } from "@/lib/domain/payments/stripe";
+import { getCheckoutBaseUrl, getStripeClient, type StripeDaypassCheckoutOption } from "@/lib/domain/payments/stripe";
 import type { PendingOrderAttribution } from "@/lib/domain/orders/createPendingOrder";
 import type { CommerceOffer, Order, OrderItem, PromoCampaign } from "@/lib/types/database";
 
 type CreateCheckoutSessionInput = {
   attribution: PendingOrderAttribution;
   campaign: PromoCampaign;
+  checkoutOption: StripeDaypassCheckoutOption;
   offer: CommerceOffer;
   order: Order;
   orderItem: OrderItem;
@@ -28,6 +29,7 @@ function metadataValue(value: string | number | null | undefined) {
 function createMetadata({
   attribution,
   campaign,
+  checkoutOption,
   offer,
   order,
   quantity,
@@ -37,6 +39,9 @@ function createMetadata({
   return {
     anonymous_id: metadataValue(attribution.anonymous_id),
     campaign_id: metadataValue(campaign.id),
+    checkout_option_code: metadataValue(checkoutOption.code),
+    checkout_total_price_cents: metadataValue(checkoutOption.totalPriceCents),
+    checkout_unit_price_cents: metadataValue(checkoutOption.unitPriceCents),
     daypass_quantity: metadataValue(quantity),
     landing_page_id: metadataValue(sourceLandingPageId),
     landing_slug: metadataValue(sourceSlug),
@@ -44,6 +49,7 @@ function createMetadata({
     offer_code: metadataValue(offer.code),
     order_id: metadataValue(order.id),
     session_id: metadataValue(attribution.session_id),
+    stripe_price_id: metadataValue(checkoutOption.stripePriceId),
     utm_campaign: metadataValue(attribution.utm_campaign),
     utm_source: metadataValue(attribution.utm_source),
   };
@@ -53,13 +59,12 @@ export async function createCheckoutSession(input: CreateCheckoutSessionInput) {
   const stripe = getStripeClient();
   const baseUrl = getCheckoutBaseUrl();
   const metadata = createMetadata(input);
-  const stripePriceId = getStripeDaypassPriceId(input.offer);
   const session = await stripe.checkout.sessions.create({
     client_reference_id: input.order.id,
     line_items: [
       {
-        price: stripePriceId,
-        quantity: input.quantity,
+        price: input.checkoutOption.stripePriceId,
+        quantity: input.checkoutOption.stripeLineItemQuantity,
       },
     ],
     metadata,

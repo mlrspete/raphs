@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { StripeDaypassCheckoutOption } from "@/lib/domain/payments/stripe";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import type { CommerceOffer, Json, Order, OrderItem, PromoCampaign } from "@/lib/types/database";
 
@@ -23,6 +24,7 @@ export type PendingOrderAttribution = {
 
 type CreatePendingOrderInput = {
   campaign: PromoCampaign;
+  checkoutOption: StripeDaypassCheckoutOption;
   offer: CommerceOffer;
   quantity: number;
   sourceLandingPageId: string | null;
@@ -42,13 +44,14 @@ function toJson(value: unknown): Json {
 export async function createPendingOrder({
   attribution,
   campaign,
+  checkoutOption,
   offer,
   quantity,
   sourceLandingPageId,
   sourceSlug,
 }: CreatePendingOrderInput): Promise<CreatePendingOrderResult> {
   const supabase = createAdminSupabaseClient();
-  const totalCents = quantity * offer.unit_price_cents;
+  const totalCents = checkoutOption.totalPriceCents;
 
   const { data: order, error: orderError } = await supabase
     .from("orders")
@@ -59,8 +62,12 @@ export async function createPendingOrder({
         checkout_context: {
           campaign_id: campaign.id,
           campaign_slug: campaign.slug,
+          checkout_option_code: checkoutOption.code,
           offer_code: offer.code,
           offer_id: offer.id,
+          stripe_price_id: checkoutOption.stripePriceId,
+          total_price_cents: checkoutOption.totalPriceCents,
+          unit_price_cents: checkoutOption.unitPriceCents,
         },
       }),
       currency: offer.currency,
@@ -90,7 +97,7 @@ export async function createPendingOrder({
       order_id: order.id,
       quantity,
       total_price_cents: totalCents,
-      unit_price_cents: offer.unit_price_cents,
+      unit_price_cents: checkoutOption.unitPriceCents,
     })
     .select("*")
     .single();

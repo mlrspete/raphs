@@ -3,10 +3,11 @@ import { z } from "zod";
 
 import { insertEventLog } from "@/lib/db/events";
 import { attachCheckoutSessionToOrder, createPendingOrder } from "@/lib/domain/orders/createPendingOrder";
-import { assertStripeCheckoutConfigured } from "@/lib/domain/payments/stripe";
+import { assertStripeSecretConfigured, getStripeDaypassCheckoutOption } from "@/lib/domain/payments/stripe";
 import { createCheckoutSession } from "@/lib/domain/payments/createCheckoutSession";
 import { campaign001Slug } from "@/lib/domain/campaigns/config";
 import { getCampaignBySlug } from "@/lib/domain/campaigns/queries";
+import { isSupportedDaypassCheckoutQuantity } from "@/lib/domain/daypass/pricing";
 import { daypassCampaign001OfferCode } from "@/lib/domain/offers/config";
 import { getActiveCommerceOfferByCode } from "@/lib/domain/offers/queries";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
@@ -70,7 +71,10 @@ const attributionSchema = z
   }));
 
 const checkoutPayloadSchema = z.object({
-  quantity: z.number().int().min(1).max(10),
+  quantity: z
+    .number()
+    .int()
+    .refine(isSupportedDaypassCheckoutQuantity, { message: "Choose 1, 5, or 10 Daypasses." }),
   campaign_slug: optionalTrimmedString(120).default(campaign001Slug),
   campaign_id: optionalUuid,
   source_landing_page_id: optionalUuid,
@@ -303,12 +307,14 @@ export async function POST(request: Request) {
       throw new Error("Campaign 001 Daypass offer is not available.");
     }
 
-    assertStripeCheckoutConfigured(offer);
+    const checkoutOption = getStripeDaypassCheckoutOption(offer, parsed.data.quantity);
+    assertStripeSecretConfigured();
 
     const attribution = toPendingOrderAttribution(parsedAttribution.data);
     const { order, orderItem } = await createPendingOrder({
       attribution,
       campaign,
+      checkoutOption,
       offer,
       quantity: parsed.data.quantity,
       sourceLandingPageId: parsed.data.source_landing_page_id,
@@ -325,12 +331,13 @@ export async function POST(request: Request) {
       offerType: offer.offer_type,
       quantity: parsed.data.quantity,
       totalPriceCents: order.total_cents,
-      unitPriceCents: offer.unit_price_cents,
+      unitPriceCents: checkoutOption.unitPriceCents,
     });
 
     const session = await createCheckoutSession({
       attribution,
       campaign,
+      checkoutOption,
       offer,
       order,
       orderItem,
