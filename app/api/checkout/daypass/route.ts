@@ -130,6 +130,29 @@ function assertCampaignCheckoutAllowed(campaign: PromoCampaign) {
   throw new Error("Campaign 001 is not open for checkout.");
 }
 
+function isCheckoutConfigurationError(message: string) {
+  return message.includes("not configured") || message.includes("price is not configured") || message.includes("Missing");
+}
+
+function isSupabaseSchemaNotReadyError(message: string) {
+  const lowerMessage = message.toLowerCase();
+
+  return (
+    lowerMessage.includes("schema cache") ||
+    lowerMessage.includes("could not find the table") ||
+    lowerMessage.includes("could not find the function") ||
+    lowerMessage.includes("relation \"public.")
+  );
+}
+
+function getPublicCheckoutError(message: string) {
+  if (isCheckoutConfigurationError(message) || isSupabaseSchemaNotReadyError(message)) {
+    return "Checkout is temporarily unavailable. Please try again shortly.";
+  }
+
+  return message;
+}
+
 async function getCampaignForCheckout(
   campaignSlug: string | null,
   campaignId: string | null,
@@ -351,11 +374,12 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Checkout could not be started.";
-    const status = message.includes("not configured") || message.includes("price is not configured") ? 503 : 400;
+    const publicMessage = getPublicCheckoutError(message);
+    const status = publicMessage === message ? 400 : 503;
 
     return NextResponse.json<CheckoutResponse>(
       {
-        error: message,
+        error: publicMessage,
         success: false,
       },
       { status },
