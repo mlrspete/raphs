@@ -2,8 +2,20 @@ import { campaign001Slug } from "@/lib/domain/campaigns/config";
 import { campaign001PublicContent } from "@/lib/domain/campaigns/publicContent";
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
+const campaign001LandingSlugs = new Set([
+  campaign001Slug,
+  "first-preview-drop",
+  "preview-pass",
+  "monthly-pass",
+  "upgrade-access",
+]);
+
+export function isCampaign001LandingSlug(slug: string) {
+  return campaign001LandingSlugs.has(slug);
+}
+
 export function getCampaign001LandingFallback(slug: string): LandingPageViewModel | null {
-  if (slug !== campaign001Slug) {
+  if (!isCampaign001LandingSlug(slug)) {
     return null;
   }
 
@@ -33,7 +45,7 @@ export function getCampaign001LandingFallback(slug: string): LandingPageViewMode
     priceCents: 499,
     priceDisplay: "$4.99 AUD",
     sections: [],
-    slug,
+    slug: campaign001Slug,
     status: "live",
     subheadline:
       "Get a Monroes Daypass and browse the member-only deck market. Eligible Daypass purchases receive free entry into the promotion.",

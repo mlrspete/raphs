@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { LandingPageRenderer } from "@/components/landing/LandingPageRenderer";
 import { getLandingPageBySlug } from "@/lib/db/landing-tests";
-import { getCampaign001LandingFallback } from "@/lib/landing-tests/campaign001Fallback";
+import { getCampaign001LandingFallback, isCampaign001LandingSlug } from "@/lib/landing-tests/campaign001Fallback";
 import { site } from "@/lib/site";
 
 type LandingPageProps = {
@@ -20,7 +20,9 @@ const landingMetaDescription =
 
 export async function generateMetadata({ params }: LandingPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = (await getLandingPageBySlug(slug)) ?? getCampaign001LandingFallback(slug);
+  const page = isCampaign001LandingSlug(slug)
+    ? getCampaign001LandingFallback(slug)
+    : await getLandingPageBySlug(slug);
 
   if (!page) {
     return {
@@ -37,7 +39,9 @@ export async function generateMetadata({ params }: LandingPageProps): Promise<Me
 
 export default async function LandingPage({ params }: LandingPageProps) {
   const { slug } = await params;
-  const page = (await getLandingPageBySlug(slug)) ?? getCampaign001LandingFallback(slug);
+  const page = isCampaign001LandingSlug(slug)
+    ? getCampaign001LandingFallback(slug)
+    : await getLandingPageBySlug(slug);
 
   if (!page) {
     notFound();
