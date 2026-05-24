@@ -6,10 +6,8 @@ import { attachCheckoutSessionToOrder, createPendingOrder } from "@/lib/domain/o
 import { assertStripeSecretConfigured, getStripeDaypassCheckoutOption } from "@/lib/domain/payments/stripe";
 import { createCheckoutSession } from "@/lib/domain/payments/createCheckoutSession";
 import { campaign001Slug } from "@/lib/domain/campaigns/config";
-import { getCampaignBySlug } from "@/lib/domain/campaigns/queries";
+import { ensureCampaign001CheckoutData } from "@/lib/domain/campaigns/ensureCampaign001CheckoutData";
 import { isSupportedDaypassCheckoutQuantity } from "@/lib/domain/daypass/pricing";
-import { daypassCampaign001OfferCode } from "@/lib/domain/offers/config";
-import { getActiveCommerceOfferByCode } from "@/lib/domain/offers/queries";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import type { Json, PromoCampaign } from "@/lib/types/database";
 import type { EventPayload } from "@/lib/validation/events";
@@ -132,7 +130,11 @@ function assertCampaignCheckoutAllowed(campaign: PromoCampaign) {
   throw new Error("Campaign 001 is not open for checkout.");
 }
 
-async function getCampaignForCheckout(campaignSlug: string | null, campaignId: string | null) {
+async function getCampaignForCheckout(
+  campaignSlug: string | null,
+  campaignId: string | null,
+  campaign001Fallback: PromoCampaign,
+) {
   const slug = campaignSlug ?? campaign001Slug;
 
   if (slug === "first-preview-drop") {
@@ -144,13 +146,7 @@ async function getCampaignForCheckout(campaignSlug: string | null, campaignId: s
   }
 
   if (!campaignId) {
-    const campaign = await getCampaignBySlug(campaign001Slug);
-
-    if (!campaign) {
-      throw new Error("Campaign 001 could not be found.");
-    }
-
-    return campaign;
+    return campaign001Fallback;
   }
 
   const supabase = createAdminSupabaseClient();
@@ -298,12 +294,13 @@ export async function POST(request: Request) {
   }
 
   try {
-    const campaign = await getCampaignForCheckout(parsed.data.campaign_slug, parsed.data.campaign_id);
+    const checkoutData = await ensureCampaign001CheckoutData();
+    const campaign = await getCampaignForCheckout(parsed.data.campaign_slug, parsed.data.campaign_id, checkoutData.campaign);
     assertCampaignCheckoutAllowed(campaign);
 
-    const offer = await getActiveCommerceOfferByCode(daypassCampaign001OfferCode);
+    const offer = checkoutData.offer;
 
-    if (!offer) {
+    if (offer.status !== "active") {
       throw new Error("Campaign 001 Daypass offer is not available.");
     }
 
