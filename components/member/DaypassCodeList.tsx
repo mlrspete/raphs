@@ -26,12 +26,12 @@ export function DaypassCodeList({ codes }: DaypassCodeListProps) {
 
   return (
     <article className="rounded-lg border border-ink/10 bg-white p-5 shadow-soft sm:p-6">
-      <p className="text-xs font-black uppercase tracking-[0.14em] text-orange">Friend codes</p>
+      <p className="text-xs font-black uppercase tracking-[0.14em] text-orange">Friend Daypass codes</p>
       <h2 className="mt-3 text-2xl font-black leading-tight text-ink">Daypass codes</h2>
 
       {codes.length === 0 ? (
         <p className="mt-4 text-sm font-semibold leading-6 text-ink/68">
-          Friend codes appear here when you buy more than one Daypass.
+          Friend Daypass codes appear here when you buy more than one Daypass.
         </p>
       ) : (
         <>

@@ -5,7 +5,7 @@ const faqs = [
   {
     question: "What is Monroes?",
     answer:
-      "Monroes is a subscription-based members-only marketplace for OG, rare, vintage and interesting complete skateboards and skateboard decks in Australia.",
+      "Monroes is a members-only marketplace for OG, rare, vintage and interesting complete skateboards and skateboard decks in Australia.",
   },
   {
     question: "What is the Daypass?",
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: "What is Monroes Ultra?",
-    answer: "Monroes Ultra is the monthly membership for members who want ongoing access to Monroes.",
+    answer: "Monroes Ultra is the ongoing membership for members who want access to the Monroes members market.",
   },
   {
     question: "Is Monroes Australia only?",

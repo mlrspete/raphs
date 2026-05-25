@@ -8,8 +8,8 @@ import { site } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Redeem Daypass | ${site.name}`,
-  description: `Redeem a Monroes Daypass friend code.`,
+  title: `Redeem access code | ${site.name}`,
+  description: `Redeem a Monroes access code.`,
 };
 
 export default async function RedeemPage() {
@@ -19,11 +19,11 @@ export default async function RedeemPage() {
     <main className="min-h-screen bg-cream px-5 py-10 text-ink sm:px-8 lg:px-12">
       <section className="mx-auto grid max-w-3xl gap-6">
         <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Daypass code</p>
-          <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Redeem friend access</h1>
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Access code</p>
+          <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Redeem Monroes access code</h1>
           <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
-            Friend Daypass codes unlock a pending 12-hour Daypass. The clock starts later, only when you activate it
-            from the member dashboard.
+            Friend Daypass codes add a pending 12-hour Daypass to your member account. The 12-hour access window only
+            starts when you activate it from the member dashboard.
           </p>
 
           {memberProfile ? (
@@ -36,7 +36,7 @@ export default async function RedeemPage() {
           ) : (
             <div className="mt-6 rounded-lg border border-ink/10 bg-cream p-4">
               <p className="text-sm font-semibold leading-6 text-ink/68">
-                Sign in or create a member account first. For safety, Monroes will not place a full Daypass code in a
+                Log in or create a member account first. For safety, Monroes will not place a full access code in a
                 login link, callback URL, query string, or redirect.
               </p>
               <Link

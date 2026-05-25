@@ -13,9 +13,9 @@ export const landingPageTests: LandingTestConfig[] = [
     slug: "campaign-001",
     status: "live",
     internalName: "Campaign 001 real Daypass checkout",
-    headline: "Get a Monroes Daypass and enter Campaign 001.",
+    headline: "WIN THE 2016 JASON JESSEE SUN GOD REISSUE.",
     subheadline:
-      "Buy a 12-hour Daypass, browse the private member deck market, and receive 1 free entry with your eligible Daypass purchase.",
+      "Get a Monroes Daypass, browse the members-only deck market, and receive free entry into the Sun God deck promotion with each eligible Daypass.",
     offerType: "daypass",
     offerId: "daypass_campaign_001",
     priceCents: 499,
@@ -23,8 +23,8 @@ export const landingPageTests: LandingTestConfig[] = [
     priceDisplay: "$4.99 AUD",
     categoryFocus: "Campaign 001 Daypass access and promo entry",
     heroImageUrl: null,
-    ctaPrimary: "Get Daypass",
-    ctaSecondary: "Choose Daypass",
+    ctaPrimary: "GET DAYPASS",
+    ctaSecondary: "VIEW PROMO RULES",
     modalHeadline: "CHECKOUT UNAVAILABLE",
     modalBody:
       "Campaign 001 checkout is not available right now. Please check back soon or contact support if you expected access.",
@@ -34,21 +34,21 @@ export const landingPageTests: LandingTestConfig[] = [
         id: "campaign-001-daypass",
         eyebrow: "12-hour access",
         title: "Paid Daypass utility before the draw.",
-        body: "Campaign 001 gives buyers a real 12-hour look inside the private Monroes deck market before any later Ultra decision.",
+        body: "Campaign 001 gives buyers a real 12-hour look inside the Monroes members market before any later Monroes Ultra decision.",
         bullets: ["$4.99 AUD Daypass", "Member-only listings", "Eligible purchase includes a free promo entry"],
       },
       {
         id: "campaign-001-promo",
         eyebrow: "Promo entry",
         title: "A simple paid campaign MVP.",
-        body: "The checkout flow creates a pending order first, then Stripe confirmation is handled separately by webhook fulfilment.",
+        body: "The checkout flow creates a pending order first, then payment processor confirmation is handled separately.",
       },
     ],
     faqItems: [
       {
         question: "Does checkout create my access immediately?",
         answer:
-          "No. Payment is confirmed by Stripe webhook fulfilment after checkout. The success page only confirms that Stripe redirected you back.",
+          "No. Payment is confirmed by our processor after checkout. The success page only confirms that our processor redirected you back.",
       },
       {
         question: "Do I need an account before buying?",
@@ -61,8 +61,10 @@ export const landingPageTests: LandingTestConfig[] = [
       bonusEntryLabel: "1 free entry into Campaign 001 with each eligible Daypass purchase",
       campaignLimit: 100,
       campaignSlug: "campaign-001",
+      canonicalRoute: "/l/sungod",
       checkoutEnabled: true,
       experimentAngle: "campaign_001_checkout",
+      rulesUrl: "/promo-rules/sungod",
       mediaItems: [
         {
           title: "Campaign 001",
@@ -82,10 +84,10 @@ export const landingPageTests: LandingTestConfig[] = [
     id: "0f3d7b2e-6f24-45dc-b63a-5883d56bf90a",
     slug: "preview-pass",
     status: "live",
-    internalName: "1-Day Preview Pass angle",
-    headline: "Get a one-day look inside Monroes Market.",
+    internalName: "Daypass angle",
+    headline: "Get a Daypass look inside Monroes.",
     subheadline:
-      "A low-friction preview for Australian deck hunters who want to see whether a curated private market is worth their attention.",
+      "A low-friction Daypass for Australian deck hunters who want to see whether a curated members market is worth their attention.",
     offerType: "preview_pass",
     offerId: "one_day_preview_pass",
     priceCents: 499,
@@ -93,15 +95,15 @@ export const landingPageTests: LandingTestConfig[] = [
     priceDisplay: "$4.99 AUD",
     categoryFocus: "OG, rare, vintage, and interesting skateboard decks",
     heroImageUrl: null,
-    ctaPrimary: "Get preview access",
+    ctaPrimary: "Get Daypass",
     ctaSecondary: "Unlock access",
     ...soldOutModalCopy,
     sections: [
       {
         id: "why-preview",
         eyebrow: "Tiny commitment",
-        title: "Peek at the private deck market before going monthly.",
-        body: "The preview pass gives buyers a quick paid look at the private deck market after arriving from Monroes ads.",
+        title: "Peek at the members market before going Ultra.",
+        body: "The Daypass gives buyers a quick paid look at the members market after arriving from Monroes ads.",
         bullets: ["One-day access", "Australia-only positioning", "No seller account needed"],
       },
       {
@@ -113,12 +115,12 @@ export const landingPageTests: LandingTestConfig[] = [
     ],
     faqItems: [
       {
-        question: "What comes with the preview pass?",
-        answer: "It gives buyers a short look at a curated private deck market before deciding whether to join Monroes Ultra.",
+        question: "What comes with the Daypass?",
+        answer: "It gives buyers a short look at the curated Monroes members market before deciding whether to join Monroes Ultra.",
       },
       {
-        question: "Is the preview pass in AUD?",
-        answer: "Yes. The preview pass is priced at $4.99 AUD.",
+        question: "Is the Daypass in AUD?",
+        answer: "Yes. The Daypass is priced at $4.99 AUD.",
       },
     ],
     configJson: {
@@ -142,10 +144,10 @@ export const landingPageTests: LandingTestConfig[] = [
     id: "aa6cae98-586b-4a55-98a0-6b9fb8eab125",
     slug: "monthly-pass",
     status: "live",
-    internalName: "Monthly access pass angle",
-    headline: "A private monthly market for skateboard decks worth checking first.",
+    internalName: "Monroes Ultra angle",
+    headline: "Monroes Ultra access for skateboard decks worth checking first.",
     subheadline:
-      "For Australian buyers who would rather browse a tighter, more curated deck market than refresh scattered listings all week.",
+      "For Australian buyers who would rather browse a tighter, more curated members market than refresh scattered listings all week.",
     offerType: "monthly_pass",
     offerId: "monthly_marketplace_pass",
     priceCents: 2499,
@@ -153,7 +155,7 @@ export const landingPageTests: LandingTestConfig[] = [
     priceDisplay: "$24.99 AUD/month",
     categoryFocus: "curated monthly access",
     heroImageUrl: null,
-    ctaPrimary: "Join monthly pass",
+    ctaPrimary: "Join Monroes Ultra",
     ctaSecondary: "Unlock access",
     ...soldOutModalCopy,
     sections: [
@@ -161,8 +163,8 @@ export const landingPageTests: LandingTestConfig[] = [
         id: "monthly-value",
         eyebrow: "Ongoing access",
         title: "Built for people who want the first look, not the leftover feed.",
-        body: "The monthly angle frames Monroes Ultra as an always-on private market for buyers who want recurring access.",
-        bullets: ["$24.99 AUD/month positioning", "Curated member-market feel", "Buyer demand signal for Monroes Ultra"],
+        body: "The monthly angle frames Monroes Ultra as an always-on members market for buyers who want recurring access.",
+        bullets: ["$24.99 AUD/month positioning", "Curated members market feel", "Buyer demand signal for Monroes Ultra"],
       },
       {
         id: "market-quality",
@@ -173,8 +175,8 @@ export const landingPageTests: LandingTestConfig[] = [
     ],
     faqItems: [
       {
-        question: "What is the monthly access pass?",
-        answer: "It is a $24.99 AUD/month access concept for a future private member deck market.",
+        question: "What is Monroes Ultra?",
+        answer: "It is a $24.99 AUD/month access concept for the Monroes members market.",
       },
       {
         question: "Who is this angle for?",
@@ -234,7 +236,7 @@ export const landingPageTests: LandingTestConfig[] = [
     faqItems: [
       {
         question: "What does the upgrade price mean?",
-        answer: "It presents a $20 AUD path from preview access into the monthly access pass.",
+        answer: "It presents a $20 AUD path from Daypass access into Monroes Ultra.",
       },
       {
         question: "Is this for collectors only?",

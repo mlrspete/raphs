@@ -17,7 +17,7 @@ export function TestsTable({ tests, range }: TestsTableProps) {
       <EmptyState
         actionHref="/admin"
         actionLabel="Back to overview"
-        description="Seed landing-page tests into Supabase, then this table will show live demand signals by test."
+        description="Seed landing-page tests into the database, then this table will show live demand signals by test."
         title="No landing tests found"
       />
     );

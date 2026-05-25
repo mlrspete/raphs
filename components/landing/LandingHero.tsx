@@ -1,4 +1,5 @@
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
+import { campaign001PublicContent } from "@/lib/domain/campaigns/publicContent";
 
 type LandingHeroProps = {
   page: LandingPageViewModel;
@@ -14,28 +15,25 @@ export function LandingHero({ page }: LandingHeroProps) {
       <div className="relative mx-auto grid w-full max-w-[1240px] gap-10 px-5 py-20 sm:px-8 sm:py-24 lg:min-h-[84svh] lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,0.72fr)] lg:items-center lg:px-10">
         <div className="landing-hero-column relative z-10 min-w-0">
           <p className="landing-hero-eyebrow mb-5 max-w-2xl">FIRST 100 ELIGIBLE DAYPASSES</p>
-          <h1 className="landing-hero-title max-w-[780px] overflow-hidden uppercase">
-            <span className="mb-2 block text-[0.48em] leading-[1.02] sm:mb-3">GET A DAYPASS FOR</span>
-            <span className="block max-w-full bg-gradient-to-r from-orange to-orange-hover bg-clip-text text-[0.64em] leading-[0.95] text-transparent min-[380px]:text-[0.7em] sm:text-[0.82em] lg:text-[0.86em]">
-              MONROES
-            </span>
-            <span className="mt-2 block text-[0.46em] leading-[0.98] min-[380px]:text-[0.52em] sm:text-[0.6em]">
-              CAMPAIGN 001
-            </span>
-            <span className="mt-2 block text-[0.62em] leading-[0.95] min-[380px]:text-[0.68em] sm:text-[0.78em] lg:text-[0.82em]">
-              DECK PROMOTION.
-            </span>
+          <h1 className="landing-hero-title max-w-[840px] text-balance uppercase">
+            WIN THE 2016 JASON JESSEE SUN GOD REISSUE.
           </h1>
           <p className="mt-6 max-w-2xl text-pretty text-base font-semibold leading-[1.65] text-muted sm:text-lg">
-            Get a Monroes Daypass and browse the member-only deck market. Eligible Daypass purchases receive free entry
-            into the promotion.
+            Get a Monroes Daypass, browse the members-only deck market, and receive free entry into the Sun God deck
+            promotion with each eligible Daypass.
           </p>
-          <div className="mt-7">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <a
               className="landing-button inline-flex min-h-[3rem] w-full items-center justify-center rounded-[10px] bg-ink px-7 py-3 text-center text-white transition hover:-translate-y-0.5 hover:bg-orange hover:shadow-[0_16px_45px_rgba(255,122,61,0.34)] focus:outline-none focus:ring-4 focus:ring-orange/35 sm:w-auto"
               href="#daypass-offer"
             >
               GET DAYPASS
+            </a>
+            <a
+              className="landing-button inline-flex min-h-[3rem] w-full items-center justify-center rounded-[10px] border border-ink/10 bg-white/80 px-7 py-3 text-center text-ink transition hover:-translate-y-0.5 hover:border-orange hover:text-orange focus:outline-none focus:ring-4 focus:ring-orange/25 sm:w-auto"
+              href={campaign001PublicContent.rulesUrl}
+            >
+              VIEW PROMO RULES
             </a>
           </div>
         </div>
@@ -43,7 +41,7 @@ export function LandingHero({ page }: LandingHeroProps) {
         <div className="landing-hero-art relative mx-auto flex min-w-0 justify-center lg:justify-end">
           <div className="absolute inset-x-8 bottom-0 top-10 rounded-[28px] bg-orange/24 blur-2xl" />
           <div
-            aria-label="Promo deck placeholder"
+            aria-label="Sun God deck prize proof pending"
             className="relative flex aspect-[0.84] w-full max-w-full overflow-hidden rounded-[24px] border border-[rgba(23,23,23,0.08)] bg-gradient-to-br from-whitecard via-peach to-mint p-5 shadow-[0_28px_80px_rgba(23,23,23,0.14)] sm:min-h-[420px] lg:min-h-[500px]"
             role="img"
             style={
@@ -70,9 +68,9 @@ export function LandingHero({ page }: LandingHeroProps) {
                   <div className="relative h-20 rounded-[18px] border border-ink/10 bg-white/58" />
                   <div className="relative">
                     <p className="text-[0.625rem] font-black uppercase leading-4 tracking-[0.2em] text-muted">
-                      Campaign 001
+                      Sun God
                     </p>
-                    <p className="mt-1 text-2xl font-black uppercase leading-none text-ink">Deck prize</p>
+                    <p className="mt-1 text-2xl font-black uppercase leading-none text-ink">Deck promotion</p>
                     <p className="mt-2 text-[0.625rem] font-black uppercase leading-4 tracking-[0.18em] text-orange">
                       Final proof pending
                     </p>
@@ -82,7 +80,7 @@ export function LandingHero({ page }: LandingHeroProps) {
 
               <div>
                 <p className="text-[0.625rem] font-black uppercase leading-4 tracking-[0.22em] text-muted">
-                  PROMO DECK PLACEHOLDER
+                  FINAL PROOF PENDING
                 </p>
                 <div className="mt-3 h-1.5 rounded-full bg-gradient-to-r from-orange via-mint to-lilac" />
               </div>

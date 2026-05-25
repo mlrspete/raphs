@@ -13,8 +13,8 @@ export type MembershipPreviewStat = {
 
 export const membershipPreviewConfig = {
   eyebrow: "Sneak peek",
-  title: "What the members market looks like behind the curtain.",
-  body: "All items curated by Monroes.",
+  title: "What does the members market look like before you join?",
+  body: null,
   tiles: [
     {
       alt: "Placeholder preview for a vintage skateboard deck listing",

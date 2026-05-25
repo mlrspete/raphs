@@ -15,7 +15,7 @@ export default function MemberLoginPage() {
         <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Member access</p>
         <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Sign in to Monroes</h1>
         <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
-          Use the same email you used at checkout so Monroes can link your member profile and future access.
+          Use the same email you used at checkout.
         </p>
         <MemberAuthForm />
       </section>

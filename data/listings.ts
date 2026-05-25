@@ -64,7 +64,7 @@ export const listingSeeds = [
     is_featured: true,
     is_member_only: true,
     primary_image_url: placeholderImageUrl,
-    facts_json: facts(["Draft listing for private market preview. Confirm model/year before launch."]),
+    facts_json: facts(["Member-market preview listing. Confirm model/year before launch."]),
     sort_order: 30,
   },
   {
@@ -98,7 +98,7 @@ export const listingSeeds = [
     is_featured: true,
     is_member_only: true,
     primary_image_url: placeholderImageUrl,
-    facts_json: facts(["Placeholder image only. Replace with actual Monroes-owned deck photos."]),
+    facts_json: facts(["Product photography to be replaced with actual Monroes-owned deck photos."]),
     sort_order: 50,
   },
   {
@@ -149,7 +149,7 @@ export const listingSeeds = [
     is_featured: false,
     is_member_only: true,
     primary_image_url: placeholderImageUrl,
-    facts_json: facts(["Verify brand/year and replace placeholder image before use in ads."]),
+    facts_json: facts(["Verify brand/year and replace product image before use in ads."]),
     sort_order: 80,
   },
   {
@@ -166,7 +166,7 @@ export const listingSeeds = [
     is_featured: false,
     is_member_only: true,
     primary_image_url: placeholderImageUrl,
-    facts_json: facts(["Public placeholder asset path used until final product photos exist."]),
+    facts_json: facts(["Product image to be replaced when final product photos exist."]),
     sort_order: 90,
   },
   {

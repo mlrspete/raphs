@@ -30,7 +30,9 @@ export function MembershipPreviewBlock({ ctaHref, ctaLabel, surface = "homepage"
       <h2 className="mt-3 max-w-2xl text-balance text-3xl font-black leading-tight text-ink sm:text-5xl">
         {membershipPreviewConfig.title}
       </h2>
-      <p className="mt-4 text-base font-semibold leading-7 text-ink/70 sm:text-lg">{membershipPreviewConfig.body}</p>
+      {membershipPreviewConfig.body ? (
+        <p className="mt-4 text-base font-semibold leading-7 text-ink/70 sm:text-lg">{membershipPreviewConfig.body}</p>
+      ) : null}
       {ctaHref && ctaLabel ? (
         <Link
           className="mt-6 inline-flex rounded-md bg-ink px-4 py-3 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-orange focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2"

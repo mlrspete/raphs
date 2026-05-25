@@ -96,7 +96,7 @@ export default async function AdminOverviewPage({ searchParams }: AdminOverviewP
           />
           <MetricCard
             helper="Created / redeemed"
-            label="Friend codes"
+            label="Friend Daypass codes"
             value={`${formatInteger(v1Overview.codesCreated)} / ${formatInteger(v1Overview.codesRedeemed)}`}
           />
         </div>

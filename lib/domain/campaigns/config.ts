@@ -3,7 +3,9 @@ import type { Database } from "@/lib/types/database";
 type PromoCampaignSeed = Database["public"]["Tables"]["promo_campaigns"]["Insert"];
 
 export const campaign001Slug = "campaign-001";
-export const campaign001Route = `/l/${campaign001Slug}`;
+export const sunGodLandingSlug = "sungod";
+export const campaign001LegacyRoute = `/l/${campaign001Slug}`;
+export const campaign001Route = `/l/${sunGodLandingSlug}`;
 
 // Timing definitions:
 // starts_at controls campaign display/start.
@@ -17,10 +19,10 @@ export const campaignSeeds = [
     slug: campaign001Slug,
     status: "draft",
     name: "Monroes Campaign 001",
-    short_name: "Campaign 001",
-    prize_title: "Campaign 001 deck prize - final asset pending",
+    short_name: "Sun God",
+    prize_title: "2016 Santa Cruz Jason Jessee Purple Pearlescent Sun God deck - final asset pending",
     prize_description:
-      "Draft placeholder. Final prize proof, prize copy, asset photography, value confirmation, and launch approval must be supplied before this campaign goes live.",
+      "Final prize proof, prize copy, asset photography, value confirmation, and launch approval must be supplied before this campaign goes live.",
     prize_value_cents: null,
     currency: "AUD",
     entry_limit: null,
@@ -29,12 +31,12 @@ export const campaignSeeds = [
     entries_close_at: null,
     draw_lock_at: null,
     draw_at: null,
-    rules_url: "/promo-rules/campaign-001",
+    rules_url: "/promo-rules/sungod",
     terms_version: "campaign-001-draft",
     config_json: {
       canonicalRoute: campaign001Route,
       copyWarnings: [
-        "Draft campaign only. Do not launch before final prize proof is supplied.",
+        "Campaign not launch-ready. Do not launch before final prize proof is supplied.",
         "Replace placeholder prize facts, imagery, eligibility summary, and disclaimer before paid traffic.",
       ],
       drawTimingPlaceholders: {

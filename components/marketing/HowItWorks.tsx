@@ -6,7 +6,7 @@ const steps = [
     body: "Start with a Daypass or go straight to Monroes Ultra.",
   },
   {
-    title: "Unlock the private market",
+    title: "Unlock the members market",
     body: "Browse members-only listings.",
   },
   {

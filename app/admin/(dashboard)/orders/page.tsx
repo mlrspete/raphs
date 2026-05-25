@@ -95,7 +95,7 @@ export default async function AdminOrdersPage({ searchParams }: AdminOrdersPageP
 
       {orders.length === 0 ? (
         <EmptyState
-          description="No V1 orders match this filter yet. Completed Stripe checkouts will appear after webhook processing."
+          description="No V1 orders match this filter yet. Completed payment processor checkouts will appear after processing."
           title="No orders found"
         />
       ) : (
@@ -171,7 +171,7 @@ function OrdersTable({ orders }: { orders: AdminOrderReportRow[] }) {
               <th className="px-4 py-3 text-right">Total</th>
               <th className="px-4 py-3 text-right">Qty</th>
               <th className="px-4 py-3">Campaign</th>
-              <th className="px-4 py-3">Stripe session</th>
+              <th className="px-4 py-3">Payment session</th>
               <th className="px-4 py-3">Fulfilled</th>
             </tr>
           </thead>

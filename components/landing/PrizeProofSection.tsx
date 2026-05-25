@@ -5,20 +5,23 @@ export function PrizeProofSection() {
     <section className="bg-white py-14 sm:py-20">
       <div className="mx-auto grid max-w-7xl gap-8 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-12">
         <div>
-          <p className="landing-card-eyebrow">Prize Proof</p>
-          <h2 className="landing-section-title mt-3">{campaign001PublicContent.prizeTitle}</h2>
-          <p className="landing-body mt-4 max-w-2xl">{campaign001PublicContent.prizeDescription}</p>
+          <p className="landing-card-eyebrow">Deck + promo details</p>
+          <h2 className="landing-section-title mt-3">Sun God deck promotion details.</h2>
+          <p className="landing-body mt-4 max-w-2xl">
+            The featured promotion is built around the {campaign001PublicContent.prizeTitle}. Final prize value,
+            condition evidence, ownership proof, and launch approval must be confirmed before paid promotion.
+          </p>
           <p className="mt-5 rounded-lg border border-orange/25 bg-orange/10 p-4 text-sm font-bold leading-6 text-ink/70">
-            {campaign001PublicContent.prizeStatus}. Do not launch paid traffic until final prize proof, value, condition,
-            ownership, and campaign rules are approved.
+            {campaign001PublicContent.prizeStatus}. Paid promotion must not launch until final prize proof, value,
+            condition, ownership, and campaign rules are approved.
           </p>
         </div>
 
         <div className="rounded-lg border border-ink/10 bg-cream p-5 shadow-soft">
           <div className="grid aspect-[4/3] place-items-center rounded-lg border border-dashed border-ink/20 bg-white p-6 text-center">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-orange">Operator Asset Placeholder</p>
-              <p className="mt-3 text-3xl font-black leading-tight text-ink">Final prize image required</p>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-orange">Prize Proof Pending</p>
+              <p className="mt-3 text-3xl font-black leading-tight text-ink">Final deck proof required</p>
               <p className="mt-3 text-sm font-semibold leading-6 text-ink/60">
                 Add real, inspectable prize photography before launch. Avoid cropped, atmospheric, or unverifiable prize
                 imagery.

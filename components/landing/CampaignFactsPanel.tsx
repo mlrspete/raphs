@@ -5,7 +5,7 @@ import {
 } from "@/lib/domain/campaigns/publicContent";
 
 const timingRows: { key: CampaignTimingKey; label: string }[] = [
-  { key: "starts_at", label: "Campaign starts" },
+  { key: "starts_at", label: "Campaign opens" },
   { key: "closes_at", label: "Campaign closes" },
   { key: "entries_close_at", label: "Entries close" },
   { key: "draw_lock_at", label: "Draw lock" },
@@ -17,11 +17,11 @@ export function CampaignFactsPanel() {
     <section className="bg-cream py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <div className="max-w-3xl">
-          <p className="landing-card-eyebrow">Campaign Facts</p>
-          <h2 className="landing-section-title mt-3">Know the timing before entering.</h2>
+          <p className="landing-card-eyebrow">Live promotion progress</p>
+          <h2 className="landing-section-title mt-3">Progress and key dates will appear here.</h2>
           <p className="landing-body mt-4">
-            Campaign 001 uses separate timestamps for public close, entry close, attribution lock, and draw timing. Final
-            dates must be supplied before launch.
+            Monroes will show verified promotion progress when live campaign data is available. Until then, this section
+            only shows configured timing fields and launch-safe placeholders.
           </p>
         </div>
 

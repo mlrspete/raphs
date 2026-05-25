@@ -21,7 +21,7 @@ export default async function AdminExportsPage({ searchParams }: AdminExportsPag
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-4xl">CSV exports</h2>
           <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-ink/68">
             Download simple CSV files for practical V0 analysis and Campaign 001 operations. Export actions are logged to
-            Supabase when available.
+            the internal event log when available.
           </p>
         </div>
         <DateRangeFilter currentRange={currentRange} />
@@ -44,7 +44,7 @@ export default async function AdminExportsPage({ searchParams }: AdminExportsPag
           title="Landing-test summary"
         />
         <ExportCard
-          body="Order status, purchaser email, totals, quantity, campaign, Stripe reconciliation IDs, and fulfilment timestamp."
+          body="Order status, purchaser email, totals, quantity, campaign, payment reconciliation IDs, and fulfilment timestamp."
           button={<CsvExportButton label="Download orders" params={{ range: currentRange }} type="orders" />}
           title="Orders CSV"
         />

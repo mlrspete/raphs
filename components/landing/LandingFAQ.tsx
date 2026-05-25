@@ -9,7 +9,7 @@ const promoFaqItems = [
   {
     question: "What do I get with a Daypass?",
     answer:
-      "A Daypass gives you 12-hour access to the Monroes member-only deck market, so you can browse private Monroes listings before deciding whether to join Ultra. It is a one-time purchase, not a subscription.",
+      "A Daypass gives you 12-hour access to the Monroes members market, so you can browse members-only Monroes listings before deciding whether to join Monroes Ultra. It is a one-time purchase, not a subscription.",
   },
   {
     question: "Does the Daypass include promo entry?",

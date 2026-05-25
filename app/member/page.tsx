@@ -63,16 +63,16 @@ export default async function MemberPage() {
         <section className="mx-auto grid max-w-3xl gap-6">
           <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
             <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Member dashboard</p>
-            <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Log in to view your access</h1>
+            <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Log in to access Monroes</h1>
             <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
-              Log in with the same email you used at checkout. Monroes will link your member profile, Daypass access,
-              friend codes, and promo entries from that email.
+              Log in with the same email you used at checkout. Monroes links your member profile, membership access,
+              access codes, and any promotional entries to that email.
             </p>
             <Link
               className="mt-6 inline-flex rounded-md bg-ink px-4 py-3 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-orange focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2"
               href="/member/login"
             >
-              Log in or create account
+              Log in
             </Link>
           </div>
         </section>
@@ -115,7 +115,7 @@ export default async function MemberPage() {
             <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Member</p>
             <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Monroes member dashboard</h1>
             <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-ink/68">
-              Signed in as {memberProfile.email}. Your profile, purchases, Daypass access, friend codes, and promo
+              Signed in as {memberProfile.email}. Your profile, purchases, Daypass access, friend Daypass codes, and promo
               entries are linked by your authenticated email.
             </p>
           </div>

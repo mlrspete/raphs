@@ -6,6 +6,36 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 type FormState = "idle" | "loading" | "sent";
 
+const authCallbackPath = "/auth/callback";
+const localAppUrlPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+
+function normalizeAppUrl(value: string | undefined) {
+  const trimmed = value?.trim().replace(/\/+$/, "");
+
+  if (!trimmed) {
+    return null;
+  }
+
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+}
+
+function isLocalAppUrl(value: string) {
+  return localAppUrlPattern.test(value);
+}
+
+function getAuthRedirectTo() {
+  const browserOrigin = window.location.origin.replace(/\/+$/, "");
+
+  if (isLocalAppUrl(browserOrigin)) {
+    return `${browserOrigin}${authCallbackPath}`;
+  }
+
+  const configuredAppUrl = normalizeAppUrl(process.env.NEXT_PUBLIC_APP_URL);
+  const baseUrl = configuredAppUrl && !isLocalAppUrl(configuredAppUrl) ? configuredAppUrl : browserOrigin;
+
+  return `${baseUrl}${authCallbackPath}`;
+}
+
 export function MemberAuthForm() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +48,7 @@ export function MemberAuthForm() {
 
     try {
       const supabase = createBrowserSupabaseClient();
-      const redirectTo = `${window.location.origin}/auth/callback?next=/member`;
+      const redirectTo = getAuthRedirectTo();
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
@@ -35,7 +65,7 @@ export function MemberAuthForm() {
 
       setState("sent");
     } catch (caughtError) {
-      const message = caughtError instanceof Error ? caughtError.message : "Unable to send login link.";
+      const message = caughtError instanceof Error ? caughtError.message : "Unable to send secure link.";
       setError(message);
       setState("idle");
     }
@@ -46,7 +76,7 @@ export function MemberAuthForm() {
       <div className="mt-7 rounded-lg border border-mint/45 bg-mint/20 p-5">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">Check your email</p>
         <p className="mt-2 text-sm font-semibold leading-6 text-ink/68">
-          We sent a secure Monroes login link to {email.trim()}. Open it in this browser to continue.
+          We sent a secure Monroes link to {email.trim()}. Open it in this browser to continue.
         </p>
       </div>
     );

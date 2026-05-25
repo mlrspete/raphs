@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 const landingMetaTitle = "Monroes Daypass Promotion";
 const landingMetaDescription =
-  "Get a Monroes Daypass, browse the member-only deck market, and receive free promo entry with an eligible Daypass purchase.";
+  "Get a Monroes Daypass, browse the members-only deck market, and receive free entry into the Sun God deck promotion with each eligible Daypass.";
 
 export async function generateMetadata({ params }: LandingPageProps): Promise<Metadata> {
   const { slug } = await params;

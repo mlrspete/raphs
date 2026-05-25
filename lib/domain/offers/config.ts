@@ -1,4 +1,5 @@
 import type { Database } from "@/lib/types/database";
+import { campaign001Route } from "@/lib/domain/campaigns/config";
 
 type CommerceOfferSeed = Database["public"]["Tables"]["commerce_offers"]["Insert"];
 
@@ -20,7 +21,7 @@ export const commerceOfferSeeds = [
       campaignSlug: "campaign-001",
       checkoutEnabled: true,
       manualStripeSetupRequired: true,
-      route: "/l/campaign-001",
+      route: campaign001Route,
       stripePriceIdSource:
         "STRIPE_DAYPASS_PRICE_ID or commerce_offers.stripe_price_id for single Daypass; STRIPE_5X_DAYPASS_PRICE_ID and STRIPE_10X_DAYPASS_PRICE_ID for bundles",
     },

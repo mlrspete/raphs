@@ -147,7 +147,7 @@ export function LandingPricingBlock({
                   <span>
                     <span className="block text-sm font-black leading-5">{option.label}</span>
                     <span className="mt-1 block text-xs font-bold leading-5 text-white/60">
-                      {option.quantity === 1 ? "Single 12-hour preview" : `${option.quantity} promo entries included`}
+                      {option.quantity === 1 ? "Single 12-hour preview" : `${option.quantity} free promo entries attached`}
                     </span>
                   </span>
                   <span className="text-right text-sm font-black leading-5 text-orange">

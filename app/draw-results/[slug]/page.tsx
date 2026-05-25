@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { campaign001Slug } from "@/lib/domain/campaigns/config";
+import { sunGodPromoRulesSlug } from "@/lib/domain/campaigns/publicContent";
 import { getDrawResultByCampaign } from "@/lib/domain/draws/getDrawResultByCampaign";
 import { formatDateTime, formatInteger } from "@/lib/utils/format";
 
@@ -13,7 +15,8 @@ export const dynamic = "force-dynamic";
 
 export default async function DrawResultPage({ params }: DrawResultPageProps) {
   const { slug } = await params;
-  const result = await getDrawResultByCampaign(slug);
+  const resultSlug = slug === sunGodPromoRulesSlug ? campaign001Slug : slug;
+  const result = await getDrawResultByCampaign(resultSlug);
 
   return (
     <main className="min-h-screen bg-cream px-5 py-10 text-ink sm:px-8 lg:px-10">
@@ -21,28 +24,30 @@ export default async function DrawResultPage({ params }: DrawResultPageProps) {
         <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Draw results</p>
           <h1 className="mt-3 text-3xl font-black leading-tight sm:text-5xl">
-            {result?.campaignName ?? "Campaign result pending"}
+            {result?.campaignName ?? "Promotion result pending"}
           </h1>
-          <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-ink/68">
-            Public draw information is limited to audit-safe details: snapshot hash, eligible entry count, winning
-            entry number, public alias, and draw method.
-          </p>
+          {result ? (
+            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-ink/68">
+              Public draw information is limited to audit-safe details: snapshot hash, eligible entry count, winning
+              entry number, public alias, and draw method.
+            </p>
+          ) : (
+            <div className="mt-4 max-w-3xl">
+              <p className="text-base font-semibold leading-7 text-ink/68">No result has been published yet.</p>
+              <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
+                The Monroes team will publish the result after the draw has been completed and recorded.
+              </p>
+              <Link
+                className="mt-5 inline-flex min-h-10 items-center justify-center rounded-md bg-ink px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:bg-ink/88 focus:outline-none focus:ring-4 focus:ring-orange/25"
+                href="/"
+              >
+                Back to Monroes
+              </Link>
+            </div>
+          )}
         </div>
 
-        {!result ? (
-          <article className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft">
-            <h2 className="text-2xl font-black leading-tight">No result has been published yet</h2>
-            <p className="mt-3 text-sm font-semibold leading-6 text-ink/65">
-              The Monroes team will publish the result after the manual draw has been completed and recorded.
-            </p>
-            <Link
-              className="mt-5 inline-flex min-h-10 items-center justify-center rounded-md bg-ink px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:bg-ink/88 focus:outline-none focus:ring-4 focus:ring-orange/25"
-              href={`/promo-rules/${slug}`}
-            >
-              View promo rules
-            </Link>
-          </article>
-        ) : (
+        {result ? (
           <>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <PublicMetric label="Eligible entries" value={formatInteger(result.entryCount)} />
@@ -63,10 +68,10 @@ export default async function DrawResultPage({ params }: DrawResultPageProps) {
 
             <p className="rounded-lg border border-ink/10 bg-white p-4 text-sm font-semibold leading-6 text-ink/65 shadow-soft">
               Public results do not include entrant emails, full names, Daypass codes, code hashes, encrypted code data,
-              Stripe identifiers, or private purchaser information.
+              payment processor identifiers, or private purchaser information.
             </p>
           </>
-        )}
+        ) : null}
       </section>
     </main>
   );

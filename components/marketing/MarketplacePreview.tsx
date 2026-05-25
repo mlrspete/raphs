@@ -32,7 +32,7 @@ export function MarketplacePreview() {
               Built for decks with a story, not endless product grids.
             </h2>
             <p className="mt-4 text-lg font-medium leading-8 text-ink/70">
-              The early experience should feel curated, colourful, and quick to browse: a tighter private market for
+              The early experience should feel curated, colourful, and quick to browse: a tighter members market for
               people who notice old graphics, rare shapes, clean wall-hangers, and decks that are simply interesting.
             </p>
           </div>

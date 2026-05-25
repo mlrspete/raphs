@@ -1,6 +1,6 @@
 # Admin Setup
 
-Raph's Market admin access uses Supabase Auth plus the `admin_profiles` table.
+Monroes admin access uses Supabase Auth plus the `admin_profiles` table.
 
 ## Create An Admin User
 
@@ -20,13 +20,13 @@ set email = excluded.email,
 
 ## Configure Redirect URLs
 
-In Supabase Auth settings, add the app URLs used by local, preview, and production deployments:
+In Supabase Auth settings, add the callback URLs used by local and production deployments:
 
-- `http://localhost:3000`
-- Vercel preview URL
-- production domain
+- `https://raphs.vercel.app/auth/callback`
+- `https://monroes.au/auth/callback` after the permanent domain is connected
+- `http://localhost:3000/auth/callback` for local development only
 
-The current login form uses email/password auth and redirects the browser to `/admin` after a successful sign-in. Non-admin authenticated users are shown an access-denied state.
+The current admin login form uses email/password auth and redirects the browser to `/admin` after a successful sign-in. Member secure-link auth redirects through `/auth/callback`, then to `/member`. Non-admin authenticated users are shown an access-denied state.
 
 ## Required Environment Variables
 

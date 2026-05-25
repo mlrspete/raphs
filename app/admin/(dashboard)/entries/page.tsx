@@ -48,7 +48,7 @@ export default async function AdminEntriesPage({ searchParams }: AdminEntriesPag
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Entries</p>
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-4xl">Promo entry ledger</h2>
           <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-ink/68">
-            Internal entry numbers, public aliases, current holders, friend-code attribution, and draw-workflow status.
+            Internal entry numbers, public aliases, current holders, friend Daypass code attribution, and draw-workflow status.
           </p>
         </div>
         <DateRangeFilter currentRange={filters.range} />

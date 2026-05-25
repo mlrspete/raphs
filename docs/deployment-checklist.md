@@ -1,6 +1,6 @@
 # Deployment Checklist
 
-Use this before shipping a Vercel preview or production deploy for Raph's Market V0.
+Use this before shipping a Vercel preview or production deploy for Monroes.
 
 ## Supabase
 
@@ -10,11 +10,28 @@ Use this before shipping a Vercel preview or production deploy for Raph's Market
 - [ ] `/l/preview-pass`, `/l/monthly-pass`, and `/l/upgrade-access` return live pages.
 - [ ] Supabase Auth admin user is created.
 - [ ] `admin_profiles` row exists for the admin user's auth UUID.
+- [ ] Supabase Auth sender is `Monroes <contact@monroes.au>` or fallback `Monroes <access@monroes.au>`.
+- [ ] Supabase Auth Site URL is the production domain: `https://raphs.vercel.app` now, then `https://monroes.au` after the permanent domain is connected.
+- [ ] Supabase Auth Redirect URLs include `https://raphs.vercel.app/auth/callback`.
+- [ ] Supabase Auth Redirect URLs include `https://monroes.au/auth/callback` when the permanent domain is connected.
+- [ ] Localhost callback URLs are kept only for local development, such as `http://localhost:3000/auth/callback`.
+- [ ] Supabase sign-in email template uses the Monroes copy in the section below.
 - [ ] Row-level security is enabled and public writes still go through server routes only.
+
+## Supabase Auth Email Template
+
+Configure the hosted Supabase sign-in email template with this copy:
+
+- Subject: `Sign in to Monroes`
+- Preview/preheader: `Use this secure link to finish signing in.`
+- Heading: `Confirm your Monroes sign-in`
+- Body: `Use the secure link below to sign in to Monroes with this email address.`
+- Button: `Sign in to Monroes`
+- Footer/helper text: `This link is for your email only and will expire automatically. If you did not request this email, you can ignore it.`
 
 ## Vercel Environment Variables
 
-- [ ] `NEXT_PUBLIC_APP_URL`
+- [ ] `NEXT_PUBLIC_APP_URL` is `https://raphs.vercel.app` for current production and `https://monroes.au` after the permanent domain is connected.
 - [ ] `NEXT_PUBLIC_SUPABASE_URL`
 - [ ] `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - [ ] `SUPABASE_SERVICE_ROLE_KEY`
@@ -44,6 +61,8 @@ Use this before shipping a Vercel preview or production deploy for Raph's Market
 - [ ] Test events appear in Supabase and `/admin/events`.
 - [ ] Events appear in PostHog when configured.
 - [ ] Admin login works.
+- [ ] Member secure-link email opens `https://raphs.vercel.app/auth/callback` in current production and redirects to `/member` after sign-in.
+- [ ] Local member secure-link email opens `http://localhost:3000/auth/callback` only during local development.
 - [ ] Dashboard metrics are understandable.
 - [ ] Landing tests, leads, events, funnels, and exports pages work.
 - [ ] Leads CSV export downloads.
@@ -56,7 +75,7 @@ Use this before shipping a Vercel preview or production deploy for Raph's Market
 
 - [ ] No fake checkout, cart, payment, Stripe, product backend, seller tools, or member features are present.
 - [ ] Demo data script is not run in production unless intentionally testing and cleanup is planned.
-- [ ] Brand copy says Raph's Market.
+- [ ] Brand copy says Monroes.
 - [ ] Market copy says Australia.
 - [ ] Currency copy says AUD.
 - [ ] Sold-out language is used for the modal and access-window messaging.

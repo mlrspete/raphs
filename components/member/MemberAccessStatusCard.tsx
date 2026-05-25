@@ -136,7 +136,7 @@ export function MemberAccessStatusCard({
 
       {!access.hasAccess && !access.needsActivation && !hasWebhookPendingOrder ? (
         <p className="mt-5 text-sm font-semibold leading-6 text-ink/68">
-          Buy a Daypass from Campaign 001 to unlock member listings and receive eligible promo entries.{" "}
+          Buy a Daypass from Campaign 001 to unlock member listings and receive any eligible free promo entry.{" "}
           <Link className="font-black text-orange hover:text-orange-hover" href={campaignHref}>
             View the campaign
           </Link>

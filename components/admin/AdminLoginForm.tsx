@@ -60,7 +60,7 @@ export function AdminLoginForm() {
           autoComplete="current-password"
           className="min-h-12 rounded-md border border-ink/12 bg-white px-4 text-base font-semibold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
           onChange={(event) => setPassword(event.target.value)}
-          placeholder="Your Supabase Auth password"
+          placeholder="Your admin password"
           required
           type="password"
           value={password}

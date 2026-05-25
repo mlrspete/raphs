@@ -24,7 +24,7 @@ export default async function AdminEventsPage({ searchParams }: AdminEventsPageP
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Events</p>
           <h2 className="mt-3 text-3xl font-black leading-tight text-ink sm:text-4xl">Raw event stream</h2>
           <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-ink/68">
-            Browse selected Supabase event logs with landing, offer, campaign, session, and properties context.
+            Browse selected internal event logs with landing, offer, campaign, session, and properties context.
           </p>
         </div>
         <CsvExportButton

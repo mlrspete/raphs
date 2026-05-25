@@ -43,8 +43,8 @@ export function DrawProcessCard({ campaignName, drawAt, drawLockAt, entriesClose
         </div>
       </dl>
       <p className="mt-5 text-sm font-semibold leading-6 text-ink/68">
-        What happens next: Monroes confirms eligible entries, locks friend-code attribution, creates a draw snapshot,
-        then publishes the result after the draw.
+        What happens next: Monroes confirms eligible entries, locks friend Daypass code attribution, creates a draw
+        snapshot, then publishes the result after the draw.
       </p>
       {rulesHref ? (
         <Link className="mt-4 inline-flex text-sm font-black text-orange hover:text-orange-hover" href={rulesHref}>

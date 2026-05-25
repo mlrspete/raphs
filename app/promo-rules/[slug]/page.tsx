@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/marketing/Footer";
+import { getCampaignBySlug } from "@/lib/domain/campaigns/queries";
 import {
   formatCampaignDateTime,
   getPublicCampaignContent,
@@ -18,8 +19,8 @@ type PromoRulesPageProps = {
 };
 
 const timingRows: { key: CampaignTimingKey; label: string }[] = [
-  { key: "starts_at", label: "Campaign start" },
-  { key: "closes_at", label: "Campaign close" },
+  { key: "starts_at", label: "Campaign opens" },
+  { key: "closes_at", label: "Campaign closes" },
   { key: "entries_close_at", label: "Entries close" },
   { key: "draw_lock_at", label: "Draw lock" },
   { key: "draw_at", label: "Planned draw" },
@@ -36,8 +37,9 @@ export async function generateMetadata({ params }: PromoRulesPageProps): Promise
   }
 
   return {
-    title: `${campaign.shortName} Promo Rules | ${site.name}`,
-    description: `Draft promotion rules for ${campaign.name}.`,
+    title: `Promo rules | ${site.name}`,
+    description:
+      "These rules explain how the Monroes Sun God Daypass promotion works, including eligibility, entry allocation, friend code attribution, draw timing, refunds, and winner handling.",
   };
 }
 
@@ -49,29 +51,36 @@ export default async function PromoRulesPage({ params }: PromoRulesPageProps) {
     notFound();
   }
 
+  const campaignRecord = await getCampaignBySlug(campaign.slug);
+  const timings = {
+    closes_at: campaignRecord?.closes_at ?? campaign.timings.closes_at,
+    draw_at: campaignRecord?.draw_at ?? campaign.timings.draw_at,
+    draw_lock_at: campaignRecord?.draw_lock_at ?? campaign.timings.draw_lock_at,
+    entries_close_at: campaignRecord?.entries_close_at ?? campaign.timings.entries_close_at,
+    starts_at: campaignRecord?.starts_at ?? campaign.timings.starts_at,
+  } satisfies Record<CampaignTimingKey, string | null>;
+
   return (
     <main className="bg-cream text-ink">
       <section className="mx-auto grid max-w-5xl gap-8 px-5 py-14 sm:px-8 sm:py-20 lg:px-12">
         <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Promotion Rules</p>
-          <h1 className="mt-3 text-4xl font-black leading-tight sm:text-5xl">{campaign.shortName} draft rules</h1>
+          <h1 className="mt-3 text-4xl font-black leading-tight sm:text-5xl">Promo rules</h1>
           <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
-            These are launch-readiness rules placeholders for Monroes. Operator and legal review must replace all
-            placeholder details before paid promotion.
+            These rules explain how the Monroes Sun God Daypass promotion works, including eligibility, entry allocation,
+            friend code attribution, draw timing, refunds, and winner handling. Final legal and operator review is
+            required before launch.
           </p>
         </div>
 
         <RuleSection title="Promoter Details">
-          <p>Promoter: Monroes. Final legal entity, ABN/ACN if applicable, address, and support contact are operator-supplied launch details.</p>
-          <p>Support contact placeholder: {campaign.supportEmailLabel}.</p>
+          <p>Promoter: Monroes. MLRS GG PTY LTD, ACN: 687 632 104, Suite 280 / 530 Little Collins Street, Melbourne, VIC 3000.</p>
+          <p>Support contact: contact@monroes.au</p>
         </RuleSection>
 
         <RuleSection title="Eligibility and Scope">
-          <p>{campaign.eligibilitySummary}</p>
-          <p>
-            Intended geographic scope: Australia, including eligible states and territories subject to final permit,
-            authority, and trade-promotion review.
-          </p>
+          <p>This promotion is only available to Australian residents aged 18 and over.</p>
+          <p>Eligibility may be subject to final state, territory, permit, and trade-promotion requirements before launch.</p>
         </RuleSection>
 
         <RuleSection title="Campaign Timing">
@@ -79,74 +88,108 @@ export default async function PromoRulesPage({ params }: PromoRulesPageProps) {
             {timingRows.map((row) => (
               <div className="rounded-lg border border-ink/10 bg-cream p-3" key={row.key}>
                 <p className="text-xs font-black uppercase tracking-[0.12em] text-ink/45">{row.label}</p>
-                <p className="mt-2 text-sm font-black leading-6 text-ink">{formatCampaignDateTime(campaign.timings[row.key])}</p>
+                <p className="mt-2 text-sm font-black leading-6 text-ink">{formatCampaignDateTime(timings[row.key])}</p>
               </div>
             ))}
           </div>
           <p>
-            Timing definitions: entries close controls when new promo entries stop being issued; draw lock controls when
-            friend-code redemption can no longer change promo entry attribution; draw time is the planned public draw.
+            Entries close when the campaign reaches its entry cap or when the campaign period ends, whichever occurs
+            first. Draw lock is the point where the eligible entry list is frozen and friend-code redemptions can no
+            longer change the promotional entry holder.
           </p>
         </RuleSection>
 
         <RuleSection title="Prize Description and Value">
-          <p>{campaign.prizeTitle}: {campaign.prizeDescription}</p>
-          <p>Prize value: {campaign.prizeValueDisplay}. Final value evidence and prize condition details are required before launch.</p>
+          <p>Promotional prize: 2016 Santa Cruz Jason Jessee Purple Pearlescent Sun God skateboard deck in new condition.</p>
+          <p>Prize value: AUD [insert final verified value before launch]. Final value evidence and prize condition details must be confirmed before launch.</p>
         </RuleSection>
 
         <RuleSection title="Entry Method">
-          <p>{campaign.entryWording}</p>
+          <p>Eligible Daypass purchases receive free entry into the promotion.</p>
           <p>
             Daypass purchase limit: maximum 10 Daypasses per order. Each eligible Daypass in an order may receive one
-            free promo entry, subject to final eligibility, cancellation, refund, and timing rules.
+            free promotional entry, subject to final eligibility, cancellation, refund, and timing rules.
           </p>
-          <p>
-            Monroes must finalise any per-person, per-household, or per-order entry caps before launch. Entries must not
-            be presented as a product sold separately.
-          </p>
+          <p>Entries are not sold separately.</p>
         </RuleSection>
 
         <RuleSection title="Friend Codes and Attribution">
           <p>
             One Daypass is for purchaser access. Additional Daypasses create friend codes. Unredeemed friend codes keep
-            their related promo entry held by the purchaser by default.
+            their related promotional entry held by the purchaser by default.
           </p>
           <p>
-            If a friend redeems a valid code before draw lock, the linked promo entry current holder can update to the
-            redeemer. If redemption happens at or after draw lock, valid codes may still grant Daypass access, but promo
-            entry attribution does not transfer.
+            If a friend redeems a valid code before draw lock, the linked promotional entry holder can update to the
+            redeemer. If redemption happens at or after draw lock, valid codes may still grant Daypass access, but
+            promotional entry attribution does not transfer.
+          </p>
+        </RuleSection>
+
+        <RuleSection id="provably-fair" title="Provably Fair Draw">
+          <p>
+            Before the draw, Monroes will freeze the eligible entry list and create a draw snapshot. The snapshot records
+            the final eligible entry range without publishing private customer information.
+          </p>
+          <p>
+            Monroes will generate and record a snapshot hash before the winner is selected. This hash allows the final
+            entry list to be checked against the locked draw snapshot after the draw has been completed.
+          </p>
+          <p>
+            The winner will be selected live from the locked entry range using a transparent random-number draw. The
+            winning number will match one entry in the frozen snapshot.
+          </p>
+          <p>
+            Public draw results will not publish entrant emails, full names, payment identifiers, access codes, code
+            hashes, or private purchaser information.
           </p>
         </RuleSection>
 
         <RuleSection title="Draw, Winner, and Redraw">
           <p>
-            Monroes should create a frozen entry snapshot before the draw. Final draw location, draw method, independent
-            supervision if required, winner notification, public result publication, prize claim timeframe, delivery
-            process, and redraw/unclaimed prize process must be approved before launch.
+            After entries close and the draw snapshot is locked, Monroes will conduct the draw using the published draw
+            method and the final eligible entry range.
+          </p>
+          <p>
+            The winner will be notified in writing using the contact details connected to the winning entry. Monroes will
+            publish the public draw result after the draw has been completed and recorded.
+          </p>
+          <p>
+            The prize claim window, redraw timing, delivery process, and any unclaimed-prize handling must be finalised
+            before launch and reflected in these rules.
           </p>
         </RuleSection>
 
         <RuleSection title="Refunds, Cancellations, and Access">
+          <p>Refunded or cancelled Daypasses may revoke access and may void related promotional entries.</p>
           <p>
-            Refunded or cancelled Daypasses may revoke access and may void related promo entries. Final refund and entry
-            voiding rules must be settled before launch and reflected in the{" "}
-            <Link className="font-black text-orange underline underline-offset-4" href={campaign.refundUrl}>
-              refund policy
-            </Link>
-            .
+            For Daypasses attached to this promotion, refund requests should be made before the promotion closes. After
+            the promotion closes, change-of-mind refunds may not be available. This does not limit any rights customers
+            may have under Australian Consumer Law.
+          </p>
+          <p>
+            If a Daypass is refunded before draw lock, any related promotional entry may be cancelled, voided, or marked
+            ineligible according to the final promotion rules.
           </p>
         </RuleSection>
 
         <RuleSection title="No Affiliation and Privacy">
-          <p>{campaign.noAffiliationDisclaimer}</p>
+          <p>
+            No affiliation, endorsement, sponsorship, or approval by Santa Cruz, Jason Jessee, Jim Phillips, any prize
+            brand, manufacturer, rider, or rights holder is implied unless Monroes publishes verified approval before
+            launch.
+          </p>
           <p>
             Personal information is handled according to the{" "}
-            <Link className="font-black text-orange underline underline-offset-4" href={campaign.privacyUrl}>
+            <Link className="font-black text-orange underline underline-offset-4" href="/privacy">
               privacy notice
             </Link>
             . See also the{" "}
-            <Link className="font-black text-orange underline underline-offset-4" href={campaign.termsUrl}>
+            <Link className="font-black text-orange underline underline-offset-4" href="/terms">
               site terms
+            </Link>{" "}
+            and{" "}
+            <Link className="font-black text-orange underline underline-offset-4" href="/refund-policy">
+              refund policy
             </Link>
             .
           </p>
@@ -157,9 +200,9 @@ export default async function PromoRulesPage({ params }: PromoRulesPageProps) {
   );
 }
 
-function RuleSection({ children, title }: { children: ReactNode; title: string }) {
+function RuleSection({ children, id, title }: { children: ReactNode; id?: string; title: string }) {
   return (
-    <section className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft">
+    <section className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft" id={id}>
       <h2 className="text-2xl font-black leading-tight text-ink">{title}</h2>
       <div className="mt-4 grid gap-4 text-base font-semibold leading-7 text-ink/68">{children}</div>
     </section>

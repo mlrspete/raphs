@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: `Checkout Success | ${site.name}`,
-  description: `Stripe checkout confirmation for ${site.name}.`,
+  description: `Checkout confirmation for ${site.name}.`,
 };
 
 export default function CheckoutSuccessPage() {
@@ -17,8 +17,8 @@ export default function CheckoutSuccessPage() {
           <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Checkout</p>
           <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Payment is being confirmed</h1>
           <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
-            Stripe redirected you back to Monroes. This page does not fulfil access by itself. We confirm payment through
-            Stripe webhook processing, then link your Daypass, friend codes, and promo entries to the checkout email.
+            You have been redirected back to Monroes. This page does not fulfil access by itself. We confirm payment
+            through our processor, then link your Daypass, friend codes, and promotional entries to the checkout email.
           </p>
           <p className="mt-3 text-base font-semibold leading-7 text-ink/68">
             Check your email for confirmation. When you log in, use the same email you used at checkout.
@@ -32,9 +32,9 @@ export default function CheckoutSuccessPage() {
             </Link>
             <Link
               className="inline-flex rounded-md border border-ink/10 bg-white px-4 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink transition hover:border-orange hover:text-orange"
-              href="/l/campaign-001"
+              href="/"
             >
-              Back to Campaign 001
+              Back to Monroes
             </Link>
           </div>
         </div>

@@ -69,7 +69,7 @@ export default async function AdminCampaignsPage({ searchParams }: AdminCampaign
         </p>
         <p>
           Use the entries export as the internal draw ledger. Public draw/result materials must omit private purchaser
-          details, Stripe identifiers, internal notes, and friend-code recovery data.
+          details, payment processor identifiers, internal notes, and friend Daypass code recovery data.
         </p>
       </div>
 
@@ -93,7 +93,7 @@ export default async function AdminCampaignsPage({ searchParams }: AdminCampaign
 
       <div className="grid gap-4 xl:grid-cols-2">
         <DiagnosticsTable
-          emptyDescription="No Stripe webhook rows match this date range."
+          emptyDescription="No payment processor webhook rows match this date range."
           rows={overview.recentWebhookEvents}
           title="Recent webhooks"
           type="webhooks"

@@ -98,7 +98,7 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
   const orderShortId = input.orderId.slice(0, 8).toUpperCase();
   const memberUrl = absoluteUrl("/member");
   const redeemUrl = absoluteUrl("/redeem");
-  const rulesUrl = absoluteUrl(input.rulesUrl ?? "/promo-rules/campaign-001");
+  const rulesUrl = absoluteUrl(input.rulesUrl ?? "/promo-rules/sungod");
   const refundUrl = absoluteUrl("/refund-policy");
   const supportEmail = getSupportEmail();
   const drawAt = formatDateTime(input.drawAt);
@@ -117,9 +117,9 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
         </div>
         ${paragraph(`Friends should open ${link("the redemption page", "/redeem")} and paste a code after signing in.`)}
       `
-      : paragraph("No friend codes were created for this order because you purchased one Daypass.");
+      : paragraph("No friend Daypass codes were created for this order because you purchased one Daypass.");
   const lockCopy = drawLockAt
-    ? `Friend-code redemption before ${escapeHtml(drawLockAt)} can update promo entry holder attribution. After that, attribution is locked, but valid codes may still grant Daypass access.`
+    ? `Friend Daypass code redemption before ${escapeHtml(drawLockAt)} can update promo entry holder attribution. After that, attribution is locked, but valid codes may still grant Daypass access.`
     : "Promo entry attribution lock timing will be confirmed before launch.";
   const html = buildHtmlShell(
     subject,
@@ -138,7 +138,7 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
       ${list([
         `Open ${link("your member dashboard", "/member")} and log in with the same email used at checkout.`,
         "Your Daypass starts as pending access. Activate it only when you are ready to start the 12-hour window.",
-        `Friend codes are redeemed at ${link("the redemption page", "/redeem")}. Codes are pasted into the form, never added to links.`,
+        `Friend Daypass codes are redeemed at ${link("the redemption page", "/redeem")}. Codes are pasted into the form, never added to links.`,
       ])}
       ${friendCodeHtml}
       <h2 style="font-size:18px;margin:24px 0 12px;">Promotion notes</h2>
@@ -163,7 +163,7 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
     `- Your Daypass is pending until you activate it from the member dashboard.`,
     `- Friends redeem codes at ${redeemUrl} by pasting the code into the form. Do not put codes in URLs.`,
     ``,
-    input.friendCodes.length > 0 ? `Friend Daypass codes:` : `No friend codes were created for this one-Daypass order.`,
+    input.friendCodes.length > 0 ? `Friend Daypass codes:` : `No friend Daypass codes were created for this one-Daypass order.`,
     ...friendCodeLines,
     ``,
     lockCopy.replaceAll("&#39;", "'"),
