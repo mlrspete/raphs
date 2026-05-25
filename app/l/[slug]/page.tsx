@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { LandingPageRenderer } from "@/components/landing/LandingPageRenderer";
+import { campaign001Slug } from "@/lib/domain/campaigns/config";
+import { getPublicCampaignProgress } from "@/lib/domain/campaigns/publicProgress";
 import { getLandingPageBySlug } from "@/lib/db/landing-tests";
 import { getCampaign001LandingFallback, isCampaign001LandingSlug } from "@/lib/landing-tests/campaign001Fallback";
 import { site } from "@/lib/site";
@@ -47,5 +49,12 @@ export default async function LandingPage({ params }: LandingPageProps) {
     notFound();
   }
 
-  return <LandingPageRenderer page={page} />;
+  const campaignProgress = isCampaign001LandingSlug(slug)
+    ? await getPublicCampaignProgress({
+        publicEntryLimit: page.campaignLimit,
+        slug: campaign001Slug,
+      })
+    : null;
+
+  return <LandingPageRenderer campaignProgress={campaignProgress} page={page} />;
 }

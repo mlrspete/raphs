@@ -41,7 +41,7 @@ export function LandingHero({ page }: LandingHeroProps) {
         <div className="landing-hero-art relative mx-auto flex min-w-0 justify-center lg:justify-end">
           <div className="absolute inset-x-8 bottom-0 top-10 rounded-[28px] bg-orange/24 blur-2xl" />
           <div
-            aria-label="Sun God deck prize proof pending"
+            aria-label="Sun God deck promotion"
             className="relative flex aspect-[0.84] w-full max-w-full overflow-hidden rounded-[24px] border border-[rgba(23,23,23,0.08)] bg-gradient-to-br from-whitecard via-peach to-mint p-5 shadow-[0_28px_80px_rgba(23,23,23,0.14)] sm:min-h-[420px] lg:min-h-[500px]"
             role="img"
             style={
@@ -72,7 +72,7 @@ export function LandingHero({ page }: LandingHeroProps) {
                     </p>
                     <p className="mt-1 text-2xl font-black uppercase leading-none text-ink">Deck promotion</p>
                     <p className="mt-2 text-[0.625rem] font-black uppercase leading-4 tracking-[0.18em] text-orange">
-                      Final proof pending
+                      2016 reissue
                     </p>
                   </div>
                 </div>
@@ -80,7 +80,7 @@ export function LandingHero({ page }: LandingHeroProps) {
 
               <div>
                 <p className="text-[0.625rem] font-black uppercase leading-4 tracking-[0.22em] text-muted">
-                  FINAL PROOF PENDING
+                  PURPLE PEARLESCENT
                 </p>
                 <div className="mt-3 h-1.5 rounded-full bg-gradient-to-r from-orange via-mint to-lilac" />
               </div>

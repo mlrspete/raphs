@@ -1,25 +1,27 @@
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
-import { CampaignFactsPanel } from "@/components/landing/CampaignFactsPanel";
 import { CampaignRulesSummary } from "@/components/landing/CampaignRulesSummary";
+import { DeckPromoDetailsSection } from "@/components/landing/DeckPromoDetailsSection";
 import { LandingDaypassOfferSection } from "@/components/landing/LandingDaypassOfferSection";
 import { LandingFAQ } from "@/components/landing/LandingFAQ";
 import { LandingFinalCTA } from "@/components/landing/LandingFinalCTA";
 import { LandingHero } from "@/components/landing/LandingHero";
-import { PrizeProofSection } from "@/components/landing/PrizeProofSection";
+import { LivePromotionProgressSection } from "@/components/landing/LivePromotionProgressSection";
 import { MembershipPreviewBlock } from "@/components/preview/MembershipPreviewBlock";
 import { campaign001Slug, sunGodLandingSlug } from "@/lib/domain/campaigns/config";
+import type { PublicCampaignProgress } from "@/lib/domain/campaigns/publicProgress";
 
 type LandingPageRendererProps = {
+  campaignProgress?: PublicCampaignProgress | null;
   page: LandingPageViewModel;
 };
 
 const educationCards = [
   {
     eyebrow: "LOW COMMITMENT",
-    title: "Try the members market before going Ultra.",
-    body: "The Daypass gives you a short look inside Monroes so you can browse members-only listings, check the deck mix, and decide whether Monroes Ultra is worth it.",
+    title: "Try the private deck market before going monthly.",
+    body: "The Daypass gives you a short look inside Monroes so you can browse private listings, check the deck mix, and decide whether Ultra is worth it.",
     bullets: ["12-hour preview access", "One-time purchase", "No hidden fees"],
   },
   {
@@ -30,7 +32,7 @@ const educationCards = [
   },
 ];
 
-export function LandingPageRenderer({ page }: LandingPageRendererProps) {
+export function LandingPageRenderer({ campaignProgress, page }: LandingPageRendererProps) {
   const isCampaign001 =
     page.slug === campaign001Slug ||
     page.slug === sunGodLandingSlug ||
@@ -50,9 +52,11 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
         }}
       />
       <LandingHero page={page} />
-      {isCampaign001 ? <PrizeProofSection /> : null}
+      {isCampaign001 ? <DeckPromoDetailsSection /> : null}
       <LandingDaypassOfferSection page={page} />
-      {isCampaign001 ? <CampaignFactsPanel /> : null}
+      {isCampaign001 ? (
+        <LivePromotionProgressSection progress={campaignProgress ?? { entryCount: null, entryLimit: page.campaignLimit }} />
+      ) : null}
 
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
@@ -62,7 +66,7 @@ export function LandingPageRenderer({ page }: LandingPageRendererProps) {
               Try out Monroes before going Ultra.
             </h2>
             <p className="landing-body mt-4 max-w-2xl">
-              A simple way to browse the members market first, without starting Monroes Ultra.
+              A simple way to browse the private deck market first, without starting a monthly membership.
             </p>
           </div>
 

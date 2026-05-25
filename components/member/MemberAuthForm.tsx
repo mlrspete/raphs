@@ -58,15 +58,14 @@ export function MemberAuthForm() {
       });
 
       if (signInError) {
-        setError(signInError.message);
+        setError("We could not send a secure link. Check the email and try again.");
         setState("idle");
         return;
       }
 
       setState("sent");
-    } catch (caughtError) {
-      const message = caughtError instanceof Error ? caughtError.message : "Unable to send secure link.";
-      setError(message);
+    } catch {
+      setError("We could not send a secure link. Check the email and try again.");
       setState("idle");
     }
   }
