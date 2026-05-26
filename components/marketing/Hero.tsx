@@ -1,24 +1,12 @@
 import Image from "next/image";
 
 import { ScrollReveal } from "@/components/marketing/ScrollReveal";
-import monroesHeroImage from "@/content/monroes_hero_v1.1.webp";
+import monroesHeroImage from "@/content/monroes_hero_v1.2.webp";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[88svh] overflow-hidden border-b border-ink/10 bg-cream">
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,252,245,0.98)_0%,rgba(255,240,225,0.94)_48%,rgba(255,138,61,0.52)_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_30%,rgba(255,138,61,0.34),transparent_30%),radial-gradient(circle_at_18%_72%,rgba(125,222,203,0.22),transparent_26%)]" />
+    <section className="relative min-h-[88svh] overflow-hidden border-b border-ink/10 bg-[#fffaf1]">
       <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-orange via-peach to-mint" />
-
-      <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute -left-24 top-20 h-[34rem] w-[42rem] opacity-60"
-          style={{
-            backgroundImage:
-              "repeating-radial-gradient(ellipse at 28% 42%, rgba(34,34,34,0.14) 0 1px, transparent 1px 24px), repeating-radial-gradient(ellipse at 62% 46%, rgba(255,138,61,0.18) 0 1px, transparent 1px 34px)",
-          }}
-        />
-      </div>
 
       <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-12">
         <div className="flex flex-1 items-center py-14 sm:py-16 lg:py-10">
