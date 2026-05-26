@@ -1,4 +1,7 @@
+import Image from "next/image";
+
 import { ScrollReveal } from "@/components/marketing/ScrollReveal";
+import monroesHeroImage from "@/content/monroes_hero_v1.1.webp";
 
 export function Hero() {
   return (
@@ -22,9 +25,17 @@ export function Hero() {
           <ScrollReveal className="relative z-10 max-w-3xl" y={18}>
             <h1 className="sr-only">Monroes members-only skateboard marketplace</h1>
             <div
-              aria-hidden="true"
-              className="h-32 w-full max-w-[45rem] rounded-md bg-ink shadow-deck sm:h-40 lg:h-52 xl:h-56"
-            />
+              className="relative h-32 w-full max-w-[45rem] overflow-hidden rounded-md bg-ink shadow-deck sm:h-40 lg:h-52 xl:h-56"
+            >
+              <Image
+                alt="Australia's most wanted skateboards - Monroes"
+                className="object-contain"
+                fill
+                priority
+                sizes="(min-width: 1024px) 45rem, 100vw"
+                src={monroesHeroImage}
+              />
+            </div>
             <p className="mt-6 max-w-xl text-pretty text-lg font-semibold leading-8 text-ink/72 sm:text-xl">
               Monroes is a private members-only marketplace for OG, rare and interesting skateboard decks in Australia.
             </p>
