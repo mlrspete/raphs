@@ -13,7 +13,7 @@ export function Hero() {
           <ScrollReveal className="relative z-10 flex w-full max-w-[78rem] flex-col items-start" y={18}>
             <h1 className="sr-only">Monroes members-only skateboard marketplace</h1>
             <div
-              className="relative -ml-24 h-[17rem] w-[calc(100vw+6rem)] max-w-none overflow-hidden sm:-ml-32 sm:h-[27rem] lg:-ml-[18rem] lg:h-[37rem] xl:-ml-[21rem] xl:h-[42rem]"
+              className="relative -ml-24 h-[15.5rem] w-[calc(100vw+6rem)] max-w-none overflow-hidden sm:-ml-32 sm:h-[24rem] lg:-ml-[18rem] lg:h-[33rem] xl:-ml-[21rem] xl:h-[38rem]"
             >
               <Image
                 alt="Australia's most wanted skateboards - Monroes"
