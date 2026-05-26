@@ -25,14 +25,14 @@ export function Hero() {
           <ScrollReveal className="relative z-10 flex w-full max-w-[78rem] flex-col items-start" y={18}>
             <h1 className="sr-only">Monroes members-only skateboard marketplace</h1>
             <div
-              className="relative h-[15rem] w-full max-w-[72rem] overflow-hidden sm:h-[24rem] lg:h-[31rem] xl:h-[35rem]"
+              className="relative -ml-24 h-[17rem] w-[calc(100vw+6rem)] max-w-none overflow-hidden sm:-ml-32 sm:h-[27rem] lg:-ml-[18rem] lg:h-[37rem] xl:-ml-[21rem] xl:h-[42rem]"
             >
               <Image
                 alt="Australia's most wanted skateboards - Monroes"
                 className="object-contain object-left"
                 fill
                 priority
-                sizes="(min-width: 1280px) 72rem, (min-width: 1024px) 70vw, 100vw"
+                sizes="100vw"
                 src={monroesHeroImage}
               />
             </div>
