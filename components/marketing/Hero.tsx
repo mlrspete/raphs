@@ -21,18 +21,18 @@ export function Hero() {
       </div>
 
       <div className="relative mx-auto flex min-h-[88svh] max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-12">
-        <div className="grid flex-1 gap-10 py-16 lg:grid-cols-[0.96fr_1.04fr] lg:items-center lg:py-10">
-          <ScrollReveal className="relative z-10 max-w-3xl" y={18}>
+        <div className="flex flex-1 items-center py-14 sm:py-16 lg:py-10">
+          <ScrollReveal className="relative z-10 flex w-full max-w-[78rem] flex-col items-start" y={18}>
             <h1 className="sr-only">Monroes members-only skateboard marketplace</h1>
             <div
-              className="relative h-32 w-full max-w-[45rem] overflow-hidden rounded-md bg-ink shadow-deck sm:h-40 lg:h-52 xl:h-56"
+              className="relative h-[15rem] w-full max-w-[72rem] overflow-hidden sm:h-[24rem] lg:h-[31rem] xl:h-[35rem]"
             >
               <Image
                 alt="Australia's most wanted skateboards - Monroes"
-                className="object-contain"
+                className="object-contain object-left"
                 fill
                 priority
-                sizes="(min-width: 1024px) 45rem, 100vw"
+                sizes="(min-width: 1280px) 72rem, (min-width: 1024px) 70vw, 100vw"
                 src={monroesHeroImage}
               />
             </div>
@@ -45,23 +45,6 @@ export function Hero() {
             >
               SIGN UP
             </a>
-          </ScrollReveal>
-
-          <ScrollReveal className="relative mx-auto w-full max-w-md lg:max-w-xl" delay={0.08} y={20}>
-            <div className="absolute -inset-5 rounded-lg bg-orange/25 blur-3xl" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-ink/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.92)_0%,rgba(255,224,196,0.84)_48%,rgba(255,138,61,0.72)_100%)] p-5 shadow-deck">
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 opacity-55"
-                style={{
-                  backgroundImage:
-                    "repeating-radial-gradient(ellipse at 68% 34%, rgba(34,34,34,0.16) 0 1px, transparent 1px 24px)",
-                }}
-              />
-              <div className="relative h-full rounded-md border border-white/70 bg-white/28 p-5 backdrop-blur-sm">
-                <div className="h-full rounded-md bg-orange shadow-soft" />
-              </div>
-            </div>
           </ScrollReveal>
         </div>
       </div>
