@@ -9,8 +9,7 @@ type FormState = "idle" | "loading" | "sent" | "verifying";
 
 const authCallbackPath = "/auth/callback";
 const cooldownSeconds = 60;
-const rateLimitCooldownSeconds = 60 * 60;
-const emailSendBlockedUntilStorageKey = "monroes.memberAuth.emailSendBlockedUntil";
+const rateLimitCooldownSeconds = 2 * 60;
 const genericSecureLinkError = "We could not send a secure link. Check the email and try again.";
 const genericCodeError = "That code did not work. Check the latest email and try again.";
 
@@ -70,7 +69,7 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   const code = getErrorStringProperty(error, "code");
 
   if (code === "over_email_send_rate_limit") {
-    return "Too many links requested. Wait a little longer, then try again.";
+    return "Secure-link emails are temporarily rate-limited. Try again in a couple of minutes.";
   }
 
   if (code === "otp_expired") {
@@ -88,10 +87,6 @@ function getCooldownSecondsForResult(error: unknown) {
   return getErrorStringProperty(error, "code") === "over_email_send_rate_limit"
     ? rateLimitCooldownSeconds
     : cooldownSeconds;
-}
-
-function isEmailSendRateLimitError(error: unknown) {
-  return getErrorStringProperty(error, "code") === "over_email_send_rate_limit";
 }
 
 function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
@@ -117,31 +112,6 @@ function clearPageAuthError() {
   url.searchParams.delete("error");
   url.hash = "";
   window.history.replaceState(null, "", url);
-}
-
-function getStoredEmailSendBlockedUntil() {
-  const storedValue = window.localStorage.getItem(emailSendBlockedUntilStorageKey);
-
-  if (!storedValue) {
-    return null;
-  }
-
-  const timestamp = Number(storedValue);
-
-  if (!Number.isFinite(timestamp) || timestamp <= Date.now()) {
-    window.localStorage.removeItem(emailSendBlockedUntilStorageKey);
-    return null;
-  }
-
-  return timestamp;
-}
-
-function storeEmailSendBlockedUntil(timestamp: number) {
-  window.localStorage.setItem(emailSendBlockedUntilStorageKey, String(timestamp));
-}
-
-function clearStoredEmailSendBlockedUntil() {
-  window.localStorage.removeItem(emailSendBlockedUntilStorageKey);
 }
 
 function formatCooldown(remainingSeconds: number) {
@@ -189,11 +159,7 @@ export function MemberAuthForm() {
   }, [cooldownUntil]);
 
   useEffect(() => {
-    const storedBlockedUntil = getStoredEmailSendBlockedUntil();
-
-    if (storedBlockedUntil) {
-      setCooldownUntil(storedBlockedUntil);
-    }
+    window.localStorage.removeItem("monroes.memberAuth.emailSendBlockedUntil");
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -223,9 +189,6 @@ export function MemberAuthForm() {
 
       if (signInError) {
         cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
-        if (isEmailSendRateLimitError(signInError)) {
-          storeEmailSendBlockedUntil(Date.now() + cooldownDurationSeconds * 1000);
-        }
         logAuthErrorInDevelopment(signInError, redirectTo);
         setError(getFriendlyAuthErrorMessage(signInError));
         setState("idle");
@@ -235,9 +198,6 @@ export function MemberAuthForm() {
       setState("sent");
     } catch (signInError) {
       cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
-      if (isEmailSendRateLimitError(signInError)) {
-        storeEmailSendBlockedUntil(Date.now() + cooldownDurationSeconds * 1000);
-      }
       logAuthErrorInDevelopment(signInError, redirectTo);
       setError(getFriendlyAuthErrorMessage(signInError));
       setState("idle");
@@ -270,7 +230,6 @@ export function MemberAuthForm() {
         return;
       }
 
-      clearStoredEmailSendBlockedUntil();
       router.replace("/member");
     } catch (verifyError) {
       logAuthErrorInDevelopment(verifyError, null);
