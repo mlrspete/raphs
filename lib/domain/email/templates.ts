@@ -23,6 +23,12 @@ type CodeRedeemedTemplateInput = {
   redemptionBeforeLock: boolean;
 };
 
+type MemberSignInTemplateInput = {
+  actionUrl: string;
+  code: string;
+  email: string;
+};
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -170,6 +176,46 @@ export function buildOrderConfirmationEmail(input: OrderConfirmationTemplateInpu
     ``,
     `Promotion rules: ${rulesUrl}`,
     `Refund policy: ${refundUrl}`,
+    `Support: ${supportEmail}`,
+  ].join("\n");
+
+  return {
+    html,
+    subject,
+    text,
+  };
+}
+
+export function buildMemberSignInEmail(input: MemberSignInTemplateInput): TransactionalEmailContent {
+  const actionUrl = absoluteUrl(input.actionUrl);
+  const supportEmail = getSupportEmail();
+  const subject = "Your Monroes secure sign-in";
+  const html = buildHtmlShell(
+    subject,
+    `
+      <p style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c65f24;font-weight:800;margin:0 0 10px;">Monroes</p>
+      <h1 style="font-size:28px;line-height:1.2;margin:0 0 16px;">Sign in to Monroes</h1>
+      ${paragraph(`Use this secure link to sign in as ${escapeHtml(input.email)}.`)}
+      <p style="margin:24px 0;">
+        <a href="${escapeHtml(actionUrl)}" style="display:inline-block;background:#eb7f45;color:#211f1a;text-decoration:none;border-radius:6px;padding:14px 18px;font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">Sign in to Monroes</a>
+      </p>
+      ${paragraph("If the button does not work, paste this secure code into the Monroes sign-in page:")}
+      <div style="background:#f8f3e7;border:1px solid #e9decc;border-radius:6px;color:#211f1a;font-family:Consolas,monospace;font-size:28px;font-weight:800;letter-spacing:.18em;margin:0 0 18px;padding:16px;text-align:center;">${escapeHtml(input.code)}</div>
+      ${paragraph("Use the newest email only. Secure links and codes expire automatically and can only be used once.")}
+      ${paragraph(`If you did not request this email, you can ignore it or contact ${escapeHtml(supportEmail)}.`)}
+    `,
+  );
+  const text = [
+    "Sign in to Monroes",
+    "",
+    `Use this secure link to sign in as ${input.email}:`,
+    actionUrl,
+    "",
+    "Or paste this secure code into the Monroes sign-in page:",
+    input.code,
+    "",
+    "Use the newest email only. Secure links and codes expire automatically and can only be used once.",
+    "",
     `Support: ${supportEmail}`,
   ].join("\n");
 

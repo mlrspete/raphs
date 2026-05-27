@@ -6,28 +6,18 @@ import { useRouter } from "next/navigation";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 type FormState = "idle" | "loading" | "sent" | "verifying";
+type MemberAuthLinkResponse =
+  | {
+      success: true;
+    }
+  | {
+      error?: string;
+      errorCode?: string;
+      success: false;
+    };
 
-const authCallbackPath = "/auth/callback";
 const genericSecureLinkError = "We could not send a secure link. Check the email and try again.";
 const genericCodeError = "That code did not work. Check the latest email and try again.";
-
-function normalizeAppUrl(value: string | undefined) {
-  const trimmed = value?.trim().replace(/\/+$/, "");
-
-  if (!trimmed) {
-    return null;
-  }
-
-  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
-}
-
-function getAuthRedirectTo() {
-  const configuredAppUrl = normalizeAppUrl(process.env.NEXT_PUBLIC_APP_URL);
-  const fallbackOrigin = window.location.origin.replace(/\/+$/, "");
-  const baseUrl = configuredAppUrl ?? fallbackOrigin;
-
-  return `${baseUrl}${authCallbackPath}`;
-}
 
 function getErrorStringProperty(error: unknown, property: "code" | "message" | "name") {
   if (!error || typeof error !== "object" || !(property in error)) {
@@ -67,11 +57,15 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   const code = getErrorStringProperty(error, "code");
 
   if (code === "over_email_send_rate_limit") {
-    return "Supabase is blocking secure-link emails right now. You can try again, but it may fail until the Auth rate limit resets.";
+    return "Supabase is blocking new secure links right now. Try one fresh request in a few minutes.";
   }
 
   if (code === "otp_expired") {
     return "That link expired. Request a fresh secure link.";
+  }
+
+  if (code === "email_provider_not_configured") {
+    return "Monroes secure email is not configured yet.";
   }
 
   if (isInvalidRedirectError(error)) {
@@ -81,18 +75,26 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   return genericSecureLinkError;
 }
 
-function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
+function logAuthErrorInDevelopment(error: unknown) {
   if (process.env.NODE_ENV !== "development") {
     return;
   }
 
-  console.error("Member magic-link signInWithOtp failed", {
+  console.error("Member magic-link auth failed", {
     code: getErrorStringProperty(error, "code"),
     message: getErrorStringProperty(error, "message") ?? String(error),
     name: getErrorStringProperty(error, "name"),
-    redirectTo,
     status: getErrorNumberProperty(error, "status"),
   });
+}
+
+function toAuthError(response: Response, result: MemberAuthLinkResponse | null) {
+  return {
+    code: result?.success === false ? result.errorCode : undefined,
+    message: result?.success === false ? result.error : response.statusText,
+    name: "MemberAuthLinkError",
+    status: response.status,
+  };
 }
 
 function clearPageAuthError() {
@@ -120,29 +122,27 @@ export function MemberAuthForm() {
     setError(null);
     setState("loading");
 
-    let redirectTo: string | null = null;
-
     try {
-      const supabase = createBrowserSupabaseClient();
-      redirectTo = getAuthRedirectTo();
-      const { error: signInError } = await supabase.auth.signInWithOtp({
-        email: email.trim(),
-        options: {
-          emailRedirectTo: redirectTo,
-          shouldCreateUser: true,
+      const response = await fetch("/api/member/auth/link", {
+        body: JSON.stringify({ email: email.trim() }),
+        headers: {
+          "Content-Type": "application/json",
         },
+        method: "POST",
       });
+      const result = (await response.json().catch(() => null)) as MemberAuthLinkResponse | null;
 
-      if (signInError) {
-        logAuthErrorInDevelopment(signInError, redirectTo);
-        setError(getFriendlyAuthErrorMessage(signInError));
+      if (!response.ok || !result?.success) {
+        const authError = toAuthError(response, result);
+        logAuthErrorInDevelopment(authError);
+        setError(getFriendlyAuthErrorMessage(authError));
         setState("idle");
         return;
       }
 
       setState("sent");
     } catch (signInError) {
-      logAuthErrorInDevelopment(signInError, redirectTo);
+      logAuthErrorInDevelopment(signInError);
       setError(getFriendlyAuthErrorMessage(signInError));
       setState("idle");
     }
@@ -158,11 +158,11 @@ export function MemberAuthForm() {
       const { error: verifyError } = await supabase.auth.verifyOtp({
         email: email.trim(),
         token: otpCode.trim(),
-        type: "email",
+        type: "magiclink",
       });
 
       if (verifyError) {
-        logAuthErrorInDevelopment(verifyError, null);
+        logAuthErrorInDevelopment(verifyError);
         setCodeError(
           getErrorStringProperty(verifyError, "code") === "otp_expired"
             ? "That code expired. Request a fresh secure link."
@@ -173,8 +173,9 @@ export function MemberAuthForm() {
       }
 
       router.replace("/member");
+      router.refresh();
     } catch (verifyError) {
-      logAuthErrorInDevelopment(verifyError, null);
+      logAuthErrorInDevelopment(verifyError);
       setCodeError(genericCodeError);
       setState("sent");
     }
@@ -186,7 +187,7 @@ export function MemberAuthForm() {
         <div className="rounded-lg border border-mint/45 bg-mint/20 p-5">
           <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">Check your email</p>
           <p className="mt-2 text-sm font-semibold leading-6 text-ink/68">
-            We sent a secure Monroes link to {email.trim()}. Open it in this browser to continue.
+            We sent a secure Monroes link and code to {email.trim()}. Open it in this browser to continue.
           </p>
           <p className="mt-3 text-sm font-semibold leading-6 text-ink/58">
             Use the newest email only. Earlier secure links can expire or stop working after another link is requested.
