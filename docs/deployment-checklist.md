@@ -31,9 +31,9 @@ Configure the hosted Supabase sign-in email template with this copy:
 - Button: `Sign in to Monroes`
 - Footer/helper text: `This link is for your email only and will expire automatically. If you did not request this email, you can ignore it.`
 
-Use `{{ .ConfirmationURL }}` as the button/link URL in both the Confirm Signup and Magic Link templates. Do not use `{{ .SiteURL }}/member`, because that bypasses the app callback route and can strand users on `/member#error=access_denied&error_code=otp_expired` when a secure link expires or is pre-consumed. The Supabase URL configuration must include `https://raphs.vercel.app/auth/callback`; add `https://monroes.au/auth/callback` when the permanent domain is connected.
+Use `{{ .ConfirmationURL }}` as the button/link URL in both the Confirm Signup and Magic Link templates. Include the fallback one-time code `{{ .Token }}` in the member sign-in email copy so users can paste the 6-digit code if the one-click link is expired, pre-consumed, or opened in the wrong browser. Do not use `{{ .SiteURL }}/member`, because that bypasses the app callback route and can strand users on `/member#error=access_denied&error_code=otp_expired` when a secure link expires or is pre-consumed. The Supabase URL configuration must include `https://raphs.vercel.app/auth/callback`; add `https://monroes.au/auth/callback` when the permanent domain is connected.
 
-Supabase Auth rate-limits secure-link sends per email address. The app has a local retry cooldown, but the hosted Auth service can still reject requests if the user asks for multiple links close together. During support, tell users to wait a little longer and use only the newest email.
+Supabase Auth rate-limits secure-link sends per email address and also rate-limits project email sending. With the built-in Supabase email sender, the project can be limited to 2 emails per hour. Use custom SMTP before production member login testing, or repeated test sends may show `over_email_send_rate_limit` even after the 60-second per-user window passes. During support, tell users to wait longer and use only the newest email.
 
 ## Vercel Environment Variables
 

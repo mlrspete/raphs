@@ -1,15 +1,18 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
-type FormState = "idle" | "loading" | "sent";
+type FormState = "idle" | "loading" | "sent" | "verifying";
 
 const authCallbackPath = "/auth/callback";
 const cooldownSeconds = 60;
-const rateLimitCooldownSeconds = 90;
+const rateLimitCooldownSeconds = 60 * 60;
+const emailSendBlockedUntilStorageKey = "monroes.memberAuth.emailSendBlockedUntil";
 const genericSecureLinkError = "We could not send a secure link. Check the email and try again.";
+const genericCodeError = "That code did not work. Check the latest email and try again.";
 
 function normalizeAppUrl(value: string | undefined) {
   const trimmed = value?.trim().replace(/\/+$/, "");
@@ -87,6 +90,10 @@ function getCooldownSecondsForResult(error: unknown) {
     : cooldownSeconds;
 }
 
+function isEmailSendRateLimitError(error: unknown) {
+  return getErrorStringProperty(error, "code") === "over_email_send_rate_limit";
+}
+
 function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
   if (process.env.NODE_ENV !== "development") {
     return;
@@ -112,9 +119,47 @@ function clearPageAuthError() {
   window.history.replaceState(null, "", url);
 }
 
+function getStoredEmailSendBlockedUntil() {
+  const storedValue = window.localStorage.getItem(emailSendBlockedUntilStorageKey);
+
+  if (!storedValue) {
+    return null;
+  }
+
+  const timestamp = Number(storedValue);
+
+  if (!Number.isFinite(timestamp) || timestamp <= Date.now()) {
+    window.localStorage.removeItem(emailSendBlockedUntilStorageKey);
+    return null;
+  }
+
+  return timestamp;
+}
+
+function storeEmailSendBlockedUntil(timestamp: number) {
+  window.localStorage.setItem(emailSendBlockedUntilStorageKey, String(timestamp));
+}
+
+function clearStoredEmailSendBlockedUntil() {
+  window.localStorage.removeItem(emailSendBlockedUntilStorageKey);
+}
+
+function formatCooldown(remainingSeconds: number) {
+  if (remainingSeconds >= 60) {
+    const minutes = Math.ceil(remainingSeconds / 60);
+
+    return `${minutes}m`;
+  }
+
+  return `${remainingSeconds}s`;
+}
+
 export function MemberAuthForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
+  const [otpCode, setOtpCode] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [codeError, setCodeError] = useState<string | null>(null);
   const [state, setState] = useState<FormState>("idle");
   const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
@@ -143,6 +188,14 @@ export function MemberAuthForm() {
     return () => window.clearInterval(intervalId);
   }, [cooldownUntil]);
 
+  useEffect(() => {
+    const storedBlockedUntil = getStoredEmailSendBlockedUntil();
+
+    if (storedBlockedUntil) {
+      setCooldownUntil(storedBlockedUntil);
+    }
+  }, []);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -170,6 +223,9 @@ export function MemberAuthForm() {
 
       if (signInError) {
         cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
+        if (isEmailSendRateLimitError(signInError)) {
+          storeEmailSendBlockedUntil(Date.now() + cooldownDurationSeconds * 1000);
+        }
         logAuthErrorInDevelopment(signInError, redirectTo);
         setError(getFriendlyAuthErrorMessage(signInError));
         setState("idle");
@@ -179,6 +235,9 @@ export function MemberAuthForm() {
       setState("sent");
     } catch (signInError) {
       cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
+      if (isEmailSendRateLimitError(signInError)) {
+        storeEmailSendBlockedUntil(Date.now() + cooldownDurationSeconds * 1000);
+      }
       logAuthErrorInDevelopment(signInError, redirectTo);
       setError(getFriendlyAuthErrorMessage(signInError));
       setState("idle");
@@ -187,16 +246,80 @@ export function MemberAuthForm() {
     }
   }
 
-  if (state === "sent") {
+  async function handleVerifyCode(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setCodeError(null);
+    setState("verifying");
+
+    try {
+      const supabase = createBrowserSupabaseClient();
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: otpCode.trim(),
+        type: "email",
+      });
+
+      if (verifyError) {
+        logAuthErrorInDevelopment(verifyError, null);
+        setCodeError(
+          getErrorStringProperty(verifyError, "code") === "otp_expired"
+            ? "That code expired. Request a fresh secure link."
+            : genericCodeError,
+        );
+        setState("sent");
+        return;
+      }
+
+      clearStoredEmailSendBlockedUntil();
+      router.replace("/member");
+    } catch (verifyError) {
+      logAuthErrorInDevelopment(verifyError, null);
+      setCodeError(genericCodeError);
+      setState("sent");
+    }
+  }
+
+  if (state === "sent" || state === "verifying") {
     return (
-      <div className="mt-7 rounded-lg border border-mint/45 bg-mint/20 p-5">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">Check your email</p>
-        <p className="mt-2 text-sm font-semibold leading-6 text-ink/68">
-          We sent a secure Monroes link to {email.trim()}. Open it in this browser to continue.
-        </p>
-        <p className="mt-3 text-sm font-semibold leading-6 text-ink/58">
-          Use the newest email only. Earlier secure links can expire or stop working after another link is requested.
-        </p>
+      <div className="mt-7 grid gap-4">
+        <div className="rounded-lg border border-mint/45 bg-mint/20 p-5">
+          <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">Check your email</p>
+          <p className="mt-2 text-sm font-semibold leading-6 text-ink/68">
+            We sent a secure Monroes link to {email.trim()}. Open it in this browser to continue.
+          </p>
+          <p className="mt-3 text-sm font-semibold leading-6 text-ink/58">
+            Use the newest email only. Earlier secure links can expire or stop working after another link is requested.
+          </p>
+        </div>
+
+        <form className="grid gap-3" onSubmit={handleVerifyCode}>
+          <label className="grid gap-2 text-sm font-black text-ink">
+            Secure code
+            <input
+              autoComplete="one-time-code"
+              className="min-h-12 rounded-md border border-ink/12 bg-white px-4 text-base font-semibold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
+              inputMode="numeric"
+              maxLength={6}
+              onChange={(event) => {
+                setCodeError(null);
+                setOtpCode(event.target.value.replace(/\D/g, "").slice(0, 6));
+              }}
+              placeholder="123456"
+              type="text"
+              value={otpCode}
+            />
+          </label>
+
+          {codeError ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm font-bold text-red-700">{codeError}</p> : null}
+
+          <button
+            className="inline-flex min-h-12 items-center justify-center rounded-md bg-ink px-5 py-3 text-sm font-black uppercase tracking-[0.12em] text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={otpCode.length !== 6 || state === "verifying"}
+            type="submit"
+          >
+            {state === "verifying" ? "Checking code" : "Use secure code"}
+          </button>
+        </form>
       </div>
     );
   }
@@ -210,6 +333,7 @@ export function MemberAuthForm() {
           className="min-h-12 rounded-md border border-ink/12 bg-white px-4 text-base font-semibold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
           onChange={(event) => {
             clearPageAuthError();
+            setError(null);
             setEmail(event.target.value);
           }}
           placeholder="you@example.com"
@@ -229,7 +353,7 @@ export function MemberAuthForm() {
         {state === "loading"
           ? "Sending link"
           : cooldownRemaining > 0
-            ? `Try again in ${cooldownRemaining}s`
+            ? `Try again in ${formatCooldown(cooldownRemaining)}`
             : "Email me a secure link"}
       </button>
     </form>
