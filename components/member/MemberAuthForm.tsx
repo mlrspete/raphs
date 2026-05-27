@@ -8,6 +8,7 @@ type FormState = "idle" | "loading" | "sent";
 
 const authCallbackPath = "/auth/callback";
 const cooldownSeconds = 60;
+const rateLimitCooldownSeconds = 90;
 const genericSecureLinkError = "We could not send a secure link. Check the email and try again.";
 
 function normalizeAppUrl(value: string | undefined) {
@@ -66,7 +67,7 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   const code = getErrorStringProperty(error, "code");
 
   if (code === "over_email_send_rate_limit") {
-    return "Too many links requested. Wait 60 seconds, then try again.";
+    return "Too many links requested. Wait a little longer, then try again.";
   }
 
   if (code === "otp_expired") {
@@ -78,6 +79,12 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   }
 
   return genericSecureLinkError;
+}
+
+function getCooldownSecondsForResult(error: unknown) {
+  return getErrorStringProperty(error, "code") === "over_email_send_rate_limit"
+    ? rateLimitCooldownSeconds
+    : cooldownSeconds;
 }
 
 function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
@@ -92,6 +99,17 @@ function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
     redirectTo,
     status: getErrorNumberProperty(error, "status"),
   });
+}
+
+function clearPageAuthError() {
+  window.dispatchEvent(new Event("member-auth-error-clear"));
+
+  const url = new URL(window.location.href);
+  url.searchParams.delete("auth_error");
+  url.searchParams.delete("error_code");
+  url.searchParams.delete("error");
+  url.hash = "";
+  window.history.replaceState(null, "", url);
 }
 
 export function MemberAuthForm() {
@@ -137,6 +155,8 @@ export function MemberAuthForm() {
 
     let redirectTo: string | null = null;
 
+    let cooldownDurationSeconds = cooldownSeconds;
+
     try {
       const supabase = createBrowserSupabaseClient();
       redirectTo = getAuthRedirectTo();
@@ -149,6 +169,7 @@ export function MemberAuthForm() {
       });
 
       if (signInError) {
+        cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
         logAuthErrorInDevelopment(signInError, redirectTo);
         setError(getFriendlyAuthErrorMessage(signInError));
         setState("idle");
@@ -157,11 +178,12 @@ export function MemberAuthForm() {
 
       setState("sent");
     } catch (signInError) {
+      cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
       logAuthErrorInDevelopment(signInError, redirectTo);
       setError(getFriendlyAuthErrorMessage(signInError));
       setState("idle");
     } finally {
-      setCooldownUntil(Date.now() + cooldownSeconds * 1000);
+      setCooldownUntil(Date.now() + cooldownDurationSeconds * 1000);
     }
   }
 
@@ -171,6 +193,9 @@ export function MemberAuthForm() {
         <p className="text-xs font-black uppercase tracking-[0.14em] text-ink/60">Check your email</p>
         <p className="mt-2 text-sm font-semibold leading-6 text-ink/68">
           We sent a secure Monroes link to {email.trim()}. Open it in this browser to continue.
+        </p>
+        <p className="mt-3 text-sm font-semibold leading-6 text-ink/58">
+          Use the newest email only. Earlier secure links can expire or stop working after another link is requested.
         </p>
       </div>
     );
@@ -183,7 +208,10 @@ export function MemberAuthForm() {
         <input
           autoComplete="email"
           className="min-h-12 rounded-md border border-ink/12 bg-white px-4 text-base font-semibold text-ink outline-none placeholder:text-ink/35 focus:ring-4 focus:ring-orange/25"
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={(event) => {
+            clearPageAuthError();
+            setEmail(event.target.value);
+          }}
           placeholder="you@example.com"
           required
           type="email"

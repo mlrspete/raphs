@@ -24,6 +24,7 @@ function getHashParams() {
 export function MemberLoginAuthErrorNotice() {
   const searchParams = useSearchParams();
   const [hashParams, setHashParams] = useState<URLSearchParams>(() => new URLSearchParams());
+  const [isDismissed, setIsDismissed] = useState(false);
   const authError =
     searchParams.get("auth_error") ??
     searchParams.get("error_code") ??
@@ -34,9 +35,17 @@ export function MemberLoginAuthErrorNotice() {
 
   useEffect(() => {
     setHashParams(getHashParams());
+
+    function dismissNotice() {
+      setIsDismissed(true);
+    }
+
+    window.addEventListener("member-auth-error-clear", dismissNotice);
+
+    return () => window.removeEventListener("member-auth-error-clear", dismissNotice);
   }, []);
 
-  if (!authError || !expiredOrInvalidAuthErrors.has(authError)) {
+  if (isDismissed || !authError || !expiredOrInvalidAuthErrors.has(authError)) {
     return null;
   }
 

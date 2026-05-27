@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { DaypassCodeList } from "@/components/member/DaypassCodeList";
+import { MemberAuthHashErrorRedirect } from "@/components/member/MemberAuthHashErrorRedirect";
 import { DrawProcessCard } from "@/components/member/DrawProcessCard";
 import { MemberAccessStatusCard } from "@/components/member/MemberAccessStatusCard";
 import { MemberOrderHistory } from "@/components/member/MemberOrderHistory";
@@ -60,6 +61,7 @@ export default async function MemberPage() {
   if (!memberProfile) {
     return (
       <main className="min-h-screen bg-cream px-5 py-10 text-ink sm:px-8 lg:px-12">
+        <MemberAuthHashErrorRedirect />
         <section className="mx-auto grid max-w-3xl gap-6">
           <div className="rounded-lg border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
             <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Member dashboard</p>
@@ -97,6 +99,7 @@ export default async function MemberPage() {
 
   return (
     <main className="min-h-screen bg-cream px-5 py-10 text-ink sm:px-8 lg:px-12">
+      <MemberAuthHashErrorRedirect />
       <PageViewTracker
         eventName="member_dashboard_viewed"
         properties={{

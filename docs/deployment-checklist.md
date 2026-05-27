@@ -33,6 +33,8 @@ Configure the hosted Supabase sign-in email template with this copy:
 
 Use `{{ .ConfirmationURL }}` as the button/link URL in both the Confirm Signup and Magic Link templates. Do not use `{{ .SiteURL }}/member`, because that bypasses the app callback route and can strand users on `/member#error=access_denied&error_code=otp_expired` when a secure link expires or is pre-consumed. The Supabase URL configuration must include `https://raphs.vercel.app/auth/callback`; add `https://monroes.au/auth/callback` when the permanent domain is connected.
 
+Supabase Auth rate-limits secure-link sends per email address. The app has a local retry cooldown, but the hosted Auth service can still reject requests if the user asks for multiple links close together. During support, tell users to wait a little longer and use only the newest email.
+
 ## Vercel Environment Variables
 
 - [ ] `NEXT_PUBLIC_APP_URL` is `https://raphs.vercel.app` for current production and `https://monroes.au` after the permanent domain is connected.
