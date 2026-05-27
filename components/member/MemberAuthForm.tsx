@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
@@ -8,8 +8,6 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 type FormState = "idle" | "loading" | "sent" | "verifying";
 
 const authCallbackPath = "/auth/callback";
-const cooldownSeconds = 60;
-const rateLimitCooldownSeconds = 2 * 60;
 const genericSecureLinkError = "We could not send a secure link. Check the email and try again.";
 const genericCodeError = "That code did not work. Check the latest email and try again.";
 
@@ -69,7 +67,7 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   const code = getErrorStringProperty(error, "code");
 
   if (code === "over_email_send_rate_limit") {
-    return "Secure-link emails are temporarily rate-limited. Try again in a couple of minutes.";
+    return "Supabase is blocking secure-link emails right now. You can try again, but it may fail until the Auth rate limit resets.";
   }
 
   if (code === "otp_expired") {
@@ -81,12 +79,6 @@ function getFriendlyAuthErrorMessage(error: unknown) {
   }
 
   return genericSecureLinkError;
-}
-
-function getCooldownSecondsForResult(error: unknown) {
-  return getErrorStringProperty(error, "code") === "over_email_send_rate_limit"
-    ? rateLimitCooldownSeconds
-    : cooldownSeconds;
 }
 
 function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
@@ -114,16 +106,6 @@ function clearPageAuthError() {
   window.history.replaceState(null, "", url);
 }
 
-function formatCooldown(remainingSeconds: number) {
-  if (remainingSeconds >= 60) {
-    const minutes = Math.ceil(remainingSeconds / 60);
-
-    return `${minutes}m`;
-  }
-
-  return `${remainingSeconds}s`;
-}
-
 export function MemberAuthForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -131,50 +113,14 @@ export function MemberAuthForm() {
   const [error, setError] = useState<string | null>(null);
   const [codeError, setCodeError] = useState<string | null>(null);
   const [state, setState] = useState<FormState>("idle");
-  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
-  const [cooldownRemaining, setCooldownRemaining] = useState(0);
-
-  useEffect(() => {
-    if (!cooldownUntil) {
-      setCooldownRemaining(0);
-      return;
-    }
-
-    const activeCooldownUntil = cooldownUntil;
-
-    function syncCooldownRemaining() {
-      const nextRemaining = Math.max(0, Math.ceil((activeCooldownUntil - Date.now()) / 1000));
-
-      setCooldownRemaining(nextRemaining);
-
-      if (nextRemaining === 0) {
-        setCooldownUntil(null);
-      }
-    }
-
-    syncCooldownRemaining();
-    const intervalId = window.setInterval(syncCooldownRemaining, 1000);
-
-    return () => window.clearInterval(intervalId);
-  }, [cooldownUntil]);
-
-  useEffect(() => {
-    window.localStorage.removeItem("monroes.memberAuth.emailSendBlockedUntil");
-  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    if (cooldownRemaining > 0) {
-      return;
-    }
 
     setError(null);
     setState("loading");
 
     let redirectTo: string | null = null;
-
-    let cooldownDurationSeconds = cooldownSeconds;
 
     try {
       const supabase = createBrowserSupabaseClient();
@@ -188,7 +134,6 @@ export function MemberAuthForm() {
       });
 
       if (signInError) {
-        cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
         logAuthErrorInDevelopment(signInError, redirectTo);
         setError(getFriendlyAuthErrorMessage(signInError));
         setState("idle");
@@ -197,12 +142,9 @@ export function MemberAuthForm() {
 
       setState("sent");
     } catch (signInError) {
-      cooldownDurationSeconds = getCooldownSecondsForResult(signInError);
       logAuthErrorInDevelopment(signInError, redirectTo);
       setError(getFriendlyAuthErrorMessage(signInError));
       setState("idle");
-    } finally {
-      setCooldownUntil(Date.now() + cooldownDurationSeconds * 1000);
     }
   }
 
@@ -306,14 +248,10 @@ export function MemberAuthForm() {
 
       <button
         className="inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-5 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
-        disabled={state === "loading" || cooldownRemaining > 0}
+        disabled={state === "loading"}
         type="submit"
       >
-        {state === "loading"
-          ? "Sending link"
-          : cooldownRemaining > 0
-            ? `Try again in ${formatCooldown(cooldownRemaining)}`
-            : "Email me a secure link"}
+        {state === "loading" ? "Sending link" : "Email me a secure link"}
       </button>
     </form>
   );
