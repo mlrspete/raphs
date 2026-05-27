@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Monroes listing side-view placeholder</title>
+  <desc id="desc">Placeholder artwork for an alternate skateboard deck photo awaiting final product photography.</desc>
+  <rect width="1200" height="900" fill="#fffdf7"/>
+  <rect x="70" y="70" width="1060" height="760" rx="36" fill="#bff6e8" stroke="#171717" stroke-opacity=".08" stroke-width="4"/>
+  <path d="M0 690c160-62 286-72 420-30 188 58 336 38 520-76 106-66 184-84 260-64v380H0z" fill="#ffe0c4" opacity=".76"/>
+  <path d="M0 0h1200v210c-144 46-262 42-354-12C732 132 588 128 438 186 294 242 144 232 0 148z" fill="#d8c8ff" opacity=".56"/>
+  <g transform="translate(255 410) rotate(-2)">
+    <rect x="0" y="0" width="690" height="72" rx="36" fill="#fffdf7" stroke="#171717" stroke-opacity=".16" stroke-width="5"/>
+    <circle cx="84" cy="36" r="14" fill="#ff7a3d" opacity=".82"/>
+    <circle cx="606" cy="36" r="14" fill="#ff7a3d" opacity=".82"/>
+    <path d="M172 36h344" stroke="#171717" stroke-opacity=".2" stroke-width="15" stroke-linecap="round"/>
+    <path d="M244 36h186" stroke="#ff7a3d" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <text x="600" y="782" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800" fill="#171717">MONROES PLACEHOLDER ALT VIEW</text>
+</svg>

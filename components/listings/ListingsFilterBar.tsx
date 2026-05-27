@@ -28,6 +28,10 @@ const brandOptions = [
   "Zero",
   "Element",
   "Enjoi",
+  "Vision",
+  "Black Label",
+  "Bones Brigade",
+  "Bam",
 ];
 const eraOptions = ["80s", "90s", "2000s", "2010s", "2020s"];
 const conditionOptions = [
@@ -40,6 +44,16 @@ const conditionOptions = [
   "Near new",
   "Clean storage condition",
   "Odd shape / display ready",
+  "New Old Stock / collector grade",
+  "Vintage NOS / collector grade",
+  "Original NOS / collector grade",
+  "Vintage NOS BLEM / collector grade",
+  "Vintage NOS / autographed / shrink rips",
+  "Vintage NOS / rare graphic",
+  "Vintage / autographed",
+  "Original / signed / collector grade",
+  "Vintage NOS / signed",
+  "Signed / 2009 reissue / collector grade",
 ];
 const priceOptions = [
   { label: "Under $250", value: "under-250" },

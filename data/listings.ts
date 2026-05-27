@@ -1,5 +1,7 @@
 import type { Database } from "@/lib/types/database";
 
+import { westernSkateCoListings } from "./westernSkateCoListings";
+
 type ListingSeed = Database["public"]["Tables"]["listings"]["Insert"];
 
 const placeholderImageUrl = "/images/listings/placeholder-deck.svg";
@@ -15,7 +17,7 @@ function facts(notes: string[], extra: Record<string, string | boolean | string[
   };
 }
 
-export const listingSeeds = [
+const manualListingSeeds = [
   {
     slug: "powell-peralta-hawk-era-wall-deck",
     status: "live",
@@ -221,3 +223,18 @@ export const listingSeeds = [
     sort_order: 120,
   },
 ] satisfies ListingSeed[];
+
+function uniqueBySlug(listings: ListingSeed[]) {
+  const seenSlugs = new Set<string>();
+
+  return listings.filter((listing) => {
+    if (seenSlugs.has(listing.slug)) {
+      return false;
+    }
+
+    seenSlugs.add(listing.slug);
+    return true;
+  });
+}
+
+export const listingSeeds = uniqueBySlug([...manualListingSeeds, ...westernSkateCoListings]) satisfies ListingSeed[];

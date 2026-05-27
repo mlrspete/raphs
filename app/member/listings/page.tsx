@@ -186,10 +186,11 @@ export default async function MemberListingsPage({ searchParams }: MemberListing
         <div className="flex flex-col gap-4 rounded-lg border border-ink/10 bg-white p-6 shadow-soft sm:p-8 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">Member listings</p>
-          <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Private Monroes deck listings</h1>
-          <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-ink/68">
-              Manual Monroes-owned listings only. No seller profiles, saved decks, cart, or listing submissions in this preview.
-          </p>
+            <h1 className="mt-3 text-3xl font-black leading-tight text-ink">Private Monroes deck listings</h1>
+            <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-ink/68">
+              Member-only Monroes and consignment listings. No seller profiles, saved decks, cart, or listing submissions
+              in this preview.
+            </p>
           </div>
           <Link
             className="inline-flex rounded-md border border-ink/10 bg-cream px-4 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink transition hover:border-orange hover:text-orange"
