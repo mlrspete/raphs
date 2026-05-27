@@ -2,23 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createServerSupabaseAuthClient } from "@/lib/supabase/server";
 
-function safeNextPath(value: string | null) {
-  if (!value || !value.startsWith("/") || value.startsWith("//")) {
-    return "/member";
-  }
+function loginErrorRedirect(requestUrl: URL, authError: "callback_failed" | "missing_code") {
+  const redirectUrl = new URL("/member/login", requestUrl.origin);
+  redirectUrl.searchParams.set("auth_error", authError);
 
-  return value;
+  return NextResponse.redirect(redirectUrl);
 }
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = safeNextPath(requestUrl.searchParams.get("next"));
 
-  if (code) {
-    const supabase = await createServerSupabaseAuthClient();
-    await supabase.auth.exchangeCodeForSession(code);
+  if (!code) {
+    return loginErrorRedirect(requestUrl, "missing_code");
   }
 
-  return NextResponse.redirect(new URL(next, requestUrl.origin));
+  try {
+    const supabase = await createServerSupabaseAuthClient();
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      return loginErrorRedirect(requestUrl, "callback_failed");
+    }
+  } catch {
+    return loginErrorRedirect(requestUrl, "callback_failed");
+  }
+
+  return NextResponse.redirect(new URL("/member", requestUrl.origin));
 }

@@ -28,6 +28,8 @@ In Supabase Auth settings, add the callback URLs used by local and production de
 
 The current admin login form uses email/password auth and redirects the browser to `/admin` after a successful sign-in. Member secure-link auth redirects through `/auth/callback`, then to `/member`. Non-admin authenticated users are shown an access-denied state.
 
+For member magic-link auth, the Supabase Confirm Signup and Magic Link email templates must use `{{ .ConfirmationURL }}` as the auth email link. Do not point auth emails directly at `{{ .SiteURL }}/member`; that skips `/auth/callback` and prevents the app from handling expired or already-used links cleanly.
+
 ## Required Environment Variables
 
 - `NEXT_PUBLIC_SUPABASE_URL`

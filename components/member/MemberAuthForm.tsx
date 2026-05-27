@@ -1,13 +1,14 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 type FormState = "idle" | "loading" | "sent";
 
 const authCallbackPath = "/auth/callback";
-const localAppUrlPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+const cooldownSeconds = 60;
+const genericSecureLinkError = "We could not send a secure link. Check the email and try again.";
 
 function normalizeAppUrl(value: string | undefined) {
   const trimmed = value?.trim().replace(/\/+$/, "");
@@ -19,36 +20,126 @@ function normalizeAppUrl(value: string | undefined) {
   return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }
 
-function isLocalAppUrl(value: string) {
-  return localAppUrlPattern.test(value);
-}
-
 function getAuthRedirectTo() {
-  const browserOrigin = window.location.origin.replace(/\/+$/, "");
-
-  if (isLocalAppUrl(browserOrigin)) {
-    return `${browserOrigin}${authCallbackPath}`;
-  }
-
   const configuredAppUrl = normalizeAppUrl(process.env.NEXT_PUBLIC_APP_URL);
-  const baseUrl = configuredAppUrl && !isLocalAppUrl(configuredAppUrl) ? configuredAppUrl : browserOrigin;
+  const fallbackOrigin = window.location.origin.replace(/\/+$/, "");
+  const baseUrl = configuredAppUrl ?? fallbackOrigin;
 
   return `${baseUrl}${authCallbackPath}`;
+}
+
+function getErrorStringProperty(error: unknown, property: "code" | "message" | "name") {
+  if (!error || typeof error !== "object" || !(property in error)) {
+    return null;
+  }
+
+  const value = (error as Record<string, unknown>)[property];
+
+  return typeof value === "string" ? value : null;
+}
+
+function getErrorNumberProperty(error: unknown, property: "status") {
+  if (!error || typeof error !== "object" || !(property in error)) {
+    return null;
+  }
+
+  const value = (error as Record<string, unknown>)[property];
+
+  return typeof value === "number" ? value : null;
+}
+
+function isInvalidRedirectError(error: unknown) {
+  const code = getErrorStringProperty(error, "code")?.toLowerCase() ?? "";
+  const message = getErrorStringProperty(error, "message")?.toLowerCase() ?? "";
+  const searchableText = `${code} ${message}`;
+
+  return (
+    searchableText.includes("redirect") &&
+    (searchableText.includes("invalid") ||
+      searchableText.includes("not allowed") ||
+      searchableText.includes("not configured") ||
+      searchableText.includes("uri"))
+  );
+}
+
+function getFriendlyAuthErrorMessage(error: unknown) {
+  const code = getErrorStringProperty(error, "code");
+
+  if (code === "over_email_send_rate_limit") {
+    return "Too many links requested. Wait 60 seconds, then try again.";
+  }
+
+  if (code === "otp_expired") {
+    return "That link expired. Request a fresh secure link.";
+  }
+
+  if (isInvalidRedirectError(error)) {
+    return "Auth redirect is not configured correctly.";
+  }
+
+  return genericSecureLinkError;
+}
+
+function logAuthErrorInDevelopment(error: unknown, redirectTo: string | null) {
+  if (process.env.NODE_ENV !== "development") {
+    return;
+  }
+
+  console.error("Member magic-link signInWithOtp failed", {
+    code: getErrorStringProperty(error, "code"),
+    message: getErrorStringProperty(error, "message") ?? String(error),
+    name: getErrorStringProperty(error, "name"),
+    redirectTo,
+    status: getErrorNumberProperty(error, "status"),
+  });
 }
 
 export function MemberAuthForm() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [state, setState] = useState<FormState>("idle");
+  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
+
+  useEffect(() => {
+    if (!cooldownUntil) {
+      setCooldownRemaining(0);
+      return;
+    }
+
+    const activeCooldownUntil = cooldownUntil;
+
+    function syncCooldownRemaining() {
+      const nextRemaining = Math.max(0, Math.ceil((activeCooldownUntil - Date.now()) / 1000));
+
+      setCooldownRemaining(nextRemaining);
+
+      if (nextRemaining === 0) {
+        setCooldownUntil(null);
+      }
+    }
+
+    syncCooldownRemaining();
+    const intervalId = window.setInterval(syncCooldownRemaining, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [cooldownUntil]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (cooldownRemaining > 0) {
+      return;
+    }
+
     setError(null);
     setState("loading");
 
+    let redirectTo: string | null = null;
+
     try {
       const supabase = createBrowserSupabaseClient();
-      const redirectTo = getAuthRedirectTo();
+      redirectTo = getAuthRedirectTo();
       const { error: signInError } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
@@ -58,15 +149,19 @@ export function MemberAuthForm() {
       });
 
       if (signInError) {
-        setError("We could not send a secure link. Check the email and try again.");
+        logAuthErrorInDevelopment(signInError, redirectTo);
+        setError(getFriendlyAuthErrorMessage(signInError));
         setState("idle");
         return;
       }
 
       setState("sent");
-    } catch {
-      setError("We could not send a secure link. Check the email and try again.");
+    } catch (signInError) {
+      logAuthErrorInDevelopment(signInError, redirectTo);
+      setError(getFriendlyAuthErrorMessage(signInError));
       setState("idle");
+    } finally {
+      setCooldownUntil(Date.now() + cooldownSeconds * 1000);
     }
   }
 
@@ -100,10 +195,14 @@ export function MemberAuthForm() {
 
       <button
         className="inline-flex min-h-12 items-center justify-center rounded-md bg-orange px-5 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink shadow-soft transition hover:-translate-y-0.5 hover:bg-peach focus:outline-none focus:ring-4 focus:ring-orange/30 disabled:cursor-not-allowed disabled:opacity-60"
-        disabled={state === "loading"}
+        disabled={state === "loading" || cooldownRemaining > 0}
         type="submit"
       >
-        {state === "loading" ? "Sending link" : "Email me a secure link"}
+        {state === "loading"
+          ? "Sending link"
+          : cooldownRemaining > 0
+            ? `Try again in ${cooldownRemaining}s`
+            : "Email me a secure link"}
       </button>
     </form>
   );

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { MemberAuthForm } from "@/components/member/MemberAuthForm";
+import { MemberLoginAuthErrorNotice } from "@/components/member/MemberLoginAuthErrorNotice";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -17,6 +19,9 @@ export default function MemberLoginPage() {
         <p className="mt-4 text-base font-semibold leading-7 text-ink/68">
           Use the same email you used at checkout.
         </p>
+        <Suspense fallback={null}>
+          <MemberLoginAuthErrorNotice />
+        </Suspense>
         <MemberAuthForm />
       </section>
     </main>

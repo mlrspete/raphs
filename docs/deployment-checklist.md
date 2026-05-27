@@ -15,6 +15,8 @@ Use this before shipping a Vercel preview or production deploy for Monroes.
 - [ ] Supabase Auth Redirect URLs include `https://raphs.vercel.app/auth/callback`.
 - [ ] Supabase Auth Redirect URLs include `https://monroes.au/auth/callback` when the permanent domain is connected.
 - [ ] Localhost callback URLs are kept only for local development, such as `http://localhost:3000/auth/callback`.
+- [ ] Supabase Confirm Signup and Magic Link templates use `{{ .ConfirmationURL }}` for the auth email link.
+- [ ] Supabase auth email templates do not use `{{ .SiteURL }}/member` as the auth email link.
 - [ ] Supabase sign-in email template uses the Monroes copy in the section below.
 - [ ] Row-level security is enabled and public writes still go through server routes only.
 
@@ -28,6 +30,8 @@ Configure the hosted Supabase sign-in email template with this copy:
 - Body: `Use the secure link below to sign in to Monroes with this email address.`
 - Button: `Sign in to Monroes`
 - Footer/helper text: `This link is for your email only and will expire automatically. If you did not request this email, you can ignore it.`
+
+Use `{{ .ConfirmationURL }}` as the button/link URL in both the Confirm Signup and Magic Link templates. Do not use `{{ .SiteURL }}/member`, because that bypasses the app callback route and can strand users on `/member#error=access_denied&error_code=otp_expired` when a secure link expires or is pre-consumed. The Supabase URL configuration must include `https://raphs.vercel.app/auth/callback`; add `https://monroes.au/auth/callback` when the permanent domain is connected.
 
 ## Vercel Environment Variables
 
