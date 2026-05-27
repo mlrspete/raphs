@@ -41,3 +41,5 @@ For hosted Supabase auth emails, keep the Confirm Signup and Magic Link template
 - `TRANSACTIONAL_EMAIL_FROM`
 
 `SUPABASE_SERVICE_ROLE_KEY` must remain server-only. It is used by the protected member sign-in email route to generate Supabase token hashes and one-time codes without exposing admin credentials to the browser.
+
+Set these variables in Vercel Production and redeploy after saving them. Existing deployments do not receive newly-added environment variables until a fresh deploy is created.

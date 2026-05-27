@@ -30,6 +30,8 @@ Member sign-in uses `supabase.auth.admin.generateLink` from a server route, then
 - `RESEND_API_KEY`
 - `TRANSACTIONAL_EMAIL_FROM`
 
+Set these in Vercel for the Production environment, then redeploy the latest production deployment. Vercel does not apply newly-added environment variables to an already-running deployment.
+
 Keep Supabase hosted Confirm Signup and Magic Link templates on `{{ .ConfirmationURL }}` as a fallback, and do not use `{{ .SiteURL }}/member` as the auth email link. If test members receive the default `noreply@mail.app.supabase.io` email, the deployed app is still running the old client-side `signInWithOtp` flow or the Monroes transactional email env vars are missing.
 
 The app does not impose a client-side resend cooldown. Supabase or Resend can still reject repeated requests at the provider level, so during support tell users to use only the newest email and request one fresh email after a short pause.
