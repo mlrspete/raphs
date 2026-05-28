@@ -23,14 +23,9 @@ export function LandingOfferCard({ quantity }: LandingOfferCardProps) {
 
   return (
     <article className="rounded-[22px] border border-border bg-whitecard p-6 shadow-soft sm:p-8">
-      <p className="landing-card-eyebrow">DAYPASS PREVIEW</p>
-      <h2 className="mt-3 text-3xl font-black leading-[1.05] tracking-[-0.04em] text-ink sm:text-4xl lg:text-[2.625rem]">
+      <h2 className="text-3xl font-black leading-[1.05] tracking-[-0.04em] text-ink sm:text-4xl lg:text-[2.625rem]">
         Try out Monroes for the day.
       </h2>
-      <p className="landing-body mt-5">
-        A Daypass gives you a short look inside Monroes before joining Ultra - one-time purchase, no hidden fees, no
-        subscription.
-      </p>
 
       <div className="mt-7 grid gap-3">
         {benefits.map((benefit) => (

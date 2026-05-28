@@ -130,6 +130,33 @@ function assertCampaignCheckoutAllowed(campaign: PromoCampaign) {
   throw new Error("Campaign 001 is not open for checkout.");
 }
 
+async function assertCampaignEntryCapacity(campaign: PromoCampaign, quantity: number) {
+  if (!campaign.entry_limit) {
+    return;
+  }
+
+  const supabase = createAdminSupabaseClient();
+  const { count, error } = await supabase
+    .from("promo_entries")
+    .select("id", { count: "exact", head: true })
+    .eq("campaign_id", campaign.id)
+    .eq("status", "active");
+
+  if (error) {
+    throw new Error("Campaign entry availability could not be confirmed.");
+  }
+
+  const entriesRemaining = Math.max(campaign.entry_limit - (count ?? 0), 0);
+
+  if (entriesRemaining <= 0) {
+    throw new Error("This promotion has sold out.");
+  }
+
+  if (quantity > entriesRemaining) {
+    throw new Error(`Only ${entriesRemaining} eligible ${entriesRemaining === 1 ? "entry is" : "entries are"} remaining.`);
+  }
+}
+
 function isCheckoutConfigurationError(message: string) {
   return message.includes("not configured") || message.includes("price is not configured") || message.includes("Missing");
 }
@@ -320,6 +347,7 @@ export async function POST(request: Request) {
     const checkoutData = await ensureCampaign001CheckoutData();
     const campaign = await getCampaignForCheckout(parsed.data.campaign_slug, parsed.data.campaign_id, checkoutData.campaign);
     assertCampaignCheckoutAllowed(campaign);
+    await assertCampaignEntryCapacity(campaign, parsed.data.quantity);
 
     const offer = checkoutData.offer;
 

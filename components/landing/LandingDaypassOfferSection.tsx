@@ -9,9 +9,10 @@ import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 type LandingDaypassOfferSectionProps = {
   page: LandingPageViewModel;
+  passesRemaining?: number | null;
 };
 
-export function LandingDaypassOfferSection({ page }: LandingDaypassOfferSectionProps) {
+export function LandingDaypassOfferSection({ page, passesRemaining = null }: LandingDaypassOfferSectionProps) {
   const [quantity, setQuantity] = useState(defaultDaypassCheckoutQuantity);
 
   return (
@@ -22,6 +23,7 @@ export function LandingDaypassOfferSection({ page }: LandingDaypassOfferSectionP
           checkoutOptions={daypassCheckoutOptions}
           onQuantityChange={setQuantity}
           page={page}
+          passesRemaining={passesRemaining}
           quantity={quantity}
         />
       </div>

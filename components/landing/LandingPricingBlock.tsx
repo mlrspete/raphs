@@ -18,6 +18,7 @@ import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 type LandingPricingBlockProps = {
   page: LandingPageViewModel;
+  passesRemaining?: number | null;
   quantity: DaypassCheckoutQuantity;
   checkoutOptions: readonly [DaypassCheckoutOptionDefinition, ...DaypassCheckoutOptionDefinition[]];
   onQuantityChange: (quantity: DaypassCheckoutQuantity) => void;
@@ -69,6 +70,7 @@ function canPurchaseCampaignDaypass(page: LandingPageViewModel) {
 export function LandingPricingBlock({
   checkoutOptions,
   page,
+  passesRemaining = null,
   quantity,
   onQuantityChange,
 }: LandingPricingBlockProps) {
@@ -116,7 +118,7 @@ export function LandingPricingBlock({
         <div className="flex items-start justify-between gap-4">
           <p className="landing-card-eyebrow">DAYPASS</p>
           <p className="rounded-full border border-orange/25 bg-orange/10 px-3 py-2 text-[0.625rem] font-black uppercase leading-4 tracking-[0.2em] text-[#D93A1A] shadow-[0_0_28px_rgba(255,122,61,0.22)] motion-safe:animate-pulse">
-            LIMITED PASSES REMAINING
+            {passesRemaining === null ? "Passes remaining" : `${passesRemaining} passes remaining`}
           </p>
         </div>
         <p className="mt-5 break-words text-[2.5rem] font-black leading-none text-white sm:text-5xl">

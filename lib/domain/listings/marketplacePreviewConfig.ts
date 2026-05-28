@@ -13,7 +13,7 @@ export type MembershipPreviewStat = {
 
 export const membershipPreviewConfig = {
   eyebrow: "Sneak peek",
-  title: "What does the members market look like before you join?",
+  title: "What's for sale?",
   body: null,
   tiles: [
     {
@@ -33,16 +33,8 @@ export const membershipPreviewConfig = {
   ],
   stats: [
     {
-      label: "Brands",
-      value: "27",
-    },
-    {
-      label: "Oldest deck",
-      value: "1977",
-    },
-    {
       label: "Region",
-      value: "Australia only",
+      value: "Based In Australia",
     },
   ],
 } as const;

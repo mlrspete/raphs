@@ -1,14 +1,14 @@
 import type { LandingPageViewModel } from "@/lib/landing-tests/types";
 
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
-import { CampaignRulesSummary } from "@/components/landing/CampaignRulesSummary";
+import { CampaignCountdownBar } from "@/components/landing/CampaignCountdownBar";
 import { DeckPromoDetailsSection } from "@/components/landing/DeckPromoDetailsSection";
 import { LandingDaypassOfferSection } from "@/components/landing/LandingDaypassOfferSection";
 import { LandingFAQ } from "@/components/landing/LandingFAQ";
 import { LandingFinalCTA } from "@/components/landing/LandingFinalCTA";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LivePromotionProgressSection } from "@/components/landing/LivePromotionProgressSection";
-import { MembershipPreviewBlock } from "@/components/preview/MembershipPreviewBlock";
+import { getFallbackCampaignCountdownCloseAt } from "@/lib/domain/campaigns/countdown";
 import { campaign001Slug, sunGodLandingSlug } from "@/lib/domain/campaigns/config";
 import type { PublicCampaignProgress } from "@/lib/domain/campaigns/publicProgress";
 
@@ -37,6 +37,29 @@ export function LandingPageRenderer({ campaignProgress, page }: LandingPageRende
     page.slug === campaign001Slug ||
     page.slug === sunGodLandingSlug ||
     page.configJson.campaignSlug === campaign001Slug;
+  const renderedAt = new Date();
+  const progress = campaignProgress ?? {
+    closesAt: null,
+    entryCount: null,
+    entryLimit: page.campaignLimit,
+    entriesCloseAt: null,
+  };
+  const progressEntryLimit =
+    typeof progress.entryLimit === "number" && Number.isInteger(progress.entryLimit) && progress.entryLimit > 0
+      ? progress.entryLimit
+      : null;
+  const progressEntryCount =
+    typeof progress.entryCount === "number" && Number.isInteger(progress.entryCount) && progress.entryCount >= 0
+      ? progress.entryCount
+      : progressEntryLimit !== null
+        ? 0
+        : null;
+  const passesRemaining =
+    progressEntryLimit !== null && progressEntryCount !== null
+      ? Math.max(progressEntryLimit - progressEntryCount, 0)
+      : null;
+  const countdownBaseCloseAt =
+    progress.entriesCloseAt ?? progress.closesAt ?? getFallbackCampaignCountdownCloseAt(renderedAt);
 
   return (
     <main className="overflow-hidden bg-cream text-ink">
@@ -51,49 +74,57 @@ export function LandingPageRenderer({ campaignProgress, page }: LandingPageRende
           price_cents: page.priceCents,
         }}
       />
-      <LandingHero page={page} />
-      {isCampaign001 ? <DeckPromoDetailsSection /> : null}
-      <LandingDaypassOfferSection page={page} />
       {isCampaign001 ? (
-        <LivePromotionProgressSection progress={campaignProgress ?? { entryCount: null, entryLimit: page.campaignLimit }} />
+        <CampaignCountdownBar
+          baseCloseAt={countdownBaseCloseAt}
+          entryCount={progress.entryCount}
+          entryLimit={progress.entryLimit}
+          renderedAt={renderedAt.toISOString()}
+        />
+      ) : null}
+      <LandingHero page={page} />
+      {isCampaign001 ? (
+        <LivePromotionProgressSection progress={progress} />
+      ) : null}
+      <LandingDaypassOfferSection page={page} passesRemaining={isCampaign001 ? passesRemaining : null} />
+      {isCampaign001 ? <DeckPromoDetailsSection /> : null}
+
+      {!isCampaign001 ? (
+        <section className="bg-white py-14 sm:py-20">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+            <div className="max-w-3xl">
+              <p className="landing-card-eyebrow">WHY GET A DAYPASS?</p>
+              <h2 className="landing-section-title mt-3">
+                Try out Monroes before going Ultra.
+              </h2>
+              <p className="landing-body mt-4 max-w-2xl">
+                A simple way to browse the private deck market first, without starting a monthly membership.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 md:grid-cols-2">
+              {educationCards.map((card) => (
+                <article className="rounded-[22px] border border-border bg-whitecard p-6 shadow-soft sm:p-7" key={card.eyebrow}>
+                  <p className="landing-card-eyebrow">{card.eyebrow}</p>
+                  <h3 className="mt-3 text-2xl font-black leading-tight text-ink sm:text-3xl">{card.title}</h3>
+                  <p className="landing-body mt-4">{card.body}</p>
+                  <div className="mt-6 grid gap-2">
+                    {card.bullets.map((bullet) => (
+                      <p
+                        className="rounded-[12px] border border-border bg-cream px-3 py-2 text-sm font-bold text-muted"
+                        key={bullet}
+                      >
+                        {bullet}
+                      </p>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
       ) : null}
 
-      <section className="bg-white py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-          <div className="max-w-3xl">
-            <p className="landing-card-eyebrow">WHY GET A DAYPASS?</p>
-            <h2 className="landing-section-title mt-3">
-              Try out Monroes before going Ultra.
-            </h2>
-            <p className="landing-body mt-4 max-w-2xl">
-              A simple way to browse the private deck market first, without starting a monthly membership.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {educationCards.map((card) => (
-              <article className="rounded-[22px] border border-border bg-whitecard p-6 shadow-soft sm:p-7" key={card.eyebrow}>
-                <p className="landing-card-eyebrow">{card.eyebrow}</p>
-                <h3 className="mt-3 text-2xl font-black leading-tight text-ink sm:text-3xl">{card.title}</h3>
-                <p className="landing-body mt-4">{card.body}</p>
-                <div className="mt-6 grid gap-2">
-                  {card.bullets.map((bullet) => (
-                    <p
-                      className="rounded-[12px] border border-border bg-cream px-3 py-2 text-sm font-bold text-muted"
-                      key={bullet}
-                    >
-                      {bullet}
-                    </p>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <MembershipPreviewBlock ctaHref="#daypass-offer" ctaLabel="Choose Daypass" surface="landing" />
-      {isCampaign001 ? <CampaignRulesSummary /> : null}
       <LandingFAQ page={page} />
       <LandingFinalCTA />
     </main>

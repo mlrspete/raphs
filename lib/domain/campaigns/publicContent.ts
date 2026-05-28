@@ -33,8 +33,8 @@ export const campaign001PublicContent = {
   } satisfies Record<CampaignTimingKey, string | null>,
   timingDefinitions: {
     starts_at: "Campaign display/start: when public campaign copy can say the campaign has started.",
-    closes_at: "Campaign close: when public campaign promotion and Daypass campaign copy should stop.",
-    entries_close_at: "Entries close: when new promo entries stop being issued.",
+    closes_at: "Campaign close: when public campaign promotion and Daypass campaign copy should stop, subject to rolling 24-hour extensions if the entry cap has not been reached.",
+    entries_close_at: "Entries close: when new promo entries stop being issued, subject to rolling 24-hour extensions if the entry cap has not been reached.",
     draw_lock_at: "Draw lock: when friend Daypass code redemption can no longer change promo entry holder attribution.",
     draw_at: "Planned draw: the intended public draw time after eligible entries are frozen.",
   } satisfies Record<CampaignTimingKey, string>,
@@ -61,10 +61,11 @@ export const campaign001PublicContent = {
     "One Daypass gives the purchaser pending 12-hour member access.",
     "Additional Daypasses create friend Daypass codes that can be redeemed from /redeem.",
     "Each eligible Daypass purchase receives one free promo entry for this promotion.",
+    "If the countdown reaches zero before all eligible entries are allocated, the countdown may roll forward by 24 hours.",
     "Friend Daypass code redemption before draw lock can update the current promo entry holder. After draw lock, access may still be granted but attribution does not change.",
   ],
   drawProcess: [
-    "Monroes freezes eligible entries after entries close and draw lock.",
+    "Monroes freezes eligible entries after entries close under the published countdown, including any rolling 24-hour extension, and draw lock.",
     "A draw snapshot should be created before selecting a winner.",
     "The winner notification, publication, claim window, delivery process, and redraw rules require final operator/legal approval before launch.",
   ],

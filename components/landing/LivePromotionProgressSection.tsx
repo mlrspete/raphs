@@ -32,7 +32,7 @@ function positiveInteger(value: number | null) {
 
 export function LivePromotionProgressSection({ progress }: { progress: PublicCampaignProgress }) {
   const entryLimit = positiveInteger(progress.entryLimit);
-  const entryCount = nonNegativeInteger(progress.entryCount);
+  const entryCount = nonNegativeInteger(progress.entryCount) ?? (entryLimit !== null ? 0 : null);
   const liveProgress =
     entryLimit !== null && entryCount !== null
       ? {
@@ -44,27 +44,17 @@ export function LivePromotionProgressSection({ progress }: { progress: PublicCam
       : null;
 
   return (
-    <section className="bg-cream py-14 sm:py-20">
+    <section className="bg-cream py-6 sm:py-8">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-        <div className="max-w-3xl">
-          <p className="landing-card-eyebrow">Live promotion progress</p>
-          <h2 className="landing-section-title mt-3">When the entries fill, the draw goes live.</h2>
-          <p className="landing-body mt-4">
-            {entryLimit
-              ? `This promotion is capped at ${entryLimit} eligible entries. Once entries close, Monroes locks the eligible entry snapshot, runs a transparent live draw, and ships the deck free to the winner after claim confirmation.`
-              : "This promotion has a limited number of eligible entries. Once entries close, Monroes locks the eligible entry snapshot, runs a transparent live draw, and ships the deck free to the winner after claim confirmation."}
-          </p>
-        </div>
-
-        <div className="mt-10 rounded-lg border border-ink/10 bg-white p-5 shadow-soft sm:p-6">
+        <div className="rounded-lg border border-ink/10 bg-white p-5 shadow-soft sm:p-6">
           {liveProgress ? (
             <div>
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                <p className="text-xl font-black leading-tight text-ink">
-                  {liveProgress.entryCount} / {liveProgress.entryLimit} entries allocated
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-2xl font-black leading-tight text-ink sm:text-3xl">
+                  {liveProgress.entryCount}/{liveProgress.entryLimit} entries allocated
                 </p>
-                <p className="text-sm font-black leading-6 text-orange">
-                  {liveProgress.entriesRemaining} entries remaining
+                <p className="inline-flex w-fit -skew-x-6 items-center rounded-md bg-orange px-4 py-2 text-lg font-black uppercase leading-none tracking-[0.08em] text-ink shadow-deck sm:text-2xl">
+                  <span className="skew-x-6">{liveProgress.entriesRemaining} entries remaining</span>
                 </p>
               </div>
               <div

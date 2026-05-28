@@ -5,8 +5,10 @@ import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 const statusesWithPublicProgress = new Set(["live", "closed", "locked", "drawn"]);
 
 export type PublicCampaignProgress = {
+  closesAt: string | null;
   entryCount: number | null;
   entryLimit: number | null;
+  entriesCloseAt: string | null;
 };
 
 function positiveInteger(value: number | null | undefined) {
@@ -21,12 +23,18 @@ export async function getPublicCampaignProgress({
   slug: string;
 }): Promise<PublicCampaignProgress> {
   let entryLimit = positiveInteger(publicEntryLimit);
+  const fallbackProgress = {
+    closesAt: null,
+    entryCount: null,
+    entryLimit,
+    entriesCloseAt: null,
+  } satisfies PublicCampaignProgress;
 
   try {
     const supabase = createAdminSupabaseClient();
     const { data: campaign, error: campaignError } = await supabase
       .from("promo_campaigns")
-      .select("id,status,entry_limit")
+      .select("id,status,entry_limit,closes_at,entries_close_at")
       .eq("slug", slug)
       .maybeSingle();
 
@@ -35,14 +43,20 @@ export async function getPublicCampaignProgress({
         console.error(`Public campaign progress lookup failed for "${slug}": ${campaignError.message}`);
       }
 
-      return { entryCount: null, entryLimit };
+      return fallbackProgress;
     }
 
     // TODO(milestone-15): set promo_campaigns.entry_limit before launch so public progress can use the live campaign cap instead of the landing-page public cap fallback.
     entryLimit = positiveInteger(campaign.entry_limit) ?? entryLimit;
+    const campaignProgress = {
+      closesAt: campaign.closes_at,
+      entryCount: null,
+      entryLimit,
+      entriesCloseAt: campaign.entries_close_at,
+    } satisfies PublicCampaignProgress;
 
     if (!statusesWithPublicProgress.has(campaign.status)) {
-      return { entryCount: null, entryLimit };
+      return campaignProgress;
     }
 
     const { count, error: countError } = await supabase
@@ -53,16 +67,18 @@ export async function getPublicCampaignProgress({
 
     if (countError) {
       console.error(`Public campaign progress count failed for "${slug}": ${countError.message}`);
-      return { entryCount: null, entryLimit };
+      return campaignProgress;
     }
 
     return {
+      closesAt: campaign.closes_at,
       entryCount: count ?? 0,
       entryLimit,
+      entriesCloseAt: campaign.entries_close_at,
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(`Public campaign progress could not be loaded for "${slug}": ${message}`);
-    return { entryCount: null, entryLimit };
+    return fallbackProgress;
   }
 }

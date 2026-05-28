@@ -31,8 +31,8 @@ export default function RefundPolicyPage() {
           </p>
           <p>
             For Daypasses attached to a promotion, refund requests should be made before the related promotional period
-            closes. After a promotion closes, change-of-mind refunds may not be available, except where required by
-            Australian Consumer Law.
+            closes, including any published 24-hour countdown extension. After a promotion closes, change-of-mind
+            refunds may not be available, except where required by Australian Consumer Law.
           </p>
           <p>
             Any approved refund may revoke member access, access codes, friend codes, and related promotional

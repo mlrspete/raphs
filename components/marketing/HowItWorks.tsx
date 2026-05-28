@@ -2,16 +2,16 @@ import { ScrollReveal } from "@/components/marketing/ScrollReveal";
 
 const steps = [
   {
-    title: "Choose your access",
+    title: "Select membership",
     body: "Start with a Daypass or go straight to Monroes Ultra.",
   },
   {
-    title: "Unlock the members market",
+    title: "Unlock access",
     body: "Browse members-only listings.",
   },
   {
     title: "Secure what you want",
-    body: "Follow drops, shortlist favourites, and move early when the right deck appears.",
+    body: "Shortlist favourites and move early when the right deck appears.",
   },
 ];
 
@@ -22,9 +22,6 @@ export function HowItWorks() {
         <ScrollReveal className="grid gap-5 lg:grid-cols-[0.72fr_1fr] lg:items-end">
           <div>
             <p className="text-sm font-black uppercase text-orange">How it works</p>
-            <h2 className="mt-3 text-4xl font-black uppercase leading-none text-ink sm:text-6xl">
-              BUILD A SHARPER COLLECTION.
-            </h2>
           </div>
         </ScrollReveal>
 

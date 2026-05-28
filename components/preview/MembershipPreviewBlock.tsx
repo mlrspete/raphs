@@ -3,8 +3,8 @@
 import Link from "next/link";
 
 import { ScrollReveal } from "@/components/marketing/ScrollReveal";
-import { listingSeeds } from "@/data/listings";
 import { membershipPreviewConfig } from "@/lib/domain/listings/marketplacePreviewConfig";
+import { getLiveListingPreviewStats } from "@/lib/domain/listings/queries";
 
 type MembershipPreviewBlockProps = {
   ctaHref?: string;
@@ -18,10 +18,25 @@ const toneClasses = {
   orange: "bg-peach/80",
 } as const;
 
-export function MembershipPreviewBlock({ ctaHref, ctaLabel, surface = "homepage" }: MembershipPreviewBlockProps) {
+function formatStatNumber(value: number) {
+  return new Intl.NumberFormat("en-AU").format(value);
+}
+
+export async function MembershipPreviewBlock({ ctaHref, ctaLabel, surface = "homepage" }: MembershipPreviewBlockProps) {
   const isMemberSurface = surface === "member";
-  const liveListingCount = listingSeeds.filter((listing) => listing.status === "live").length;
-  const moreDecksListedCount = Math.max(0, liveListingCount - membershipPreviewConfig.tiles.length);
+  const previewStats = await getLiveListingPreviewStats();
+  const moreDecksListedCount = Math.max(0, previewStats.listingCount - membershipPreviewConfig.tiles.length);
+  const stats = [
+    {
+      label: "Brands",
+      value: formatStatNumber(previewStats.brandCount),
+    },
+    {
+      label: "Oldest deck",
+      value: previewStats.oldestDeckYear ? String(previewStats.oldestDeckYear) : "TBC",
+    },
+    ...membershipPreviewConfig.stats,
+  ];
   const copyContent = (
     <>
       <p className="text-xs font-black uppercase tracking-[0.16em] text-orange">
@@ -79,11 +94,9 @@ export function MembershipPreviewBlock({ ctaHref, ctaLabel, surface = "homepage"
           <p className="mt-2 text-xs font-black uppercase tracking-[0.12em] text-ink/52">More decks listed</p>
         </article>
 
-        {membershipPreviewConfig.stats.map((stat) => (
+        {stats.map((stat) => (
           <article
-            className={`rounded-lg border border-ink/10 bg-white p-4 shadow-soft ${
-              stat.label === "Region" ? "text-center" : ""
-            }`}
+            className="rounded-lg border border-ink/10 bg-white p-4 text-left shadow-soft"
             data-scroll-reveal-item
             key={stat.label}
           >
@@ -91,7 +104,7 @@ export function MembershipPreviewBlock({ ctaHref, ctaLabel, surface = "homepage"
             <p
               className={
                 stat.label === "Region"
-                  ? "mx-auto mt-3 max-w-24 text-balance text-lg font-black uppercase leading-tight text-ink sm:text-xl"
+                  ? "mt-3 max-w-44 text-balance text-lg font-black leading-tight text-ink sm:text-xl"
                   : "mt-3 text-3xl font-black leading-none text-ink"
               }
             >

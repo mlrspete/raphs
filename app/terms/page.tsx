@@ -62,6 +62,11 @@ export default function TermsPage() {
             Promotion mechanics, friend-code treatment, draw timing, winner notification, prize claim rules, and redraw
             rules are governed by the applicable promotion rules.
           </p>
+          <p>
+            Where a promotion uses a countdown, the close time may extend by 24 hours if the countdown reaches zero
+            before all eligible entries are allocated, unless Monroes manually closes the promotion in line with the
+            applicable promotion rules.
+          </p>
         </TermsSection>
 
         <TermsSection title="Refunds and cancellations">

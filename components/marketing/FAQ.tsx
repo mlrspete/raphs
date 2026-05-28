@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: "What is Monroes Ultra?",
-    answer: "Monroes Ultra is the ongoing membership for members who want access to the Monroes members market.",
+    answer: "Monroes Ultra is the ongoing membership for access to all Monroes listings.",
   },
   {
     question: "Is Monroes Australia only?",
@@ -28,7 +28,7 @@ const faqs = [
   {
     question: "How many Daypasses can I purchase?",
     answer:
-      "You can only have one Daypass active at a time, however you can purchase multiple Daypasses at a time and have those Daypasses available for later activation.",
+      "You can only have one Daypass active at a time, however you can purchase multiple Daypasses at a time and have those Daypasses available for later activation or to share with a friend.",
   },
 ];
 

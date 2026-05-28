@@ -93,8 +93,10 @@ export default async function PromoRulesPage({ params }: PromoRulesPageProps) {
             ))}
           </div>
           <p>
-            Entries close when the campaign reaches its entry cap or when the campaign period ends, whichever occurs
-            first. Draw lock is the point where the eligible entry list is frozen and friend-code redemptions can no
+            Entries close when the campaign reaches its entry cap. If the published countdown reaches zero before all
+            eligible entries are allocated, the close time may roll forward by 24 hours and the countdown may continue
+            from the extended close time. This may repeat until the entry cap is reached or Monroes manually closes the
+            promotion. Draw lock is the point where the eligible entry list is frozen and friend-code redemptions can no
             longer change the promotional entry holder.
           </p>
         </RuleSection>
@@ -146,8 +148,9 @@ export default async function PromoRulesPage({ params }: PromoRulesPageProps) {
 
         <RuleSection title="Draw, Winner, and Redraw">
           <p>
-            After entries close and the draw snapshot is locked, Monroes will conduct the draw using the published draw
-            method and the final eligible entry range.
+            After entries close under the published countdown, including any rolling 24-hour extension, and the draw
+            snapshot is locked, Monroes will conduct the draw using the published draw method and the final eligible
+            entry range.
           </p>
           <p>
             The winner will be notified in writing using the contact details connected to the winning entry. Monroes will
