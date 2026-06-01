@@ -14,10 +14,16 @@ class DisabledRealtimeWebSocket {
   }
 }
 
-loadEnvConfig(process.cwd());
+for (const name of ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]) {
+  if (process.env[name] === "") {
+    delete process.env[name];
+  }
+}
+
+const loadedEnv = loadEnvConfig(process.cwd());
 
 function requiredEnv(name: string) {
-  const value = process.env[name];
+  const value = process.env[name] || loadedEnv.parsedEnv?.[name];
 
   if (!value) {
     throw new Error(`Missing required environment variable: ${name}`);
